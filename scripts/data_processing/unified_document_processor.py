@@ -28,10 +28,10 @@ for p in (ROOT, ROOT / "core"):
     if sp not in sys.path:
         sys.path.insert(0, sp)
 
-from core.config import CFG
-from core.io import PDFLoader, ZipIngestor, ExcelCleaner
-from core.qa import retrieve_candidates
-from core.search import is_alive, count_points  # health + collection stats
+from src.core.config import CFG
+from src.core.io import PDFLoader, ZipIngestor, ExcelCleaner
+from src.core.qa import retrieve_candidates
+from src.core.search import is_alive, count_points  # health + collection stats
 
 
 class UnifiedDocumentProcessor:

@@ -1,6 +1,6 @@
 # core/qa.py
 from .config import CFG
-from .search import search_dense, search_hybrid, rrf  # we'll fuse multi-query results via RRFom __future__ import annotations
+from .search import search_dense, search_hybrid, search_hybrid_cached, rrf  # we'll fuse multi-query results via RRFom __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -122,7 +122,13 @@ def retrieve_candidates(user_text: str, cfg=CFG, limit: Optional[int] = None) ->
         lang = "de"
 
     # Choose search method (hybrid or dense)
-    search_fn = search_hybrid if cfg.use_hybrid else search_dense
+    # Use cached version for hybrid search for better performance
+    search_fn = search_hybrid_cached if cfg.use_hybrid else search_dense
+    
+    # Ensure cached version returns objects for backward compatibility
+    if cfg.use_hybrid:
+        original_search = search_fn
+        search_fn = lambda q, l: original_search(q, l, return_objects=True)
 
     # Strategy selection
     if not cfg.force_german_retrieval and not cfg.dual_query:
@@ -173,11 +179,25 @@ def answer_query(user_text: str, cfg=CFG) -> str:
         ps, pe = pl.get("page_start"), pl.get("page_end")
         cite = f"[{Path(src).name}:p{ps}-{pe}]" if (ps is not None and pe is not None) else f"[{Path(src).name or 'source'}]"
         snippet = (h.text or pl.get("text", "")).strip()
-        if not snippet:
-            snippet = _load_pages_text(src, ps, pe)
-        blocks.append(f"{cite}\n{snippet or '[No readable text]'}")
+        
+        # Only load PDF if snippet is empty AND source exists
+        # This prevents unnecessary PDF loading that causes timeouts
+        if not snippet and src and Path(src).exists():
+            try:
+                snippet = _load_pages_text(src, ps, pe)
+            except Exception:
+                snippet = "[Could not load page content]"
+        
+        if snippet:  # Only add non-empty snippets
+            blocks.append(f"{cite}\n{snippet or '[No readable text]'}")
 
     context = "\n\n---\n\n".join(blocks) if blocks else "(no context)"
+    
+    # Truncate context if too long (prevent Ollama timeout)
+    max_context_length = 3000  # characters
+    if len(context) > max_context_length:
+        context = context[:max_context_length] + "\n...[context truncated]"
+    
     prompt = (
         "Beantworte die Frage NUR mit dem bereitgestellten Kontext. "
         "Wenn es nicht im Kontext steht, sage ehrlich, dass du es nicht weißt. "

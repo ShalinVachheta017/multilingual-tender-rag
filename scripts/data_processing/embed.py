@@ -34,8 +34,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from core.config import CFG
-from core.index import Indexer  # updated indexer supports fresh/append/ocr-only
+from src.core.config import CFG
+from src.core.index import Indexer  # updated indexer supports fresh/append/ocr-only
 
 
 def _qdrant_ready(url: str, timeout_s: float = 3.0) -> bool:

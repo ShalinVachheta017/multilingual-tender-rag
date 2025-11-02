@@ -12,9 +12,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from core.config import CFG
-from core.search import search_dense, search_hybrid
-from core.qa import retrieve_candidates
+from src.core.config import CFG
+from src.core.search import search_dense, search_hybrid
+from src.core.qa import retrieve_candidates
 
 
 def test_query(query: str, show_top_n: int = 3):

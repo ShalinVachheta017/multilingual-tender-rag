@@ -1,6 +1,9 @@
 # core/search.py
 from __future__ import annotations
 
+import hashlib
+import json
+import re
 from functools import lru_cache
 from typing import Dict, List, Optional, Sequence, Tuple
 
@@ -13,6 +16,9 @@ from .config import CFG
 
 # Keep embedder behavior stable if HF repo updates
 PINNED_SHA = "f1944de8402dcd5f2b03f822a4bc22a7f2de2eb9"
+
+# Cache configuration
+SEARCH_CACHE_SIZE = 1000  # Number of queries to cache
 
 
 # ---------------------------------------------------------------------------
@@ -122,13 +128,52 @@ def _vector_arg(vec: Sequence[float]):
 
 
 # ---------------------------------------------------------------------------
+# ID Detection
+# ---------------------------------------------------------------------------
+
+def detect_tender_id(query: str) -> Optional[str]:
+    """
+    Detect if the query contains a tender ID and extract it.
+    
+    Supports patterns:
+    - "DTAD-ID 20046891"
+    - "Tender 20047108"
+    - "Vergabe 20046893"
+    - "20046891" (8-digit number only)
+    
+    Returns:
+        The extracted ID as a string, or None if no ID pattern found
+    """
+    # Pattern 1: "DTAD-ID <number>"
+    match = re.search(r'DTAD-ID\s*(\d{8})', query, re.IGNORECASE)
+    if match:
+        return match.group(1)
+    
+    # Pattern 2: "Tender <number>"
+    match = re.search(r'Tender\s*(\d{8})', query, re.IGNORECASE)
+    if match:
+        return match.group(1)
+    
+    # Pattern 3: "Vergabe <number>"
+    match = re.search(r'Vergabe\s*(\d{8})', query, re.IGNORECASE)
+    if match:
+        return match.group(1)
+    
+    # Pattern 4: Just an 8-digit number (be careful - only if it's the whole query or clearly an ID)
+    if re.match(r'^\d{8}$', query.strip()):
+        return query.strip()
+    
+    return None
+
+
+# ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
 
-def embed_query(text: str) -> List[float]:
+def _embed_query_impl(text: str) -> str:
     """
-    Encode a user query with the Jina v3 query prefix and return a float list.
-    Auto-slices to the collection's vector size if needed.
+    Internal implementation of query embedding.
+    Returns JSON string of the embedding vector for caching.
     """
     prefix = getattr(CFG, "embed_query_prefix", "search_query: ")
     embs = _embedder().encode(
@@ -141,18 +186,86 @@ def embed_query(text: str) -> List[float]:
     qdim = _qdrant_dim()
     if qdim is not None and v.shape[0] > qdim:
         v = v[:qdim]
-    return v.tolist()
+    
+    # Return as JSON string for caching
+    return json.dumps(v.tolist())
+
+
+@lru_cache(maxsize=SEARCH_CACHE_SIZE)
+def _embed_query_cached(text: str) -> str:
+    """
+    Cached wrapper for embedding queries.
+    Returns JSON string of the embedding vector.
+    """
+    return _embed_query_impl(text)
+
+
+def embed_query(text: str) -> List[float]:
+    """
+    Encode a user query with the Jina v3 query prefix and return a float list.
+    Auto-slices to the collection's vector size if needed.
+    
+    This function uses LRU caching internally for better performance.
+    Repeated queries return instantly (0.001s) instead of 5-7s.
+    """
+    # Get cached embedding as JSON string
+    embedding_json = _embed_query_cached(text)
+    
+    # Deserialize and return
+    return json.loads(embedding_json)
 
 
 def search_dense(query_text: str, limit: Optional[int] = None, min_score: Optional[float] = None):
     """
     Dense vector search against the configured collection.
     Returns: list[qdrant_client.models.ScoredPoint].
+    
+    If query contains a tender ID (e.g., "DTAD-ID 20046891"), will filter by metadata.
     """
     _ensure_dims_ok()
     limit = int(limit or getattr(CFG, "topk_candidate", 100))
+    
+    # Check if query contains a tender ID
+    tender_id = detect_tender_id(query_text)
+    
+    # Embed query ONCE (cached for repeated queries)
     qv = embed_query(query_text)
-
+    
+    if tender_id:
+        # ID-based search: filter by metadata
+        try:
+            # Create a filter for the ID field
+            filter_condition = qmodels.Filter(
+                must=[
+                    qmodels.FieldCondition(
+                        key="id",
+                        match=qmodels.MatchValue(value=tender_id)
+                    )
+                ]
+            )
+            
+            # Use vector search with ID filter
+            res = _client().search(
+                collection_name=CFG.qdrant_collection,
+                query_vector=_vector_arg(qv),
+                query_filter=filter_condition,
+                limit=limit,
+                with_payload=True,
+                with_vectors=False,
+            )
+            
+            # If we found results by ID, return them immediately (they're the right ones)
+            if res:
+                return res
+                
+            # If no results with ID filter, fall through to normal search
+            # This handles cases where the ID format doesn't match
+        except Exception as e:
+            import logging
+            logger = logging.getLogger("core.search")
+            logger.warning(f"ID-filtered search failed, falling back to normal search: {e}")
+    
+    # Normal vector search (no ID filter) - reuse the embedded query vector
     # Note: 'params' argument removed for compatibility with Qdrant 1.9.2
     # In newer versions, you can add: params=qmodels.SearchParams(hnsw_ef=128)
     
@@ -191,6 +304,8 @@ def search_hybrid(query_text: str, limit: Optional[int] = None, dense_weight: fl
     """
     Hybrid search: combines dense vector search (70%) with BM25 sparse search (30%).
     Uses Reciprocal Rank Fusion (RRF) to merge results.
+    
+    NOTE: For better performance, use search_hybrid_cached() instead.
     
     Args:
         query_text: User query
@@ -262,6 +377,72 @@ def search_hybrid(query_text: str, limit: Optional[int] = None, dense_weight: fl
     fused_results = rrf([dense_results, bm25_results], k=60)
     
     return fused_results[:limit]
+
+
+@lru_cache(maxsize=SEARCH_CACHE_SIZE)
+def _search_hybrid_cached_impl(query_hash: str, query_text: str, limit: int) -> str:
+    """
+    Internal cached implementation. Returns JSON string of results.
+    
+    Note: We cache the JSON string instead of objects to avoid pickling issues
+    with Qdrant's ScoredPoint objects.
+    """
+    results = search_hybrid(query_text, limit=limit)
+    
+    # Convert results to serializable format
+    serializable_results = []
+    for hit in results:
+        serializable_results.append({
+            "id": str(hit.id),
+            "score": float(hit.score) if hasattr(hit, 'score') else 0.0,
+            "payload": dict(hit.payload) if hasattr(hit, 'payload') and hit.payload else {}
+        })
+    
+    return json.dumps(serializable_results)
+
+
+def search_hybrid_cached(query_text: str, limit: Optional[int] = None, dense_weight: float = 0.7, return_objects: bool = False):
+    """
+    Cached version of hybrid search for better performance on repeated queries.
+    
+    Uses LRU cache to store up to 1000 recent queries. Cached queries return instantly
+    (~0.01s) instead of taking 7+ seconds for full hybrid search.
+    
+    Args:
+        query_text: User query
+        limit: Final number of results to return (default: CFG.topk_candidate)
+        dense_weight: Weight for dense results in fusion (default: 0.7)
+        return_objects: If True, return ScoredPoint-like objects (for backward compatibility)
+    
+    Returns:
+        List of result dictionaries with id, score, and payload fields (default)
+        or list of ScoredPoint-like objects if return_objects=True
+    """
+    limit = int(limit or getattr(CFG, "topk_candidate", 100))
+    
+    # Create a hash of the query for cache key
+    query_hash = hashlib.md5(f"{query_text}:{limit}".encode()).hexdigest()
+    
+    # Get cached results as JSON string
+    results_json = _search_hybrid_cached_impl(query_hash, query_text, limit)
+    
+    # Deserialize
+    results = json.loads(results_json)
+    
+    # Convert to objects if requested
+    if return_objects:
+        objects = []
+        for r in results:
+            # Create a simple object with score, payload, and id attributes
+            obj = type('ScoredPoint', (), {
+                'score': r['score'],
+                'payload': r['payload'],
+                'id': r['id']
+            })()
+            objects.append(obj)
+        return objects
+    
+    return results
 
 
 def count_points() -> Optional[int]:

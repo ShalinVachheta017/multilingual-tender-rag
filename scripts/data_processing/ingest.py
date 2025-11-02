@@ -24,8 +24,8 @@ import shutil
 import subprocess
 import sys
 
-from core.config import CFG
-from core.io import ZipIngestor, ExcelCleaner
+from src.core.config import CFG
+from src.core.io import ZipIngestor, ExcelCleaner
 
 def copy_loose_files() -> int:
     """

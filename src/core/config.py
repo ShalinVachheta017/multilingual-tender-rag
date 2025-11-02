@@ -4,7 +4,10 @@ from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-ROOT = Path(__file__).resolve().parents[1]
+# ROOT should be the project root, not src/
+# Path(__file__) = .../src/core/config.py
+# parents[2] goes up to project root
+ROOT = Path(__file__).resolve().parents[2]
 
 
 class AppConfig(BaseSettings):

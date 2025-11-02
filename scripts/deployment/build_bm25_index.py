@@ -18,8 +18,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from qdrant_client import QdrantClient
-from core.config import CFG
-from core.hybrid_search import BM25Index
+from src.core.config import CFG
+from src.core.hybrid_search import BM25Index
 
 
 def fetch_all_documents() -> list[dict]:
