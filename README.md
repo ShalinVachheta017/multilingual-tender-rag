@@ -253,7 +253,7 @@ multilingual-tender-rag/
 ├── ui/streamlit/app.py              # Streamlit chat UI
 ├── tests/                           # pytest suite
 ├── evaluation/                      # Manual / RAGAS evaluation scripts, datasets, results
-├── docs/                            # Project definition, plans, architecture diagram
+├── docs/                            # TENDER_RAG_REFERENCE.md, stage-plan PDFs (Project 1 and 2), diagrams
 │
 ├── data/                            # Not in git
 │   ├── raw/                         # Original tender ZIPs + metadata Excel
