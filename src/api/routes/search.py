@@ -9,48 +9,10 @@ from src.api.models.responses import SearchResponse, Document, ErrorResponse
 from src.api.security import verify_api_key, check_rate_limit
 import time
 import logging
-from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
-
-# Global search engine instance (lazy loaded)
-_search_engine = None
-
-
-def get_search_engine():
-    """Get or initialize the search engine (singleton pattern)."""
-    global _search_engine
-    
-    if _search_engine is None:
-        try:
-            # Import search functions
-            from src.core import search
-            from src.core import hybrid_search
-            
-            logger.info("Initializing search engine...")
-            # Test that search functions are accessible
-            assert callable(search.search_hybrid_cached)
-            assert callable(search.search_dense)
-            assert callable(hybrid_search.search_bm25)
-            
-            _search_engine = {
-                "hybrid": search.search_hybrid_cached,  # Use cached version
-                "dense": search.search_dense,
-                "bm25": hybrid_search.search_bm25
-            }
-            logger.info("Search engine initialized with caching enabled")
-            
-        except Exception as e:
-            logger.error(f"Failed to initialize search engine: {e}", exc_info=True)
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Failed to initialize search engine: {str(e)}"
-            )
-    
-    return _search_engine
-
 
 @router.post(
     "/search",
@@ -80,54 +42,33 @@ async def search_documents(request: SearchRequest):
     start_time = time.time()
     
     try:
-        # Get search functions
-        search_engine = get_search_engine()
-        
-        # Perform search based on mode
+        from src.core import hybrid_search, search
+
         logger.info(f"Search request: query='{request.query}', mode={request.search_mode}, top_k={request.top_k}")
-        
+
         if request.search_mode == "hybrid":
-            # Use cached hybrid search - returns list of dicts
-            results = search_engine["hybrid"](request.query, limit=request.top_k)
-            
-            # Convert dict results to Document format
-            documents = []
-            for result in results:
-                documents.append(Document(
-                    id=result.get("id", "unknown"),
-                    content=result.get("payload", {}).get("text", ""),
-                    score=result.get("score", 0.0),
-                    metadata={k: v for k, v in result.get("payload", {}).items() if k not in ["text", "doc_id"]}
-                ))
-                
+            points = search.search_hybrid(request.query, limit=request.top_k)
         elif request.search_mode == "dense":
-            results = search_engine["dense"](request.query, limit=request.top_k)
-            
-            # Convert Qdrant ScoredPoint to Document format
-            documents = []
-            for result in results:
-                documents.append(Document(
-                    id=result.id or str(result.payload.get("doc_id", "unknown")),
-                    content=result.payload.get("text", ""),
-                    score=result.score,
-                    metadata={k: v for k, v in result.payload.items() if k not in ["text", "doc_id"]}
-                ))
-                
+            points = search.search_dense(request.query, limit=request.top_k)
         elif request.search_mode == "bm25":
-            results = search_engine["bm25"](request.query, top_k=request.top_k)
-            
-            # Convert BM25 tuples to Document format
-            documents = []
-            for doc_id, score in results:
-                documents.append(Document(
-                    id=doc_id,
-                    content="",  # BM25 doesn't return content directly
-                    score=score,
-                    metadata={}
-                ))
+            points = []  # BM25 only returns (id, score); the content is not fetched in this mode
+            bm25_ids = hybrid_search.search_bm25(request.query, top_k=request.top_k)
         else:
             raise ValueError(f"Invalid search mode: {request.search_mode}")
-        
+
+        if request.search_mode == "bm25":
+            documents = [Document(id=str(i), content="", score=score, metadata={}) for i, score in bm25_ids]
+        else:
+            documents = [
+                Document(
+                    id=str(p.id),
+                    content=(p.payload or {}).get("text", ""),
+                    score=float(p.score or 0.0),
+                    metadata={k: v for k, v in (p.payload or {}).items() if k not in ("text", "doc_id")},
+                )
+                for p in points
+            ]
+
         process_time = time.time() - start_time
         
         logger.info(f"Search completed: {len(documents)} results in {process_time:.3f}s")
@@ -148,22 +89,11 @@ async def search_documents(request: SearchRequest):
         )
 
 
-@router.get(
-    "/search/health",
-    summary="Search engine health check",
-    description="Check if search engine is initialized and healthy"
-)
+@router.get("/search/health", summary="Search engine health check")
 async def search_health():
-    """Check search engine health."""
+    """Check that the search modules import (models load on the first real request)."""
     try:
-        search_engine = get_search_engine()
-        return {
-            "status": "healthy",
-            "engine": "HybridSearch",
-            "initialized": search_engine is not None
-        }
+        from src.core import hybrid_search, search  # noqa: F401
+        return {"status": "healthy"}
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"Search engine unhealthy: {str(e)}"
-        )
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=f"Search engine unhealthy: {e}")

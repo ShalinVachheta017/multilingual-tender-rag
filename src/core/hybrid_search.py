@@ -11,7 +11,7 @@ from __future__ import annotations
 import pickle
 import re
 from pathlib import Path
-from typing import Dict, List, Optional, Sequence, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from rank_bm25 import BM25Okapi
 
@@ -196,7 +196,7 @@ def get_bm25_index() -> BM25Index:
         if not index_path.exists():
             raise RuntimeError(
                 f"BM25 index not found at {index_path}. "
-                "Run 'python scripts/build_bm25_index.py' to create it."
+                "Run 'python scripts/deployment/build_bm25_index.py' to create it."
             )
         
         _bm25_index = BM25Index.load(index_path)
@@ -204,47 +204,7 @@ def get_bm25_index() -> BM25Index:
     return _bm25_index
 
 
-def reload_bm25_index() -> None:
-    """Force reload of BM25 index (useful after rebuilding)."""
-    global _bm25_index
-    _bm25_index = None
-    get_bm25_index()
-
-
-# ─── Reciprocal Rank Fusion ─────────────────────────────────────────────────
-def reciprocal_rank_fusion(
-    result_sets: List[List[Tuple[str, float]]],
-    k: int = 60
-) -> List[Tuple[str, float]]:
-    """
-    Reciprocal Rank Fusion (RRF) to combine multiple ranked lists.
-    
-    Args:
-        result_sets: List of ranked lists, each containing (doc_id, score) tuples
-        k: RRF constant (default: 60, standard value from literature)
-    
-    Returns:
-        Fused list of (doc_id, fused_score) tuples, sorted by fused_score descending
-    
-    Reference:
-        Cormack et al. "Reciprocal Rank Fusion outperforms Condorcet and 
-        individual Rank Learning Methods" (SIGIR 2009)
-    """
-    fused_scores: Dict[str, float] = {}
-    
-    for results in result_sets:
-        for rank, (doc_id, _) in enumerate(results, start=1):
-            # RRF formula: score = 1 / (k + rank)
-            fused_scores[doc_id] = fused_scores.get(doc_id, 0.0) + (1.0 / (k + rank))
-    
-    # Sort by fused score descending
-    fused_results = [(doc_id, score) for doc_id, score in fused_scores.items()]
-    fused_results.sort(key=lambda x: x[1], reverse=True)
-    
-    return fused_results
-
-
-# ─── Hybrid Search Function ─────────────────────────────────────────────────
+# ─── Search  ─────────────────────────────────────────────────
 def search_bm25(query: str, top_k: int = 100) -> List[Tuple[str, float]]:
     """
     Perform BM25 sparse search.

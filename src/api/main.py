@@ -8,7 +8,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import time
 import logging
-from pathlib import Path
 
 # Setup logging
 logging.basicConfig(

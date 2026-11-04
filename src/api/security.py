@@ -7,7 +7,7 @@ from fastapi import HTTPException, Security, status
 from fastapi.security import APIKeyHeader
 from datetime import datetime, timedelta
 from collections import defaultdict
-from typing import Dict, Optional
+from typing import Dict
 import os
 
 # API Key configuration

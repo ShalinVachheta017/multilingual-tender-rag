@@ -3,7 +3,6 @@ Test script for multilingual support (Jina v3 embeddings)
 """
 
 from src.core.search import _embedder, search_hybrid
-import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
 print("=" * 70)

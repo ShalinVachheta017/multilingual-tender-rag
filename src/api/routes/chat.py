@@ -4,52 +4,15 @@ Combines retrieval with LLM generation
 """
 
 from fastapi import APIRouter, HTTPException, status, Depends
-from fastapi.responses import StreamingResponse
 from src.api.models.requests import ChatRequest
 from src.api.models.responses import ChatResponse, Document, ErrorResponse
 from src.api.security import verify_api_key, check_rate_limit
 import time
 import logging
-import asyncio
-import json
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
-
-# Global QA engine instance (lazy loaded)
-_qa_engine = None
-
-
-def get_qa_engine():
-    """Get or initialize the QA engine (singleton pattern)."""
-    global _qa_engine
-    
-    if _qa_engine is None:
-        try:
-            # Import QA functions
-            from src.core import qa
-            
-            logger.info("Initializing QA engine...")
-            # Test that QA functions are accessible
-            assert callable(qa.answer_query)
-            assert callable(qa.retrieve_candidates)
-            
-            _qa_engine = {
-                "answer": qa.answer_query,
-                "retrieve": qa.retrieve_candidates
-            }
-            logger.info("QA engine initialized successfully")
-            
-        except Exception as e:
-            logger.error(f"Failed to initialize QA engine: {e}", exc_info=True)
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Failed to initialize QA engine: {str(e)}"
-            )
-    
-    return _qa_engine
-
 
 @router.post(
     "/chat",
@@ -71,24 +34,19 @@ async def chat(request: ChatRequest):
     
     - **query**: User question (1-1000 characters)
     - **top_k**: Number of documents to retrieve (1-20, default: 5)
-    - **search_mode**: hybrid (recommended), dense, or bm25
-    - **stream**: Enable streaming response (default: false)
     
     Returns an answer with source documents.
     """
     start_time = time.time()
     
     try:
-        # Get QA functions
-        qa_engine = get_qa_engine()
-        
+        from src.core.qa import answer_from_hits, retrieve_candidates
+
         logger.info(f"Chat request: query='{request.query}', top_k={request.top_k}")
-        
-        # Retrieve candidates (sources)
-        candidates = qa_engine["retrieve"](request.query, limit=request.top_k)
-        
-        # Generate answer using LLM
-        answer_text = qa_engine["answer"](request.query)
+
+        # Retrieve once, then answer from exactly those sources
+        candidates = retrieve_candidates(request.query, limit=request.top_k)
+        answer_text = answer_from_hits(request.query, candidates)
         
         # Convert candidates to Document format
         sources = []
@@ -123,22 +81,11 @@ async def chat(request: ChatRequest):
         )
 
 
-@router.get(
-    "/chat/health",
-    summary="QA engine health check",
-    description="Check if QA engine is initialized and healthy"
-)
+@router.get("/chat/health", summary="QA engine health check")
 async def chat_health():
-    """Check QA engine health."""
+    """Check that the QA module imports (models load on the first real request)."""
     try:
-        qa_engine = get_qa_engine()
-        return {
-            "status": "healthy",
-            "engine": "QAEngine",
-            "initialized": qa_engine is not None
-        }
+        from src.core import qa  # noqa: F401
+        return {"status": "healthy"}
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"QA engine unhealthy: {str(e)}"
-        )
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=f"QA engine unhealthy: {e}")

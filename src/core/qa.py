@@ -1,30 +1,28 @@
-# core/qa.py
-from .config import CFG
-from .search import search_dense, search_hybrid, search_hybrid_cached, rrf  # we'll fuse multi-query results via RRFom __future__ import annotations
-from dataclasses import dataclass
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+"""Question answering: retrieve chunks, optionally rerank them, then ask the local LLM.
+
+    hits = retrieve_candidates(question)          # search (+ translate, + rerank)
+    answer = answer_from_hits(question, hits)     # build the prompt and call Ollama
+    answer = answer_query(question)               # both steps in one call
+"""
+from __future__ import annotations
+
+import logging
 import re
+from dataclasses import dataclass
+from functools import lru_cache
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 import requests
-import fitz  # PyMuPDF
-
 from langdetect import detect
-from sentence_transformers import SentenceTransformer
-from qdrant_client import QdrantClient
 
 from .config import CFG
-from .search import search_dense, rrf  # we’ll fuse multi-query results via RRF
+from .search import rrf, search_dense, search_hybrid
 
-# Optional reranker (BAAI/bge-reranker-v2-m3)
-try:
-    from FlagEmbedding import FlagReranker
-    _HAS_RERANKER = True
-except Exception:
-    _HAS_RERANKER = False
+logger = logging.getLogger(__name__)
 
+MAX_CONTEXT_CHARS = 3000  # keeps the prompt small enough that Ollama does not time out
 
-# ----------------------------- Data types ------------------------------------
 
 @dataclass
 class Hit:
@@ -35,230 +33,127 @@ class Hit:
     source: str = ""
 
 
-# ---------------------------- Utilities --------------------------------------
+def _to_hit(point) -> Hit:
+    payload = point.payload or {}
+    return Hit(
+        text=(payload.get("text") or payload.get("chunk_text") or "")[:2000],
+        score=float(point.score or 0.0),
+        payload=payload,
+        page=payload.get("page_start") or payload.get("page"),
+        source=payload.get("source_path") or payload.get("source") or "",
+    )
+
+
+# ---------------------------------------------------------------------------
+# Retrieval
+# ---------------------------------------------------------------------------
 
 def _translate_to_de(text: str) -> str:
-    """
-    Best-effort EN→DE translation via Ollama (qwen2.5). If unavailable, returns input.
-    """
+    """Translate to German with the local LLM; return the input unchanged if that fails."""
     try:
         import ollama
-        prompt = (
-            "Übersetze exakt ins Deutsche. Erhalte Namen, Zahlen, Fachbegriffe. "
-            "Nicht zusammenfassen oder umformulieren.\n\nTEXT:\n" + text + "\n\nDEUTSCH:"
-        )
+        prompt = ("Übersetze exakt ins Deutsche. Erhalte Namen, Zahlen, Fachbegriffe. "
+                  "Nicht zusammenfassen oder umformulieren.\n\nTEXT:\n" + text + "\n\nDEUTSCH:")
         out = ollama.chat(model=CFG.llm_model, messages=[{"role": "user", "content": prompt}])
         return out["message"]["content"].strip()
-    except Exception:
+    except Exception as e:
+        logger.warning("Translation to German failed, using the original question: %s", e)
         return text
 
 
-def _assert_dims_match_once() -> None:
-    """
-    Fast-fail if someone switched the model or collection to a different dimension.
-    Skips check if collection doesn't exist yet.
-    """
+@lru_cache(maxsize=1)
+def _reranker():
+    from FlagEmbedding import FlagReranker
+    return FlagReranker(CFG.reranker_model, use_fp16=True)
+
+
+def _rerank(question: str, hits: List[Hit], cfg) -> List[Hit]:
+    """Blend reranker score and search score, keep the best `rerank_keep`. On failure keep the search order."""
     try:
-        m = SentenceTransformer(CFG.embed_model, trust_remote_code=True)
-        dim = m.get_sentence_embedding_dimension()
-        client = QdrantClient(url=CFG.qdrant_url)
-        
-        # Check if collection exists before trying to access it
-        if not client.collection_exists(CFG.qdrant_collection):
-            import logging
-            logger = logging.getLogger("core.qa")
-            logger.warning(f"Qdrant collection '{CFG.qdrant_collection}' does not exist yet. Skipping dimension check.")
-            return
-            
-        vecs = client.get_collection(CFG.qdrant_collection).config.params.vectors
-        qdim = vecs.size if hasattr(vecs, "size") else list(vecs.values())[0].size
-        if dim != qdim:
-            raise RuntimeError(f"Embedding dim mismatch: model={dim}, qdrant={qdim}")
+        pairs = [(question, h.text[:1800]) for h in hits]
+        scores = _reranker().compute_score(pairs, normalize=True)
     except Exception as e:
-        import logging
-        logger = logging.getLogger("core.qa")
-        logger.warning(f"Could not verify embedding dimensions: {e}")
+        logger.warning("Reranker unavailable, keeping search order: %s", e)
+        return hits
+    w = float(cfg.rerank_weight)
+    blended = sorted(zip(hits, scores), key=lambda t: w * float(t[1]) + (1.0 - w) * t[0].score, reverse=True)
+    return [h for h, _ in blended[: int(cfg.rerank_keep)]]
 
-
-_assert_dims_match_once()
-
-
-def _sp_to_hit(sp) -> Hit:
-    pl = sp.payload or {}
-    txt = (pl.get("text") or pl.get("chunk_text") or "")[:2000]
-    src = pl.get("source_path") or pl.get("source") or ""
-    page = pl.get("page_start") or pl.get("page")
-    return Hit(text=txt, score=float(sp.score or 0.0), payload=pl, page=page, source=src)
-
-
-def _should_skip_rerank(query: str) -> bool:
-    """
-    Skip reranking for deterministic ID lookups (e.g., 8-digit DTAD-ID).
-    """
-    return bool(re.fullmatch(r"\d{8}", query.strip()))
-
-
-# ---------------------------- Public API -------------------------------------
 
 def retrieve_candidates(user_text: str, cfg=CFG, limit: Optional[int] = None) -> List[Hit]:
-    """
-    Retrieves candidates using:
-      - Hybrid search (BM25 + dense) if cfg.use_hybrid is True
-      - Dense-only otherwise
-      
-    Optional multilingual routing:
-      - multilingual default (no translation), OR
-      - DE-only routing (translate then search), OR
-      - dual retrieval (original + DE) fused via RRF.
-      
-    Optional BGE reranking if enabled and available.
-    """
+    """Search (hybrid or dense), optionally also with a German translation, then rerank and cut to `final_k`."""
     limit = int(limit or cfg.top_k)
+    search = search_hybrid if cfg.use_hybrid else search_dense
 
-    # Language detect (best-effort)
-    try:
-        lang = detect(user_text)
-    except Exception:
-        lang = "de"
-
-    # Choose search method (hybrid or dense)
-    # Use cached version for hybrid search for better performance
-    search_fn = search_hybrid_cached if cfg.use_hybrid else search_dense
-    
-    # Ensure cached version returns objects for backward compatibility
-    if cfg.use_hybrid:
-        original_search = search_fn
-        search_fn = lambda q, l: original_search(q, l, return_objects=True)
-
-    # Strategy selection
-    if not cfg.force_german_retrieval and not cfg.dual_query:
-        res = search_fn(user_text, limit)
-    elif cfg.force_german_retrieval and not cfg.dual_query:
-        de_q = user_text if lang == "de" else _translate_to_de(user_text)
-        res = search_fn(de_q, limit)
-    else:
-        # Dual retrieval + RRF fusion
-        res_en = search_fn(user_text, limit)
-        de_q   = user_text if lang == "de" else _translate_to_de(user_text)
-        res_de = search_fn(de_q, limit)
-        res    = rrf([res_en, res_de])[:limit]
-
-    hits = [_sp_to_hit(r) for r in res]
-
-    # Optional reranking
-    if cfg.use_rerank and _HAS_RERANKER and hits and not _should_skip_rerank(user_text):
+    queries = [user_text]
+    if cfg.force_german_retrieval or cfg.dual_query:
         try:
-            reranker = FlagReranker(cfg.reranker_model, use_fp16=True)
-            # make sure we have text for each item
-            pairs = [(user_text, (h.text or h.payload.get("text", ""))[:1800]) for h in hits]
-            scores = reranker.compute_score(pairs, normalize=True)
-            blended: List[Tuple[float, Hit]] = []
-            w = float(cfg.rerank_weight)
-            for h, s in zip(hits, scores):
-                blended.append((w * float(s) + (1.0 - w) * float(h.score), h))
-            blended.sort(key=lambda t: t[0], reverse=True)
-            keep = int(cfg.rerank_keep)
-            hits = [h for _, h in blended[:keep]]
+            is_german = detect(user_text) == "de"
         except Exception:
-            pass
+            is_german = True
+        german = user_text if is_german else _translate_to_de(user_text)
+        queries = [user_text, german] if cfg.dual_query else [german]
 
-    # Final cut (maps to cfg.final_k so the UI stays snappy)
+    result_sets = [search(q, limit) for q in dict.fromkeys(queries)]  # drops a duplicate query
+    points = result_sets[0] if len(result_sets) == 1 else rrf(result_sets)[:limit]
+    hits = [_to_hit(p) for p in points]
+
+    is_id_lookup = bool(re.fullmatch(r"\d{8}", user_text.strip()))  # an exact id needs no reranking
+    if cfg.use_rerank and hits and not is_id_lookup:
+        hits = _rerank(user_text, hits, cfg)
     return hits[: int(cfg.final_k)]
 
 
-def answer_query(user_text: str, cfg=CFG) -> str:
-    """
-    Minimal answerer: stitches snippets from top hits and asks the LLM.
-    Replace with your preferred prompting if you want.
-    """
-    hits = retrieve_candidates(user_text, cfg)
-    blocks: List[str] = []
-    for h in hits[: int(cfg.final_k)]:
-        pl = h.payload or {}
-        src = pl.get("source_path", "") or pl.get("source", "")
-        ps, pe = pl.get("page_start"), pl.get("page_end")
-        cite = f"[{Path(src).name}:p{ps}-{pe}]" if (ps is not None and pe is not None) else f"[{Path(src).name or 'source'}]"
-        snippet = (h.text or pl.get("text", "")).strip()
-        
-        # Only load PDF if snippet is empty AND source exists
-        # This prevents unnecessary PDF loading that causes timeouts
-        if not snippet and src and Path(src).exists():
-            try:
-                snippet = _load_pages_text(src, ps, pe)
-            except Exception:
-                snippet = "[Could not load page content]"
-        
-        if snippet:  # Only add non-empty snippets
-            blocks.append(f"{cite}\n{snippet or '[No readable text]'}")
+# ---------------------------------------------------------------------------
+# Answering
+# ---------------------------------------------------------------------------
 
-    context = "\n\n---\n\n".join(blocks) if blocks else "(no context)"
-    
-    # Truncate context if too long (prevent Ollama timeout)
-    max_context_length = 3000  # characters
-    if len(context) > max_context_length:
-        context = context[:max_context_length] + "\n...[context truncated]"
-    
+def _build_context(hits: List[Hit]) -> str:
+    blocks = []
+    for h in hits:
+        snippet = h.text.strip()
+        if not snippet:
+            continue
+        name = Path(h.source).name or "source"
+        start, end = h.payload.get("page_start"), h.payload.get("page_end")
+        cite = f"[{name}:p{start}-{end}]" if start is not None and end is not None else f"[{name}]"
+        blocks.append(f"{cite}\n{snippet}")
+    context = "\n\n---\n\n".join(blocks) or "(no context)"
+    if len(context) > MAX_CONTEXT_CHARS:
+        context = context[:MAX_CONTEXT_CHARS] + "\n...[context truncated]"
+    return context
+
+
+def answer_from_hits(question: str, hits: List[Hit]) -> str:
+    """Ask the LLM to answer from the given hits only."""
     prompt = (
         "Beantworte die Frage NUR mit dem bereitgestellten Kontext. "
         "Wenn es nicht im Kontext steht, sage ehrlich, dass du es nicht weißt. "
         "Antworte auf Deutsch, wenn die Frage Deutsch ist; sonst antworte in der Sprache der Frage. "
         "Sei präzise und nenne die Quelle in eckigen Klammern.\n\n"
-        f"Kontext:\n{context}\n\nFrage: {user_text}\nAntwort:"
+        f"Kontext:\n{_build_context(hits)}\n\nFrage: {question}\nAntwort:"
     )
     return _ask_llm(prompt)
 
 
-# ----------------------- PDF fallback & LLM bridge ---------------------------
-
-def _load_pages_text(source_path: str, p_start: Optional[int], p_end: Optional[int], max_chars: int = 1200) -> str:
-    if not source_path or p_start is None or p_end is None:
-        return ""
-    try:
-        p = Path(source_path)
-        if not p.exists():
-            # fallback to extract_dir/filename.pdf
-            p = Path(CFG.extract_dir) / p.name
-        if not p.exists():
-            return f"[File not found: {Path(source_path).name}]"
-
-        with fitz.open(p) as doc:
-            p_start = max(1, int(p_start))
-            p_end = min(len(doc), int(p_end))
-            texts = []
-            for i in range(p_start - 1, p_end):
-                texts.append(doc[i].get_text() or "")
-            out = "\n".join(texts).strip()
-            return out[:max_chars] + ("..." if len(out) > max_chars else "")
-    except Exception as e:
-        return f"[Error loading PDF: {e}]"
+def answer_query(user_text: str, cfg=CFG) -> str:
+    """Retrieve and answer in one call."""
+    return answer_from_hits(user_text, retrieve_candidates(user_text, cfg))
 
 
 def _ask_llm(prompt: str) -> str:
-    """LLM call with Ollama client first, then HTTP fallback."""
-    # Try Ollama Python client
+    """Call Ollama with the Python client; if that fails, try its HTTP API."""
+    options = {"num_predict": 256, "temperature": 0.2, "top_p": 0.9}
     try:
         import ollama
-        response = ollama.chat(
-            model=CFG.llm_model,
-            messages=[{"role": "user", "content": prompt}],
-            options={"num_predict": 256, "temperature": 0.2, "top_p": 0.9},
-        )
-        return response["message"]["content"].strip()
-    except Exception as ollama_error:
-        # Fallback to direct HTTP API
+        reply = ollama.chat(model=CFG.llm_model, messages=[{"role": "user", "content": prompt}], options=options)
+        return reply["message"]["content"].strip()
+    except Exception as client_error:
         try:
-            body = {
-                "model": CFG.llm_model,
-                "prompt": prompt,
-                "options": {"num_predict": 256, "temperature": 0.2},
-                "stream": False,
-            }
-            r = requests.post("http://localhost:11434/api/generate", json=body, timeout=60)
+            r = requests.post("http://localhost:11434/api/generate", timeout=60,
+                              json={"model": CFG.llm_model, "prompt": prompt, "options": options, "stream": False})
             r.raise_for_status()
-            data = r.json()
-            return (data.get("response") or "").strip() or "[LLM returned empty response]"
-        except Exception as api_error:
-            return (
-                f"[LLM unavailable - Ollama: {ollama_error}, API: {api_error}] "
-                "Based on the context, I found relevant documents but cannot generate an answer."
-            )
+            return (r.json().get("response") or "").strip() or "[LLM returned empty response]"
+        except Exception as http_error:
+            return (f"[LLM unavailable - Ollama: {client_error}, API: {http_error}] "
+                    "Based on the context, I found relevant documents but cannot generate an answer.")

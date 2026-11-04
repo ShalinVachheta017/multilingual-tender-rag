@@ -12,7 +12,7 @@ Tests:
 import sys
 import time
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Dict, Any
 from datetime import datetime
 import json
 
@@ -20,7 +20,6 @@ import json
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.core.qa import retrieve_candidates, answer_query
-from src.core.search import search_hybrid, search_dense
 from src.core.config import CFG
 
 
