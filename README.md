@@ -241,18 +241,16 @@ multilingual-tender-rag/
 │   │   ├── index.py                 # Chunking, embedding, Qdrant indexing
 │   │   ├── search.py                # Dense search, hybrid fusion (RRF), caching
 │   │   ├── hybrid_search.py         # BM25 index (German tokenizer)
-│   │   ├── qa.py                    # Retrieval, reranking, answer generation (Ollama)
-│   │   └── logger.py                # Pipeline logging
+│   │   └── qa.py                    # Retrieval, reranking, answer generation (Ollama)
 │   └── api/                         # FastAPI app: /search, /chat, auth, rate limit
 │
 ├── scripts/
-│   ├── data_processing/             # ingest.py, embed.py, unified_document_processor.py
-│   ├── deployment/                  # build_bm25_index.py, deploy_production.py
-│   └── evaluation/                  # hybrid-search validation scripts
+│   ├── data_processing/             # ingest.py, embed.py
+│   └── deployment/                  # build_bm25_index.py
 │
 ├── ui/streamlit/app.py              # Streamlit chat UI
 ├── tests/                           # pytest suite
-├── evaluation/                      # Manual / RAGAS evaluation scripts, datasets, results
+├── evaluation/                      # Manual evaluation script, query lists, results
 ├── docs/                            # TENDER_RAG_REFERENCE.md, stage-plan PDFs (Project 1 and 2), diagrams
 │
 ├── data/                            # Not in git
