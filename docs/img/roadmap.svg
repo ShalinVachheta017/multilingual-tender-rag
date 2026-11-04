@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="767.1" height="252.5" preserveAspectRatio="xMinYMin meet" viewBox="0 0 767 252" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="767.1" height="252.5"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-252)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="0.5" y="0.5" width="766.1" height="251.5" rx="10" ry="10" style="stroke: rgb(83%,87%,89%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<g transform=" matrix(1.55,0,0,1.55,10,10)">
+				<rect x="6" y="66" width="88" height="70" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="45.474365234375" y="112.884" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,225) scale(1,-1)">S0</text>
+				<text x="35.80703125" y="103.28399999999999" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,206) scale(1,-1)">Baseline</text>
+				<text x="32.92724609375" y="93.684" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,187) scale(1,-1)">and safety</text>
+				<text x="21.82724609375" y="84.084" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,168) scale(1,-1)">Weeks 1-2 · 12 h</text>
+				<text x="28.113818359375" y="52" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.2px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,104) scale(1,-1)">tag: s0-baseline</text>
+				<path d="M 95,101 L 103,101 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="103 101, 99.21812 102.8269, 99.21812 99.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="104" y="66" width="88" height="70" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="143.474365234375" y="112.884" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,225) scale(1,-1)">S1</text>
+				<text x="133.400537109375" y="103.28399999999999" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,206) scale(1,-1)">Retrieval</text>
+				<text x="140.392236328125" y="93.684" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,187) scale(1,-1)">fixes</text>
+				<text x="116.74150390625" y="84.084" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,168) scale(1,-1)">Weeks 3-5 · 18.5 h</text>
+				<text x="119.229638671875" y="52" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.2px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,104) scale(1,-1)">tag: s1-retrieval-fixes</text>
+				<path d="M 193,101 L 201,101 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="201 101, 197.2181 102.8269, 197.2181 99.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="202" y="66" width="88" height="70" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="241.474365234375" y="112.884" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,225) scale(1,-1)">S2</text>
+				<text x="228.7212890625" y="103.28399999999999" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,206) scale(1,-1)">Evaluation</text>
+				<text x="244.972021484375" y="93.684" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,187) scale(1,-1)"> </text>
+				<text x="217.82724609375" y="84.084" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,168) scale(1,-1)">Weeks 6-7 · 13 h</text>
+				<text x="221.528466796875" y="52" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.2px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,104) scale(1,-1)">tag: s2-evaluation</text>
+				<path d="M 291,101 L 299,101 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="299 101, 295.2181 102.8269, 295.2181 99.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="300" y="66" width="88" height="70" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="339.474365234375" y="112.884" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,225) scale(1,-1)">S3</text>
+				<text x="328.1666015625" y="103.28399999999999" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,206) scale(1,-1)">Reliability</text>
+				<text x="325.283203125" y="93.684" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,187) scale(1,-1)">and access</text>
+				<text x="315.82724609375" y="84.084" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,168) scale(1,-1)">Weeks 9-11 · 9 h</text>
+				<text x="321.602197265625" y="52" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.2px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,104) scale(1,-1)">tag: s3-reliability</text>
+				<path d="M 389,101 L 397,101 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="397 101, 393.2181 102.8269, 393.2181 99.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="398" y="66" width="88" height="70" rx="4" ry="4" style="stroke: rgb(4%,12%,22%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,12%,22%); fill-rule: evenodd;"/>
+				<text x="437.474365234375" y="112.884" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,225) scale(1,-1)">S4</text>
+				<text x="431.92255859375" y="103.28399999999999" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,206) scale(1,-1)">Polish</text>
+				<text x="423.895654296875" y="93.684" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,187) scale(1,-1)">and deploy</text>
+				<text x="418.967138671875" y="84.084" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,168) scale(1,-1)">Week 12 · 6 h</text>
+				<text x="426.489404296875" y="52" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.2px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,104) scale(1,-1)">tag: shared</text>
+				<rect x="6" y="6" width="470" height="30" rx="4" ry="4" style="stroke: rgb(35%,24%,62%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(35%,24%,62%); fill-rule: evenodd;"/>
+				<text x="117.835888671875" y="18.483999999999998" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,36) scale(1,-1)">Project 2: MultiDoc Evidence Agent (separate plan) · weeks 8-12 · 17 h</text>
+			</g>
+		</g>
+	</g>
+</svg>

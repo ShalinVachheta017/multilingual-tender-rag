@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="791.2" height="112.80000000000001" preserveAspectRatio="xMinYMin meet" viewBox="0 0 791 112" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="791.2" height="112.80000000000001"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-112)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="0.5" y="0.5" width="790.2" height="111.80000000000001" rx="10" ry="10" style="stroke: rgb(83%,87%,89%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<g transform=" matrix(1.6,0,0,1.6,10,10)">
+				<rect x="0.0" y="2" width="69.5" height="54" rx="4" ry="4" style="stroke: rgb(4%,12%,22%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,12%,22%); fill-rule: evenodd;"/>
+				<text x="19.7994384765625" y="35.754000000000005" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,71) scale(1,-1)">Question</text>
+				<text x="18.261425781249997" y="26.654000000000003" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,53) scale(1,-1)">German or</text>
+				<text x="23.4347412109375" y="17.554000000000002" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,35) scale(1,-1)">English</text>
+				<path d="M 70.5,29 L 81.5,29 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="81.5 29, 77.71812 30.82686, 77.71812 27.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="82.5" y="2" width="69.5" height="54" rx="4" ry="4" style="stroke: rgb(72%,10%,10%); stroke-linecap: butt; stroke-width: 1.8; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="107.476123046875" y="35.754000000000005" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,71) scale(1,-1)">Route</text>
+				<text x="97.3063720703125" y="26.654000000000003" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,53) scale(1,-1)">ID or region?</text>
+				<text x="88.87509765625" y="17.554000000000002" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,35) scale(1,-1)">answer from Excel</text>
+				<path d="M 153,29 L 164,29 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="164 29, 160.2181 30.82686, 160.2181 27.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="165.0" y="2" width="69.5" height="54" rx="4" ry="4" style="stroke: rgb(72%,10%,10%); stroke-linecap: butt; stroke-width: 1.8; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="176.7404541015625" y="35.754000000000005" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,71) scale(1,-1)">Hybrid search</text>
+				<text x="175.6859130859375" y="26.654000000000003" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,53) scale(1,-1)">vectors + BM25</text>
+				<text x="174.828466796875" y="17.554000000000002" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,35) scale(1,-1)">merge with RRF</text>
+				<path d="M 235.5,29 L 246.5,29 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="246.5 29, 242.7181 30.82686, 242.7181 27.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="247.5" y="2" width="69.5" height="54" rx="4" ry="4" style="stroke: rgb(72%,10%,10%); stroke-linecap: butt; stroke-width: 1.8; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="270.55234375" y="35.754000000000005" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,71) scale(1,-1)">Rerank</text>
+				<text x="264.6142333984375" y="26.654000000000003" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,53) scale(1,-1)">BGE cross-</text>
+				<text x="269.7824951171875" y="17.554000000000002" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,35) scale(1,-1)">encoder</text>
+				<path d="M 318,29 L 329,29 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="329 29, 325.2181 30.82686, 325.2181 27.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="330.0" y="2" width="69.5" height="54" rx="4" ry="4" style="stroke: rgb(72%,10%,10%); stroke-linecap: butt; stroke-width: 1.8; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="341.654541015625" y="35.754000000000005" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,71) scale(1,-1)">Prompt + LLM</text>
+				<text x="353.8221923828125" y="26.654000000000003" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,53) scale(1,-1)">Ollama</text>
+				<text x="343.6507568359375" y="17.554000000000002" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,35) scale(1,-1)">qwen2.5 1.5B</text>
+				<path d="M 400.5,29 L 411.5,29 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="411.5 29, 407.7181 30.82686, 407.7181 27.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="412.5" y="2" width="69.5" height="54" rx="4" ry="4" style="stroke: rgb(4%,12%,22%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,12%,22%); fill-rule: evenodd;"/>
+				<text x="434.787548828125" y="35.754000000000005" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,71) scale(1,-1)">Answer</text>
+				<text x="428.076220703125" y="26.654000000000003" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,53) scale(1,-1)">with sources</text>
+				<text x="431.135400390625" y="17.554000000000002" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,35) scale(1,-1)">and pages</text>
+			</g>
+		</g>
+	</g>
+</svg>

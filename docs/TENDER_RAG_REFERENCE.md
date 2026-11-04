@@ -1,21 +1,86 @@
-# Tender RAG 2.0: Project Reference
 
-**The single reference file for the current project.** Same content as the PDF `PROJECT_1_TENDER_RAG_2_0.pdf`, generated from one source. The future agent project has its own PDF (`PROJECT_2_MULTIDOC_AGENT.pdf`).
+<p align="center"><img src="img/roadmap.svg" alt="Stage roadmap" width="100%"></p>
 
-- **Version:** 1.2 · 4 November 2026 · branch `chore/repo-cleanup`
-- **Status:** plan. Part 1 describes the code as *read*, not as *run*. Nothing in the stages has been built or measured yet. Targets marked TBD are set from the baseline.
-- **How to use:** read section 1 and the stage you are in (sections 10 to 14); use sections 15 to 17 for method; log decisions in section 21.
+# 🏛️ Tender RAG 2.0 · Project Reference
+
+> **The single reference file for the current project.** Private, measured question answering over German public tenders: fix it, measure it, prove it. The future agent project has its own PDF (`PROJECT_2_MULTIDOC_AGENT.pdf`); this file has the same content as `PROJECT_1_TENDER_RAG_2_0.pdf`, laid out for reading.
+
+| 📁 **112** | ✅ **105** | 📄 **1,781** | 🐞 **22** | ❓ **48** | ⏱ **75.5 h** |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| tenders | valid zips | extracted files | known defects | test questions | project hours |
+
+**Version 1.2** · 4 Nov 2026 · branch `chore/repo-cleanup` · **Status:** *plan. Part 1 describes the code as read, not as run. Nothing is built or measured yet.*
+
+## 🚦 Status board
+
+> ▶ **Now:** S0 · task 1 · back up `data/raw`  *(edit this line and the bars as you go, then commit)*
+
+| Stage | What | Weeks | Hours | Progress | Exit tag |
+|---|---|:-:|:-:|---|---|
+| [S0](#stage-s0) | Baseline and safety | 1–2 | 12 | ▱▱▱▱▱▱▱▱▱▱ 0 % | `s0-baseline` |
+| [S1](#stage-s1) | Retrieval fixes | 3–5 | 18.5 | ▱▱▱▱▱▱▱▱▱▱ 0 % | `s1-retrieval-fixes` |
+| [S2](#stage-s2) | Evaluation | 6–7 | 13 | ▱▱▱▱▱▱▱▱▱▱ 0 % | `s2-evaluation` |
+| [S3](#stage-s3) | Reliability, scale, access control | 9–11 | 9 | ▱▱▱▱▱▱▱▱▱▱ 0 % | `s3-reliability` |
+| [S4](#stage-s4) | Polish and deploy | 12 | 6 (shared) | ▱▱▱▱▱▱▱▱▱▱ 0 % | — |
+| P2 | Project 2: MultiDoc Evidence Agent | 8–12 | 17 | (separate PDF) | — |
+
+<details>
+<summary>▸ <b>How to read this file</b></summary>
+
+- 🔴 🟠 ⚪ = defect priority P0 / P1 / P2 · `- [ ]` = a task you tick (`- [x]`) when done · ▮ = hours in that week · ▸ = click to expand.
+- Sections 10 to 14 are the **stages**: each has a tick-box task list, tests, outputs and an exit gate. Everything else is background and method.
+- Numbers about the system come from reading the code; targets marked **TBD** are set from the baseline.
+- To track progress: tick boxes in the stage you are in, move the bar above, commit the file.
+
+</details>
+
+## ▶ Start here: your first session (about 3 hours)
+
+- [ ] **1. Back up `data/raw`** to external storage. It is the only copy of the tenders. Example: `robocopy "D:\Projects\multilingual-ragbot\data\raw" "E:\backup\tender_raw" /E`, then verify checksums.
+- [ ] **2. Pull the baseline model:** `ollama pull qwen2.5:1.5b`. The baseline must use today's default model; the 3B model comes later for experiment E5. Close other programs that use the GPU (2.2 GB of the 8 GB were already in use).
+- [ ] **3. Start Docker Desktop**, then `docker compose up -d` and `curl http://localhost:6333/collections` (read-only). Does the old collection `tender_docs_jina-v3_d1024_fresh` still exist? That decides baseline option A (read-only) or B (isolated rebuild).
+- [ ] **4. Environment:** Python 3.12 with uv, fix `pyproject.toml`, add Makefile, ruff and pre-commit; run the existing tests as they are and note what passes.
+- [ ] **5.** Corpus inventory (S0 task 4), then the remaining S0 tasks in order.
+
+> 🧱 **Restructure later, not first.** The baseline must measure today's code unchanged. Order: baseline, security fixes, then restructure inside S1 (factory and dependency injection, one piece at a time, tests first).
+
+## 🔁 How every working session goes
+
+<p align="center"><img src="img/change_loop.svg" alt="Session loop" width="100%"></p>
+
+
+<a id="contents"></a>
+
+## 🧭 Contents
+
+**🟦 PART 1 · OVERVIEW AND CURRENT STATE**<br>
+[📌 1. Summary and status](#sec-1) · [🎯 2. Problem, users and scope](#sec-2) · [🗂️ 3. The data](#sec-3) · [🧩 4. The system today](#sec-4) · [🐞 5. Known defects (22)](#sec-5)
+
+**🟩 PART 2 · TARGETS AND LESSONS**<br>
+[💼 6. Job targeting for this project](#sec-6) · [🧠 7. Lessons from the reference projects](#sec-7) · [🎤 8. Interview-question map](#sec-8)
+
+**🟧 PART 3 · STAGES**<br>
+[🧭 9. Stage overview and schedule](#sec-9) · [🧱 10. Stage S0: Baseline and safety](#stage-s0) · [🔧 11. Stage S1: Retrieval fixes](#stage-s1) · [🔬 12. Stage S2: Evaluation](#stage-s2) · [🛡️ 13. Stage S3: Reliability, scale and access control](#stage-s3) · [🚀 14. Stage S4: Polish and deploy](#stage-s4)
+
+**🟪 PART 4 · METHOD**<br>
+[📐 15. Evaluation protocol](#sec-15) · [🧪 16. Experiments](#sec-16) · [⚙️ 17. Reliability, scaling, observability and security](#sec-17)
+
+**🟥 PART 5 · SCOPE, OUTPUTS AND DECISIONS**<br>
+[📦 18. Mandatory, stretch, risks and cut order](#sec-18) · [🏁 19. Deliverables, evidence and interview stories](#sec-19) · [🔌 20. Interface to Project 2](#sec-20) · [📝 21. Decision log and next steps](#sec-21) · [📚 22. Sources and verification status](#sec-22) · [📖 23. Glossary](#sec-23) · [🧾 Appendix: decision record template](#sec-appendix)
+
 
 
 ---
 
-## PART 1 · OVERVIEW AND CURRENT STATE: What the project is, the data, the system as it is today, and what is wrong with it
+## 🟦 PART 1 · OVERVIEW AND CURRENT STATE
 
+*What the project is, the data, the system as it is today, and what is wrong with it*
 
-### 1. Summary and status
+<a id="sec-1"></a>
 
+### 📌 1. Summary and status
 
-> **Decision.** Upgrade the existing German tender RAG system in place into a measured, reliable, production-style service. The order is fixed: **evaluation first, reliability second, scaling third**. Every change has a reason, a test and a before/after number. This project takes about 52.5 of the 75.5 hours planned for both projects (weeks 1 to 7 and 9 to 11) plus a share of the polish week.
+> ✅ **Decision.** Upgrade the existing German tender RAG system in place into a measured, reliable, production-style service. The order is fixed: **evaluation first, reliability second, scaling third**. Every change has a reason, a test and a before/after number. This project takes about 52.5 of the 75.5 hours planned for both projects (weeks 1 to 7 and 9 to 11) plus a share of the polish week.
 
 | Item | Value |
 |---|---|
@@ -27,20 +92,22 @@
 | Hours | S0 12 · S1 18.5 · S2 13 · S3 9 = 52.5 h, plus a shared 6 h polish week |
 | Machine | RTX 4060 Laptop GPU with 8 GB; Python 3.14 installed (project needs a 3.12 environment); Docker installed but stopped; Ollama not installed |
 
-
-> **Honest status.** Everything about the current system comes from reading the source code. Qdrant and Ollama are not running on this machine, so nothing has been executed and no quality number exists. The old 30.6 % “retrieval quality” in evaluation/EVALUATION_REPORT.md came from heuristic manual scoring; it is not a Recall@k. All targets here are marked TBD until the baseline is measured.
+> ⚠️ **Honest status.** Everything about the current system comes from reading the source code. Qdrant and Ollama are not running on this machine, so nothing has been executed and no quality number exists. The old 30.6 % “retrieval quality” in `evaluation/EVALUATION_REPORT.md` came from heuristic manual scoring; it is not a Recall@k. All targets here are marked TBD until the baseline is measured.
 
 
 #### What is new in version 1.2
 
-- **Separate documents:** this project and the future agent project are now two PDFs; docs/TENDER_RAG_REFERENCE.md holds this project's content as Markdown. The older plan files were merged into it.
+- **Separate documents:** this project and the future agent project are now two PDFs; `docs/TENDER_RAG_REFERENCE.md` holds this project's content as Markdown. The older plan files were merged into it.
 - **From the review:** read-only or isolated baseline; test questions sampled by held-out tender and sealed with a hash; code fixes (Type A) and corpus changes (Type B) measured separately; manual citation checks; supersession needs evidence; failure-analysis table; mandatory versus stretch split.
 - **From the interview question sets:** false-refusal rate; aggregation questions through the metadata route; a cross-language experiment; re-indexing into a new collection with an alias; version tags in every trace; an injection test document; a CI evaluation gate; a passages-per-answer sweep; a contextual chunk header (stretch); an access-control filter promoted to mandatory.
 - **From the jamwithai course repository:** factories and dependency injection (they also fix the reranker and embedder reloads), a test layout of unit, api and integration, Makefile, ruff and pre-commit, a git tag per stage, a ready Langfuse compose template, a cache key from all request parameters, and two stretch experiments (BM25 inside Qdrant, chunk-size sweep).
 - **Hours:** 72 became 75.5 (about 6.3 h per week). Section 18 shows what to drop to get back to exactly 6 h per week.
 
+<sub>[↑ Contents](#contents)</sub>
 
-### 2. Problem, users and scope
+<a id="sec-2"></a>
+
+### 🎯 2. Problem, users and scope
 
 **Business problem.** Companies that bid for public contracts in Germany receive “Vergabeunterlagen”: a zip with 10 to 100 files per tender (scanned PDFs, plans, Word forms, GAEB bills of quantities). A bid manager must find the deadline, the issuing authority, the required declarations (for example Formblatt 124 Eigenerklärung), the work package and the risks for every tender. This takes hours.
 
@@ -73,21 +140,27 @@
 |---|---|
 | Safe reproducible pipeline; baseline; retrieval fixes; 48-question evaluation set with sealed test split; retrieval and answer comparison; claim-level citation checks; failure analysis; access-control filter; injection test; load test at 1/5/20 users; Docker; CI; one AWS workflow | Fine-tuning models; Kubernetes; multi-region deployment; a public web service; corpus growth beyond the 112 tenders; agents (Project 2) |
 
+<sub>[↑ Contents](#contents)</sub>
 
-### 3. The data
+<a id="sec-3"></a>
+
+### 🗂️ 3. The data
 
 | Item | Verified fact (checked on disk, 4 Nov 2026) |
 |---|---|
-| Tenders | 112 folders in data/raw, one zip each, from DTAD (April 2023 packages), plus one metadata spreadsheet (VUDb_Data_2025-07-13) |
+| Tenders | 112 folders in `data/raw`, one zip each, from DTAD (April 2023 packages), plus one metadata spreadsheet (VUDb_Data_2025-07-13) |
 | Zip health | 105 zips are valid; 7 are truncated downloads (20044887, 20046902, 20046916, 20046935, 20046979, 20046996, 20047346), kept as real broken-input test fixtures |
-| Unzipped content | 1,781 files in data/extract: 1,488 PDF, 103 DOCX, 107 GAEB (62 x83, 33 d83, 12 p83), 41 nested zips, 13 XLSX, a few other types |
+| Unzipped content | 1,781 files in `data/extract`: 1,488 PDF, 103 DOCX, 107 GAEB (62 x83, 33 d83, 12 p83), 41 nested zips, 13 XLSX, a few other types |
 | Size | about 1.4 GB raw, 1.8 GB extracted |
 | Path collisions | Measured from the zips by CRC: 101 file paths occur in more than one tender; for 66 the content differs (159 file versions overwritten), 35 are byte-identical. Nested zips not counted |
-| Metadata | Excel columns include DTAD ID, title, date, region, issuing authority, source URL (cleaned into data/metadata/cleaned_metadata.xlsx) |
-| Back-up | **data/raw is the only copy of the tenders.** The legacy prototype code is archived outside the repository at D:/Projects/_archive/legacy_rag_prototypes_2025.zip |
+| Metadata | Excel columns include DTAD ID, title, date, region, issuing authority, source URL (cleaned into `data/metadata/cleaned_metadata.xlsx`) |
+| Back-up | **`data/raw` is the only copy of the tenders.** The legacy prototype code is archived outside the repository at D:/Projects/_archive/legacy_rag_prototypes_2025.zip |
 
+<sub>[↑ Contents](#contents)</sub>
 
-### 4. The system today
+<a id="sec-4"></a>
+
+### 🧩 4. The system today
 
 
 #### Architecture at a glance
@@ -97,56 +170,53 @@ The **offline** half runs once or when documents change and turns files into a s
 
 ##### Offline: files to index
 
-```mermaid
-flowchart LR
-  A[data/raw: 112 zips + Excel] --> B[1 Ingest: unzip, hash, log] --> C[2 Load PDF: text layer or OCR] --> D[3 Chunk: 1000 chars, 400 overlap]
-  D --> E[4 Metadata: join Excel row] --> F[5 Embed: Jina v3, 1024-D] --> G[(Qdrant)]
-  G --> H[6 BM25 file: data/state/bm25_index.pkl]
-```
+<p align="center"><img src="img/pipeline_offline.svg" alt="Offline pipeline: files to index" width="100%"></p>
 
 
 ##### Online: question to answer
 
-```mermaid
-flowchart LR
-  Q[Question DE or EN] --> R{ID, region or year?}
-  R -- yes --> M[Answer from Excel, no LLM]
-  R -- no --> S[Hybrid search: vectors + BM25, RRF] --> T[Rerank: BGE cross-encoder] --> U[Prompt + Ollama] --> W[Answer + sources]
-```
+<p align="center"><img src="img/pipeline_online.svg" alt="Online pipeline: question to answer" width="100%"></p>
 
 
 #### Entry points
 
 | Command | File | What it does |
 |---|---|---|
-| docker compose up -d | docker-compose.yml | Starts Qdrant 1.9.2 on port 6333 |
-| python scripts/data_processing/ingest.py | scripts/data_processing/ingest.py | Unzips, logs, cleans the Excel, triggers indexing. **Default mode is fresh (destructive)** |
-| python scripts/data_processing/embed.py --mode MODE | scripts/data_processing/embed.py | Chunks, embeds and upserts PDFs. MODE is fresh, append or ocr-only; **default fresh deletes the collection** |
-| python scripts/deployment/build_bm25_index.py | scripts/deployment/build_bm25_index.py | Reads all chunks from Qdrant and writes data/state/bm25_index.pkl |
-| uvicorn src.api.main:app --port 8000 | src/api/main.py | REST API: /health, /api/v1/search, /api/v1/chat |
-| streamlit run ui/streamlit/app.py | ui/streamlit/app.py | Chat UI (uses core.qa directly, not the API) |
+| docker compose up -d | `docker-compose.yml` | Starts Qdrant 1.9.2 on port 6333 |
+| python `scripts/data_processing/ingest.py` | `scripts/data_processing/ingest.py` | Unzips, logs, cleans the Excel, triggers indexing. **Default mode is fresh (destructive)** |
+| python `scripts/data_processing/embed.py` `--mode` MODE | `scripts/data_processing/embed.py` | Chunks, embeds and upserts PDFs. MODE is fresh, append or ocr-only; **default fresh deletes the collection** |
+| python `scripts/deployment/build_bm25_index.py` | `scripts/deployment/build_bm25_index.py` | Reads all chunks from Qdrant and writes `data/state/bm25_index.pkl` |
+| uvicorn src.api.main:app `--port` 8000 | `src/api/main.py` | REST API: /health, /api/v1/search, /api/v1/chat |
+| streamlit run `ui/streamlit/app.py` | `ui/streamlit/app.py` | Chat UI (uses core.qa directly, not the API) |
 | pytest tests/ | tests/ (7 files) | Caching, API, ID lookup, multilingual tests (pass status not yet verified) |
-
 
 #### Module map
 
+<details>
+<summary>▸ <b>Click to expand</b></summary>
+
 | Path | Role |
 |---|---|
-| src/core/config.py | Settings (pydantic-settings); every field can be overridden by an environment variable with prefix RAGBOT_ |
-| src/core/io.py | ZipIngestor (extract, hash, log), ExcelCleaner, PDFLoader (PyMuPDF + Tesseract OCR), ExcelMetadataJoiner |
-| src/core/index.py | PageAwareChunker and Indexer (Jina v3, Qdrant upsert, collection handling) |
-| src/core/search.py | Dense search, RRF, hybrid search, query embedding cache, tender ID detection |
-| src/core/hybrid_search.py | BM25Index (rank_bm25, German tokenizer, pickle save and load) |
-| src/core/qa.py | retrieve_candidates (language routing, fusion, reranking) and answer_query (prompt and Ollama call) |
-| src/core/domain.py, logger.py | DocumentPage and DocumentChunk data classes; pipeline logger |
-| src/api/ | FastAPI app, X-API-Key check, 60 requests per minute limit, search and chat routes, request and response models |
+| `src/core/config.py` | Settings (pydantic-settings); every field can be overridden by an environment variable with prefix RAGBOT_ |
+| `src/core/io.py` | ZipIngestor (extract, hash, log), ExcelCleaner, PDFLoader (PyMuPDF + Tesseract OCR), ExcelMetadataJoiner |
+| `src/core/index.py` | PageAwareChunker and Indexer (Jina v3, Qdrant upsert, collection handling) |
+| `src/core/search.py` | Dense search, RRF, hybrid search, query embedding cache, tender ID detection |
+| `src/core/hybrid_search.py` | BM25Index (rank_bm25, German tokenizer, pickle save and load) |
+| `src/core/qa.py` | retrieve_candidates (language routing, fusion, reranking) and answer_query (prompt and Ollama call) |
+| `src/core/domain.py`, `logger.py` | DocumentPage and DocumentChunk data classes; pipeline logger |
+| `src/api/` | FastAPI app, X-API-Key check, 60 requests per minute limit, search and chat routes, request and response models |
 | scripts/ | data_processing (ingest, embed, unified processor), deployment (BM25 build, deploy script), evaluation (hybrid validation) |
-| ui/streamlit/app.py | Streamlit chat, metadata route, sources panel |
-| evaluation/ | Manual and RAGAS evaluation scripts, query lists, old results, EVALUATION_REPORT.md |
-| docs/ | This reference, the two stage PDFs, planning images, architecture diagram (docs/references is local only) |
+| `ui/streamlit/app.py` | Streamlit chat, metadata route, sources panel |
+| evaluation/ | Manual and RAGAS evaluation scripts, query lists, old results, `EVALUATION_REPORT.md` |
+| docs/ | This reference, the two stage PDFs, planning images, architecture diagram (`docs/references` is local only) |
 
 
-#### Settings that matter (src/core/config.py)
+</details>
+
+#### Settings that matter (`src/core/config.py`)
+
+<details>
+<summary>▸ <b>Click to expand</b></summary>
 
 | Setting | Current value | Note |
 |---|---|---|
@@ -156,24 +226,32 @@ flowchart LR
 | topk_candidate / final_k | 100 / 16 | topk_candidate is never used online (defect 22) |
 | use_hybrid / dual_query | True / True | Dual query translates non-German questions to German with the LLM (E6) |
 | use_rerank / reranker_model | True / BAAI/bge-reranker-v2-m3 | rerank_keep 24, rerank_weight 0.8 |
-| qdrant_collection | tender_docs_jina-v3_d1024_fresh | Override with RAGBOT_QDRANT_COLLECTION for isolated runs |
-| API key | RAGBOT_API_KEY, default dev-key-12345 | Defect 4 |
+| qdrant_collection | tender_docs_jina-v3_d1024_fresh | Override with `RAGBOT_QDRANT_COLLECTION` for isolated runs |
+| API key | `RAGBOT_API_KEY`, default dev-key-12345 | Defect 4 |
 
+
+</details>
 
 #### Pipeline step by step
 
+<details>
+<summary>▸ <b>Click to expand</b></summary>
+
 | Step | What the code does | Why it exists |
 |---|---|---|
-| Ingest (io.py) | Hashes each zip (SHA-256) and skips known ones; extracts members, nested zips recursively; labels each file (type, size, language) in data/logs/ingest_YYYY-MM.csv; cleans the metadata Excel | Zips cannot be searched; hashing makes re-runs cheap; the log is an audit trail |
+| Ingest (`io.py`) | Hashes each zip (SHA-256) and skips known ones; extracts members, nested zips recursively; labels each file (type, size, language) in `data/logs/ingest_YYYY-MM.csv`; cleans the metadata Excel | Zips cannot be searched; hashing makes re-runs cheap; the log is an audit trail |
 | Load PDF | PyMuPDF text layer; a page with fewer than 50 characters is rendered at 300 dpi and read by Tesseract (German + English) | Many tender pages are stamped, signed scans |
-| Chunk (index.py) | Cuts the text of one PDF into 1,000-character pieces with 400 overlap; remembers first and last page | Embedding models have input limits; small chunks give precise matches and citations; overlap saves facts cut at a boundary |
+| Chunk (`index.py`) | Cuts the text of one PDF into 1,000-character pieces with 400 overlap; remembers first and last page | Embedding models have input limits; small chunks give precise matches and citations; overlap saves facts cut at a boundary |
 | Metadata join | Finds the tender ID in the chunk or in the digits of the file name, merges the Excel row (title, date, region, authority) | Filter by tender, region or date; show titles |
 | Embed and store | Jina v3 at a pinned revision, GPU fp16, normalised, 1,024-D; point ID = UUID5(file hash + chunk index) so re-indexing overwrites instead of duplicating; payload keeps path, pages, metadata and the first 1,500 characters | Multilingual, long input, local. Qdrant gives fast vector search with payload filters |
-| BM25 file | Reads every chunk back from Qdrant, tokenises with a German stop-word list, builds BM25Okapi, saves data/state/bm25_index.pkl (7.8 MB) | Exact words, IDs and form numbers: vectors are weak on these |
+| BM25 file | Reads every chunk back from Qdrant, tokenises with a German stop-word list, builds BM25Okapi, saves `data/state/bm25_index.pkl` (7.8 MB) | Exact words, IDs and form numbers: vectors are weak on these |
 | Route (UI) | A 7 to 8 digit number looks up that tender in the Excel; a year or region lists matching tenders; no LLM involved | Fast, cannot hallucinate |
 | Hybrid search | Dense and BM25 each return only as many results as the final count (16 in the UI; the API's top_k, default 5, in /chat), not the configured pool of 100. Merged with Reciprocal Rank Fusion (1 / (60 + rank)); non-German questions are also translated to German with the LLM and searched again | Meaning plus exact terms |
 | Rerank | BGE cross-encoder reads question and passage together, blends 0.8 x rerank + 0.2 x earlier score; keeps up to 24, final cut 16 (it only ever sees the small pool above) | Much better ordering, too slow for the whole corpus |
 | Answer | Prompt with numbered sources (UI: English prompt; API: German prompt), Ollama, sources shown with page numbers | Grounded answer with citations |
+
+
+</details>
 
 
 #### One question traced end to end
@@ -189,8 +267,10 @@ flowchart LR
 | Rerank | Loads the BGE model from disk, re-orders the small pool | Slow; best passages may belong to another tender |
 | Answer | Context cut to 3,000 characters, qwen2.5 1.5B answers | Plausible text that may describe the wrong tender, with citations that look right |
 
-
 #### Why each component exists
+
+<details>
+<summary>▸ <b>Click to expand</b></summary>
 
 | Component | Why it is there | Alternative | What decides it |
 |---|---|---|---|
@@ -211,45 +291,60 @@ flowchart LR
 | LRU caches | Repeat questions return fast | Version-aware cache | Add the index version to the key (S3) |
 
 
-### 5. Known defects (22)
+</details>
+
+<sub>[↑ Contents](#contents)</sub>
+
+<a id="sec-5"></a>
+
+### 🐞 5. Known defects (22)
+
+<p align="center"><img src="img/defects_by_stage.svg" alt="Defects by priority and by fix stage" width="100%"></p>
 
 Found by reading the code line by line. Each defect gets a test when it is fixed. **Rule: measure the baseline first, then fix one defect at a time and record the effect of each.** The old evaluation ran with defects 1, 6, 7, 8 and 10 all active, so it says little about what a corrected system can do.
 
 | # | Defect | Effect | Fix | Pri | Test to write |
 |---|---|---|---|---|---|
-| 1 | Extraction writes every file to one shared folder, not per tender: 101 paths shared, 66 with differing content (159 versions overwritten), 35 identical | Tender-specific documents vanish; every chunk loses its tender link | S1 B | P0 | Two tenders with the same member name both exist under their tender folder |
-| 2 | Zip path traversal (io.py line 135); no zip-bomb or nesting limit | A crafted zip can write outside the data folder | S0 | P0 | A zip with a ../ member is rejected, nothing written outside |
-| 3 | ingest.py and embed.py default to mode fresh, which deletes the Qdrant collection | One wrong command destroys the index | S0 | P0 | Default mode leaves an existing collection intact |
-| 4 | Fallback API key dev-key-12345 | Anyone can call the API | S0 | P0 | App refuses to start without RAGBOT_API_KEY |
-| 5 | Chat text rendered as raw HTML in Streamlit | Script injection | S0 | P0 | A message containing a script tag is shown escaped |
-| 6 | Only PDFs are indexed: 103 DOCX, 107 GAEB, 13 XLSX ignored | Forms and bills of quantities cannot be found | S1 B | P1 | A DOCX fixture is indexed and retrieved |
-| 7 | Jina v3 called without its retrieval task; code adds nomic-style prefixes. Probable; to be tested | Retrieval adapters unused; lower recall possible | S1 A (E2) | P1 | Dense recall with task versus with prefix on the dev set |
-| 8 | Exact-ID filter uses payload field id, chunks store dtad_id | Filter returns nothing and silently falls back | S1 B | P1 | An ID question returns only chunks of that tender |
-| 9 | Metadata join needs the ID in the file name; extracted names are like 124.pdf | Most chunks have no tender metadata | S1 B | P1 | 100 % of chunks of a sample tender carry dtad_id |
-| 10 | BM25 hits fetched with retrieve(), which does not keep their order | RRF fuses scrambled ranks | S1 A | P1 | A known BM25 ranking survives fusion |
-| 11 | Reranker model loaded on every question; errors swallowed | Seconds of delay; silent failure | S1 A | P1 | Constructed once across three calls; error is raised |
-| 12 | /chat retrieves twice and ignores top_k for the answer | Double cost; wrong evidence count | S1 A | P1 | One retrieval per request; top_k respected |
-| 13 | Context cut to 3,000 characters | Only 2 to 3 of 16 passages reach the LLM | S1 A | P1 | All selected passages fit a token budget and are present |
-| 14 | Scores on different scales mixed (cosine, BM25, RRF, rerank) and compared with fixed thresholds | A threshold such as 0.35 means nothing | S1 A / S2 | P1 | Refusal decided by the evidence check, not a raw score |
-| 15 | Any 7 to 8 digit number is treated as a tender ID | A CPV code question answers “not in the tender data” | S1 A | P1 | A CPV code question is not routed as an ID |
-| 16 | Two online pipelines (UI and API) with different prompts and refusal texts | Same question, different answers | S1 A | P1 | UI and API return the same refusal text and answer |
-| 22 | Candidate pool equals the final count: qa.py:116 passes its final limit to both searches, so topk_candidate = 100 is never used online | Dense and BM25 see 5 to 16 results each; RRF and reranker have little to choose from; recall is capped | S1 A | P1 | A pool of 100 reaches the reranker; the final count is respected |
-| 17 | A second copy of the embedding model is loaded at import (qa.py) | Slow start, wasted GPU memory | S1 A | P2 | One embedder instance per process |
-| 18 | Caches ignore the index version | Stale results after re-indexing | S3 | P2 | Changing the index version changes the cache key |
-| 19 | BM25 has no German compound splitting or stemming | Baustelleneinrichtung does not match Baustelle | stretch | P2 | Compound term matches its parts |
-| 20 | pyproject.toml packages core instead of src; fastapi, uvicorn, rank_bm25 missing; UI import shim points to ui/ | Install fails; UI may not start | S0 | P2 | pip install -e . works; all modules import |
-| 21 | Garbled import line 3 in qa.py | Runs only because half the line is a comment | S0 | P2 | Module imports cleanly |
+| 1 | Extraction writes every file to one shared folder, not per tender: 101 paths shared, 66 with differing content (159 versions overwritten), 35 identical | Tender-specific documents vanish; every chunk loses its tender link | S1 B | 🔴 P0 | Two tenders with the same member name both exist under their tender folder |
+| 2 | Zip path traversal (`io.py` line 135); no zip-bomb or nesting limit | A crafted zip can write outside the data folder | S0 | 🔴 P0 | A zip with a ../ member is rejected, nothing written outside |
+| 3 | `ingest.py` and `embed.py` default to mode fresh, which deletes the Qdrant collection | One wrong command destroys the index | S0 | 🔴 P0 | Default mode leaves an existing collection intact |
+| 4 | Fallback API key dev-key-12345 | Anyone can call the API | S0 | 🔴 P0 | App refuses to start without `RAGBOT_API_KEY` |
+| 5 | Chat text rendered as raw HTML in Streamlit | Script injection | S0 | 🔴 P0 | A message containing a script tag is shown escaped |
+| 6 | Only PDFs are indexed: 103 DOCX, 107 GAEB, 13 XLSX ignored | Forms and bills of quantities cannot be found | S1 B | 🟠 P1 | A DOCX fixture is indexed and retrieved |
+| 7 | Jina v3 called without its retrieval task; code adds nomic-style prefixes. Probable; to be tested | Retrieval adapters unused; lower recall possible | S1 A (E2) | 🟠 P1 | Dense recall with task versus with prefix on the dev set |
+| 8 | Exact-ID filter uses payload field id, chunks store dtad_id | Filter returns nothing and silently falls back | S1 B | 🟠 P1 | An ID question returns only chunks of that tender |
+| 9 | Metadata join needs the ID in the file name; extracted names are like `124.pdf` | Most chunks have no tender metadata | S1 B | 🟠 P1 | 100 % of chunks of a sample tender carry dtad_id |
+| 10 | BM25 hits fetched with retrieve(), which does not keep their order | RRF fuses scrambled ranks | S1 A | 🟠 P1 | A known BM25 ranking survives fusion |
+| 11 | Reranker model loaded on every question; errors swallowed | Seconds of delay; silent failure | S1 A | 🟠 P1 | Constructed once across three calls; error is raised |
+| 12 | /chat retrieves twice and ignores top_k for the answer | Double cost; wrong evidence count | S1 A | 🟠 P1 | One retrieval per request; top_k respected |
+| 13 | Context cut to 3,000 characters | Only 2 to 3 of 16 passages reach the LLM | S1 A | 🟠 P1 | All selected passages fit a token budget and are present |
+| 14 | Scores on different scales mixed (cosine, BM25, RRF, rerank) and compared with fixed thresholds | A threshold such as 0.35 means nothing | S1 A / S2 | 🟠 P1 | Refusal decided by the evidence check, not a raw score |
+| 15 | Any 7 to 8 digit number is treated as a tender ID | A CPV code question answers “not in the tender data” | S1 A | 🟠 P1 | A CPV code question is not routed as an ID |
+| 16 | Two online pipelines (UI and API) with different prompts and refusal texts | Same question, different answers | S1 A | 🟠 P1 | UI and API return the same refusal text and answer |
+| 22 | Candidate pool equals the final count: `qa.py`:116 passes its final limit to both searches, so topk_candidate = 100 is never used online | Dense and BM25 see 5 to 16 results each; RRF and reranker have little to choose from; recall is capped | S1 A | 🟠 P1 | A pool of 100 reaches the reranker; the final count is respected |
+| 17 | A second copy of the embedding model is loaded at import (`qa.py`) | Slow start, wasted GPU memory | S1 A | ⚪ P2 | One embedder instance per process |
+| 18 | Caches ignore the index version | Stale results after re-indexing | S3 | ⚪ P2 | Changing the index version changes the cache key |
+| 19 | BM25 has no German compound splitting or stemming | Baustelleneinrichtung does not match Baustelle | stretch | ⚪ P2 | Compound term matches its parts |
+| 20 | `pyproject.toml` packages core instead of src; fastapi, uvicorn, rank_bm25 missing; UI import shim points to ui/ | Install fails; UI may not start | S0 | ⚪ P2 | pip install -e . works; all modules import |
+| 21 | Garbled import line 3 in `qa.py` | Runs only because half the line is a comment | S0 | ⚪ P2 | Module imports cleanly |
+
+<sub>[↑ Contents](#contents)</sub>
 
 
 ---
 
-## PART 2 · TARGETS AND LESSONS: Which jobs this project answers, what the reference projects taught, which interview questions it covers
+## 🟩 PART 2 · TARGETS AND LESSONS
 
+*Which jobs this project answers, what the reference projects taught, which interview questions it covers*
 
-### 6. Job targeting for this project
+<a id="sec-6"></a>
 
+### 💼 6. Job targeting for this project
 
 #### Market signals
+
+<details>
+<summary>▸ <b>Click to expand</b></summary>
 
 | Source | Finding | Caveat |
 |---|---|---|
@@ -257,6 +352,9 @@ Found by reading the code line by line. Each defect gets a test when it is fixed
 | Simpleapply 2026 report | Generative AI, LLM and RAG each appear in 14 to 18 % of AI/ML postings; Python 77 % | Different method and geography |
 | Lightcast data via Second Talent (Stanford AI Index 2026) | Agentic-AI skills grew from 0.06 % to 0.23 % of US postings, 2024 to 2025 | Small share, fast growth; US data |
 | Open Telekom Cloud case; tech-insider.org (2026) | Tender-document AI hosted in Germany is a real use case; German companies are moving to local RAG pipelines | Vendor and trend articles |
+
+
+</details>
 
 
 #### Verified postings (examples, not a survey)
@@ -296,8 +394,11 @@ Not verified: the European Dynamics and Titan AI pages returned only a title; Ne
 
 **Keywords for the CV and README (only those you can demonstrate):** RAG · hybrid search · BM25 · Qdrant · embeddings · reranking · OCR · document AI · German NLP · citations · evaluation datasets · failure analysis · Langfuse or Phoenix · FastAPI · Pydantic · pytest · Docker · GitHub Actions · AWS · access control · prompt-injection testing · local LLM (Ollama) · GDPR-friendly design
 
+<sub>[↑ Contents](#contents)</sub>
 
-### 7. Lessons from the reference projects
+<a id="sec-7"></a>
+
+### 🧠 7. Lessons from the reference projects
 
 | Reference | What it is | What we take | What we leave |
 |---|---|---|---|
@@ -312,8 +413,10 @@ Not verified: the European Dynamics and Titan AI pages returned only a title; Ne
 
 **Shared lesson:** none of these projects handles messy, scanned, multi-format German documents. They use clean markdown or a handful of PDFs. Ingestion, OCR, GAEB files and tender identity are our hard part, and the part these projects skip. A limited repository search found no open-source RAG project for German public tenders. That is not proof that none exists, so present this as a specific technical and domain-focused contribution, not a first-of-its-kind claim.
 
-
 #### Tools surveyed (stars on GitHub, 4 Nov 2026)
+
+<details>
+<summary>▸ <b>Click to expand</b></summary>
 
 | Group | Projects | Use here |
 |---|---|---|
@@ -323,7 +426,16 @@ Not verified: the European Dynamics and Titan AI pages returned only a title; Ne
 | Benchmarks (optional) | EnterpriseRAG-Bench (English text only); OmniDocBench (English and Chinese, no German) | Stretch; our own questions are the main benchmark |
 
 
-### 8. Interview-question map
+</details>
+
+<sub>[↑ Contents](#contents)</sub>
+
+<a id="sec-8"></a>
+
+### 🎤 8. Interview-question map
+
+<details>
+<summary>▸ <b>Click to expand</b></summary>
 
 From the seven Krish Naik interview sets (350 questions; questions read, answers not). This table shows where this project answers a question with its own evidence. RAG = RAG set, EV = Evals and Guardrails, OP = LLMOps, FDE = Forward Deployed Engineer.
 
@@ -357,12 +469,24 @@ From the seven Krish Naik interview sets (350 questions; questions read, answers
 | FDE Q39, Q48: procurement assistant; take-home over 50 documents | This project and its README structure |
 
 
+</details>
+
+<sub>[↑ Contents](#contents)</sub>
+
+
 ---
 
-## PART 3 · STAGES: S0 to S4: tasks, technical notes, tests, outputs, exit gates
+## 🟧 PART 3 · STAGES
 
+*S0 to S4: tasks, technical notes, tests, outputs, exit gates*
 
-### 9. Stage overview and schedule
+<a id="sec-9"></a>
+
+### 🧭 9. Stage overview and schedule
+
+<p align="center"><img src="img/roadmap.svg" alt="Stage roadmap" width="100%"></p>
+
+<p align="center"><img src="img/hours.svg" alt="Hours per stage" width="100%"></p>
 
 | Stage | Weeks | Hours | Goal | Exit gate |
 |---|---|---|---|---|
@@ -377,116 +501,275 @@ From the seven Krish Naik interview sets (350 questions; questions read, answers
 
 #### Week by week (both projects)
 
-| Week | Starts | Hours | Project 1: Tender RAG 2.0 | Project 2: MultiDoc Evidence Agent |
-|---|---|---|---|---|
-| W1 | 5 Nov | 6 | S0: backup, snapshot, environment, corpus inventory | — |
-| W2 | 12 Nov | 6 | S0: read-only baseline, sampling rule and seed, 32 dev questions, P0 security fixes | — |
-| W3 | 19 Nov | 6 | S1 Type A: candidate pool, BM25 order, reranker loaded once, one retrieval, context budget | — |
-| W4 | 26 Nov | 6 | S1 Type A: one answer pipeline, ID detection, Jina task re-embedding into a new collection with alias, trace logs | — |
-| W5 | 3 Dec | 6.5 | S1 Type B: per-tender extraction, ID filter, metadata join, DOCX and XLSX, re-index; seal 16 test questions | — |
-| W6 | 10 Dec | 6.5 | S2: E1 search methods, E6 cross-language, E2 and E3 results | — |
-| W7 | 17 Dec | 6.5 | S2: E5 answers, E4 OCR baseline, sealed test run, citation checks, failure analysis, reports | — |
-| W8 | 24 Dec | 5 | — (holiday week) | P2-1: plain-Python agent drill, LangGraph toy graph (5 h) |
-| W9 | 31 Dec | 6 | S3: injection test fixture (1 h) | P2-2: contract generator, single agent (5 h) |
-| W10 | 7 Jan | 7 | S3: access-control filter, load test, cache key, timeouts and degraded mode (6 h) | P2-3: MCP server (1 h) |
-| W11 | 14 Jan | 7 | S3: Docker, CI gate, capacity note (2 h) | P2-3 finish, P2-4 LangSmith, P2-5 safety tests (5 h) |
-| W12 | 21 Jan | 7 | S4: README, diagrams, demo, one AWS workflow (6 h, shared) | P2-5 finish (1 h) |
-| **Total** |  | **75.5** | **52.5 h** in S0 to S3 plus the shared polish | **17 h** |
+| Week | Starts | Hours | Load | Project 1: Tender RAG 2.0 | Project 2: MultiDoc Evidence Agent |
+|---|---|---|---|---|---|
+| W1 | 5 Nov | 6 | ▮▮▮▮▮▮ | S0: backup, snapshot, environment, corpus inventory | — |
+| W2 | 12 Nov | 6 | ▮▮▮▮▮▮ | S0: read-only baseline, sampling rule and seed, 32 dev questions, P0 security fixes | — |
+| W3 | 19 Nov | 6 | ▮▮▮▮▮▮ | S1 Type A: candidate pool, BM25 order, reranker loaded once, one retrieval, context budget | — |
+| W4 | 26 Nov | 6 | ▮▮▮▮▮▮ | S1 Type A: one answer pipeline, ID detection, Jina task re-embedding into a new collection with alias, trace logs | — |
+| W5 | 3 Dec | 6.5 | ▮▮▮▮▮▮▯ | S1 Type B: per-tender extraction, ID filter, metadata join, DOCX and XLSX, re-index; seal 16 test questions | — |
+| W6 | 10 Dec | 6.5 | ▮▮▮▮▮▮▯ | S2: E1 search methods, E6 cross-language, E2 and E3 results | — |
+| W7 | 17 Dec | 6.5 | ▮▮▮▮▮▮▯ | S2: E5 answers, E4 OCR baseline, sealed test run, citation checks, failure analysis, reports | — |
+| W8 | 24 Dec | 5 | ▮▮▮▮▮ | — (holiday week) | P2-1: plain-Python agent drill, LangGraph toy graph (5 h) |
+| W9 | 31 Dec | 6 | ▮▮▮▮▮▮ | S3: injection test fixture (1 h) | P2-2: contract generator, single agent (5 h) |
+| W10 | 7 Jan | 7 | ▮▮▮▮▮▮▮ | S3: access-control filter, load test, cache key, timeouts and degraded mode (6 h) | P2-3: MCP server (1 h) |
+| W11 | 14 Jan | 7 | ▮▮▮▮▮▮▮ | S3: Docker, CI gate, capacity note (2 h) | P2-3 finish, P2-4 LangSmith, P2-5 safety tests (5 h) |
+| W12 | 21 Jan | 7 | ▮▮▮▮▮▮▮ | S4: README, diagrams, demo, one AWS workflow (6 h, shared) | P2-5 finish (1 h) |
+| **Total** |  | **75.5** | ▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▯ | **52.5 h** in S0 to S3 plus the shared polish | **17 h** |
 
-*Timeline: see the week-by-week table above.*
+<p align="center"><img src="img/timeline.svg" alt="Timeline in weeks" width="100%"></p>
 
 Hours are my estimates (not measured). Weeks 8 and 9 fall over Christmas and New Year, so they hold flexible learning work instead of benchmarks that need long machine runs.
 
+<sub>[↑ Contents](#contents)</sub>
 
-### 10. Stage S0: Baseline and safety
+<a id="stage-s0"></a>
 
+### 🧱 10. Stage S0: Baseline and safety
 
-##### S0 · weeks 1 to 2 · 12 h
+| ⏱ Weeks | ⌛ Hours | 🏷 Git tag |
+|---|---|---|
+| 1 to 2 | **12 h** | `s0-baseline` |
 
-| Field | Detail |
-|---|---|
-| **Goal** | A safe starting point and a first honest score, without touching the only copy of anything. |
-| **Entry** | Branch chore/repo-cleanup in use; data/raw present (112 folders); RTX 4060 8 GB. |
-| **Tasks** | 1. Back up data/raw to external storage and verify the SHA-256 of every zip (0.5 h).<br>2. If an old Qdrant Docker volume exists, snapshot it or copy the volume before any run (0.25 h).<br>3. Start Docker Desktop (docker compose up -d); install Ollama and pull a 3B model; create a uv environment with Python 3.12; fix pyproject.toml and the requirements (defects 20, 21); add a Makefile (start, stop, test, lint, format), ruff and pre-commit; arrange tests as unit, api and integration with integration tests marked so CI can skip them (2 h).<br>4. Corpus inventory script: files per tender, types, scanned-page share, path collisions by CRC; commit reports/corpus_inventory.md (1 h).<br>5. **Baseline, option A (preferred): evaluate the existing index read-only** (no ingest, no index). Option B if the collection is gone: rebuild into an isolated copy, with RAGBOT_QDRANT_COLLECTION=baseline_v0 and the extract, state, logs and metadata folders redirected through RAGBOT_* variables (1.25 h plus machine time).<br>6. Write the sampling rule and the tender split: fixed seed, stratified so scanned documents, tables and non-PDF files are represented; hold out about one third of the tenders; commit seed and split before drafting any question (0.5 h).<br>7. Draft and review 32 dev questions across the 8 categories, including 2 aggregation questions; tag each with the corpus level it needs (L0, L1, L2). I can draft candidates; you verify each against its source page (3.5 h).<br>8. Run the baseline; label each failed question with exactly one failure stage; write reports/baseline_v0.md (1 h).<br>9. Fix defects 2 to 5, each with a test, only after the baseline is recorded (2 h). |
-| **Technical notes** | Never run ingest.py or embed.py in their default mode: both default to fresh. Use append plus an isolated collection name. Qdrant snapshot: POST /collections/NAME/snapshots. config.py reads RAGBOT_* variables (RAGBOT_QDRANT_COLLECTION, RAGBOT_EXTRACT_DIR, RAGBOT_STATE_DIR, RAGBOT_LOGS_DIR, RAGBOT_METADATA_DIR). Keep the code unchanged until the baseline is recorded. |
-| **Tests** | Four P0 tests (zip traversal, non-destructive default, no default key, escaped chat text); seed reproduces the same tender split. |
-| **Outputs** | reports/corpus_inventory.md · reports/baseline_v0.md (retrieval hit rate, answer check, refusal, latency, failure labels) · evaluation/gold/dev.jsonl (32) · evaluation/gold/split.json (seed, split) · backup log · four tests. |
-| **Exit gate** | Backup verified; baseline numbers and failure labels committed; the four P0 tests pass; no real data folder or collection was modified. Tag the commit s0-baseline. |
-| **Questions covered** | RAG Q18, Q50; EV Q5, Q6, Q41; FDE Q18. |
+> 🎯 **Goal.** A safe starting point and a first honest score, without touching the only copy of anything.
 
+🔑 **Entry condition:** Branch chore/repo-cleanup in use; `data/raw` present (112 folders); RTX 4060 8 GB.
 
-### 11. Stage S1: Retrieval fixes
+#### ✅ Tasks
 
+- [ ] **1.** Back up `data/raw` to external storage and verify the SHA-256 of every zip (0.5 h).
+- [ ] **2.** If an old Qdrant Docker volume exists, snapshot it or copy the volume before any run (0.25 h).
+- [ ] **3.** Start Docker Desktop (docker compose up -d); install Ollama and pull a 3B model; create a uv environment with Python 3.12; fix `pyproject.toml` and the requirements (defects 20, 21); add a Makefile (start, stop, test, lint, format), ruff and pre-commit; arrange tests as unit, api and integration with integration tests marked so CI can skip them (2 h).
+- [ ] **4.** Corpus inventory script: files per tender, types, scanned-page share, path collisions by CRC; commit `reports/corpus_inventory.md` (1 h).
+- [ ] **5.** **Baseline, option A (preferred): evaluate the existing index read-only** (no ingest, no index). Option B if the collection is gone: rebuild into an isolated copy, with `RAGBOT_QDRANT_COLLECTION=baseline_v0` and the extract, state, logs and metadata folders redirected through RAGBOT_* variables (1.25 h plus machine time).
+- [ ] **6.** Write the sampling rule and the tender split: fixed seed, stratified so scanned documents, tables and non-PDF files are represented; hold out about one third of the tenders; commit seed and split before drafting any question (0.5 h).
+- [ ] **7.** Draft and review 32 dev questions across the 8 categories, including 2 aggregation questions; tag each with the corpus level it needs (L0, L1, L2). I can draft candidates; you verify each against its source page (3.5 h).
+- [ ] **8.** Run the baseline; label each failed question with exactly one failure stage; write `reports/baseline_v0.md` (1 h).
+- [ ] **9.** Fix defects 2 to 5, each with a test, only after the baseline is recorded (2 h).
 
-##### S1 · weeks 3 to 5 · 18.5 h
+<details>
+<summary>🔬 <b>Technical notes</b> (click to expand)</summary>
 
-| Field | Detail |
-|---|---|
-| **Goal** | Remove the defects that corrupt retrieval, one at a time, and measure each. |
-| **Entry** | S0 exit gate met; baseline numbers exist. |
-| **Tasks: Type A** | **Code and algorithm fixes on the baseline corpus; measure after each.**<br>1. Candidate pool of 100 into RRF and the reranker, final cut to the requested count (defect 22) (1.5 h).<br>2. Keep BM25 order when fetching points; fuse by rank (10) (1 h).<br>3. Create the embedder, reranker, Qdrant and Ollama clients once at start-up in a factory and inject them (the course's pattern); this fixes 11 and 17 together; raise errors instead of swallowing them (1 h).<br>4. One retrieval per request; honour top_k; replace the 3,000-character cut with a token budget (12, 13) (1.5 h).<br>5. One answer pipeline and one refusal sentence for UI and API (16); ID detection only for ID-shaped questions (15) (1 h).<br>6. Jina retrieval task: embed the same chunks with task retrieval.passage and queries with retrieval.query into a new collection (7, E2) (1.5 h). |
-| **Tasks: Type B** | **Corpus changes; measure separately, after Type A.**<br>7. Extract into one folder per tender, put the tender ID in every payload, fix the ID filter field and the metadata join (1, 8, 9); re-index into a new collection (3.5 h).<br>8. Index DOCX and XLSX (6); GAEB as text only if time allows (1.5 h). |
-| **Tasks: hygiene** | 9. Each re-index writes a new collection; switch with a Qdrant alias; keep the old collection for rollback; never change the embedding call and the chunking in the same step (0.5 h).<br>10. Structured trace logs for every request with version tags: prompt version, LLM tag and digest, embedder revision and task, chunk settings, collection name (1 h).<br>11. Try Langfuse (time-box 1.5 h): copy the six Langfuse services (web, worker, Postgres, Redis, ClickHouse, MinIO) from the course's compose file into docker-compose.langfuse.yml and start it only when needed; otherwise Phoenix (1.5 h).<br>12. Write the 16 sealed test questions from the held-out tenders; commit them with a content hash; do not run them (2 h).<br>13. Decision records and regression tests for each fix (1 h). |
-| **Technical notes** | Jina v3 with sentence-transformers: model.encode(texts, task='retrieval.passage', prompt_name='retrieval.passage') for chunks and task='retrieval.query' for questions (model card, trust_remote_code=True). Qdrant alias: update_collection_aliases (delete and create alias in one request). Qdrant search with limit 100, then rerank, then cut. Langfuse needs Web, Worker, Postgres, Redis, ClickHouse and S3-compatible storage; Phoenix is one container or pip with SQLite. |
-| **Tests** | One test per defect listed in section 5 for defects 1, 6 to 13, 15, 16, 17, 22. |
-| **Outputs** | reports/fixes.md: one before/after row per change, tagged Type A or B and by corpus level · decision records · traces of failed requests · updated failure labels · evaluation/gold/test.jsonl (sealed, with hash). |
-| **Exit gate** | Every fix has a test and a measured effect; full re-index finished; no dev question is answered from the wrong tender. Tag the commit s1-retrieval-fixes. |
-| **Questions covered** | RAG Q18, Q20, Q27, Q45; OP Q3, Q14, Q17, Q18; FDE Q18. |
+Never run `ingest.py` or `embed.py` in their default mode: both default to fresh. Use append plus an isolated collection name. Qdrant snapshot: POST /collections/NAME/snapshots. `config.py` reads RAGBOT_* variables (`RAGBOT_QDRANT_COLLECTION`, `RAGBOT_EXTRACT_DIR`, `RAGBOT_STATE_DIR`, `RAGBOT_LOGS_DIR`, `RAGBOT_METADATA_DIR`). Keep the code unchanged until the baseline is recorded.
 
+</details>
 
-### 12. Stage S2: Evaluation
+🧪 **Tests.** Four P0 tests (zip traversal, non-destructive default, no default key, escaped chat text); seed reproduces the same tender split.
 
+📦 **Outputs**
 
-##### S2 · weeks 6 to 7 · 13 h
+- `reports/corpus_inventory.md`
+- `reports/baseline_v0.md` (retrieval hit rate, answer check, refusal, latency, failure labels)
+- `evaluation/gold/dev.jsonl` (32)
+- `evaluation/gold/split.json` (seed, split)
+- backup log
+- four tests.
 
-| Field | Detail |
-|---|---|
-| **Goal** | A frozen, fair comparison of search methods and answer settings. |
-| **Entry** | S1 exit gate met; sealed test file committed with its hash. |
-| **Tasks** | 1. E1 search methods on the dev questions: BM25 only, dense only, hybrid, hybrid + rerank (2.5 h).<br>2. E6 cross-language: translated query (dual query) against direct multilingual retrieval (0.5 h).<br>3. Compile E2 (Jina task) and E3 (coverage) results from S1 (1 h).<br>4. E5 answer pipeline: grounded prompt with numbered sources; 3 / 5 / 8 passages sent to the LLM; evidence check; refusal rule; measure the false-refusal rate on answerable questions (2.5 h).<br>5. Choose the final candidates on the dev set; run the sealed test questions once (1 h).<br>6. Manual claim-level citation check: all test answers in the scanned, table, paraphrase and conflict categories; 20 % spot check of the rest (1 h).<br>7. E4 OCR baseline: transcribe 10 scanned pages by hand and measure Tesseract character and word error rates (2 h).<br>8. Failure-analysis table, before and after (1 h).<br>9. Reports and decision records (1.5 h). |
-| **Technical notes** | Compare variants on the same questions with paired bootstrap differences. Report counts (for example 11 of 16) as well as percentages. An LLM judge is optional and only used after it agrees with human labels on at least 20 answers; otherwise use exact match and a hand rubric. |
-| **Tests** | Evaluation harness runs end to end on a tiny fixture; scores are reproducible for a fixed seed; CI gate script fails when dev Recall@5 drops below the stored baseline minus the margin. |
-| **Outputs** | reports/retrieval_comparison.md · reports/answers_and_citations.md · reports/failure_analysis.md · reports/ocr_baseline.md · decision records for retrieval method, reranker, embedding call, cross-language handling. |
-| **Exit gate** | The chosen retrieval setup is justified by numbers on the dev set and confirmed once on the sealed test set; the CI gate margin is decided. Tag the commit s2-evaluation. |
-| **Questions covered** | RAG Q7, Q8, Q9, Q13, Q20, Q25, Q26, Q28, Q32; EV Q6, Q19, Q28, Q41. |
+> 🚪 **Exit gate.** Backup verified; baseline numbers and failure labels committed; the four P0 tests pass; no real data folder or collection was modified. Tag the commit s0-baseline.
 
+❓ **Interview questions covered:** RAG Q18, Q50; EV Q5, Q6, Q41; FDE Q18.
 
-### 13. Stage S3: Reliability, scale and access control
+<sub>[← Stage overview](#sec-9) · [Next stage →](#stage-s1)</sub>
 
+<sub>[↑ Contents](#contents)</sub>
 
-##### S3 · weeks 9 to 11 · 9 h
+<a id="stage-s1"></a>
 
-| Field | Detail |
-|---|---|
-| **Goal** | Know how the service behaves under load, keep it from failing silently, and enforce who may see what. |
-| **Entry** | S2 exit gate met; retrieval setup chosen. |
-| **Tasks** | 1. Injection test document: a tender PDF with a hidden instruction; the answer must ignore it; delimit context in the prompt (1 h, week 9).<br>2. Access-control filter: allowed tender IDs (or groups) stored in the payload and injected server-side from the API key; two tests: user A never sees tender B, and a missing filter returns nothing (2 h, week 10).<br>3. Load test with Locust: 1, 5 and 20 concurrent users, a realistic question mix, search-only and full answer, cold and warm cache reported separately (2 h).<br>4. Version-aware cache key: all request parameters as in the course's key, plus the index version and the prompt version (0.5 h); timeouts and retries with backoff; degraded mode that returns ranked sources when the LLM is down (1.5 h).<br>5. Docker Compose for Qdrant and the API; GitHub Actions with ruff, pytest and the evaluation smoke gate (1.5 h).<br>6. Capacity note: memory arithmetic for the 8 GB GPU (weights, KV cache) checked against nvidia-smi under load (0.5 h). |
-| **Technical notes** | Expect search to scale well and answer generation on one 8 GB GPU to queue; the LLM saturation point is the result to report. Service-level targets (p95 for exact lookup, search, first token, full answer) are TBD and set from these measurements. Phoenix and Langfuse both accept OpenTelemetry traces. |
-| **Tests** | Injection fixture ignored; ACL test A/B; no-filter-no-results; degraded mode returns sources; cache key changes with index version. |
-| **Outputs** | reports/load_test.md (operating envelope: users x hardware) · docker-compose.yml · .github/workflows · capacity note · SLO table. |
-| **Exit gate** | Service-level targets set from measurements; a failed request is diagnosable from its trace; access-control and injection tests pass. Tag the commit s3-reliability. |
-| **Questions covered** | RAG Q37, Q41, Q46; OP Q7, Q16, Q25, Q28, Q29; EV Q29. |
+### 🔧 11. Stage S1: Retrieval fixes
 
+| ⏱ Weeks | ⌛ Hours | 🏷 Git tag |
+|---|---|---|
+| 3 to 5 | **18.5 h** | `s1-retrieval-fixes` |
 
-### 14. Stage S4: Polish and deploy
+> 🎯 **Goal.** Remove the defects that corrupt retrieval, one at a time, and measure each.
 
+🔑 **Entry condition:** S0 exit gate met; baseline numbers exist.
 
-##### S4 · week 12 · 6 h (shared with Project 2)
+#### ✅ Tasks
 
-| Field | Detail |
-|---|---|
-| **Goal** | A stranger can clone, run, test and read the results in 15 minutes. |
-| **Tasks** | README in English with a short German summary; architecture diagram; results tables copied from reports/; decision-record index; 3-minute demo video; one demonstrated AWS workflow (image pushed to ECR through an IAM role with no long-lived keys; backup to S3); repository clean-up. |
-| **Outputs** | Public repository with README, diagrams, reports, decision records, demo video link. |
-| **Exit gate** | Fresh clone passes tests; README results match reports/ exactly. |
+**Type A** · Code and algorithm fixes on the baseline corpus; measure after each.
+
+- [ ] **1.** Candidate pool of 100 into RRF and the reranker, final cut to the requested count (defect 22) (1.5 h).
+- [ ] **2.** Keep BM25 order when fetching points; fuse by rank (10) (1 h).
+- [ ] **3.** Create the embedder, reranker, Qdrant and Ollama clients once at start-up in a factory and inject them (the course's pattern); this fixes 11 and 17 together; raise errors instead of swallowing them (1 h).
+- [ ] **4.** One retrieval per request; honour top_k; replace the 3,000-character cut with a token budget (12, 13) (1.5 h).
+- [ ] **5.** One answer pipeline and one refusal sentence for UI and API (16); ID detection only for ID-shaped questions (15) (1 h).
+- [ ] **6.** Jina retrieval task: embed the same chunks with task retrieval.passage and queries with retrieval.query into a new collection (7, E2) (1.5 h).
+
+**Type B** · Corpus changes; measure separately, after Type A.
+
+- [ ] **7.** Extract into one folder per tender, put the tender ID in every payload, fix the ID filter field and the metadata join (1, 8, 9); re-index into a new collection (3.5 h).
+- [ ] **8.** Index DOCX and XLSX (6); GAEB as text only if time allows (1.5 h).
+
+**Hygiene**
+
+- [ ] **9.** Each re-index writes a new collection; switch with a Qdrant alias; keep the old collection for rollback; never change the embedding call and the chunking in the same step (0.5 h).
+- [ ] **10.** Structured trace logs for every request with version tags: prompt version, LLM tag and digest, embedder revision and task, chunk settings, collection name (1 h).
+- [ ] **11.** Try Langfuse (time-box 1.5 h): copy the six Langfuse services (web, worker, Postgres, Redis, ClickHouse, MinIO) from the course's compose file into docker-compose.langfuse.yml and start it only when needed; otherwise Phoenix (1.5 h).
+- [ ] **12.** Write the 16 sealed test questions from the held-out tenders; commit them with a content hash; do not run them (2 h).
+- [ ] **13.** Decision records and regression tests for each fix (1 h).
+
+<details>
+<summary>🔬 <b>Technical notes</b> (click to expand)</summary>
+
+Jina v3 with sentence-transformers: model.encode(texts, task='retrieval.passage', prompt_name='retrieval.passage') for chunks and task='retrieval.query' for questions (model card, trust_remote_code=True). Qdrant alias: update_collection_aliases (delete and create alias in one request). Qdrant search with limit 100, then rerank, then cut. Langfuse needs Web, Worker, Postgres, Redis, ClickHouse and S3-compatible storage; Phoenix is one container or pip with SQLite.
+
+</details>
+
+🧪 **Tests.** One test per defect listed in section 5 for defects 1, 6 to 13, 15, 16, 17, 22.
+
+📦 **Outputs**
+
+- `reports/fixes.md`: one before/after row per change, tagged Type A or B and by corpus level
+- decision records
+- traces of failed requests
+- updated failure labels
+- `evaluation/gold/test.jsonl` (sealed, with hash).
+
+> 🚪 **Exit gate.** Every fix has a test and a measured effect; full re-index finished; no dev question is answered from the wrong tender. Tag the commit s1-retrieval-fixes.
+
+❓ **Interview questions covered:** RAG Q18, Q20, Q27, Q45; OP Q3, Q14, Q17, Q18; FDE Q18.
+
+<sub>[← Stage overview](#sec-9) · [Next stage →](#stage-s2)</sub>
+
+<sub>[↑ Contents](#contents)</sub>
+
+<a id="stage-s2"></a>
+
+### 🔬 12. Stage S2: Evaluation
+
+| ⏱ Weeks | ⌛ Hours | 🏷 Git tag |
+|---|---|---|
+| 6 to 7 | **13 h** | `s2-evaluation` |
+
+> 🎯 **Goal.** A frozen, fair comparison of search methods and answer settings.
+
+🔑 **Entry condition:** S1 exit gate met; sealed test file committed with its hash.
+
+#### ✅ Tasks
+
+- [ ] **1.** E1 search methods on the dev questions: BM25 only, dense only, hybrid, hybrid + rerank (2.5 h).
+- [ ] **2.** E6 cross-language: translated query (dual query) against direct multilingual retrieval (0.5 h).
+- [ ] **3.** Compile E2 (Jina task) and E3 (coverage) results from S1 (1 h).
+- [ ] **4.** E5 answer pipeline: grounded prompt with numbered sources; 3 / 5 / 8 passages sent to the LLM; evidence check; refusal rule; measure the false-refusal rate on answerable questions (2.5 h).
+- [ ] **5.** Choose the final candidates on the dev set; run the sealed test questions once (1 h).
+- [ ] **6.** Manual claim-level citation check: all test answers in the scanned, table, paraphrase and conflict categories; 20 % spot check of the rest (1 h).
+- [ ] **7.** E4 OCR baseline: transcribe 10 scanned pages by hand and measure Tesseract character and word error rates (2 h).
+- [ ] **8.** Failure-analysis table, before and after (1 h).
+- [ ] **9.** Reports and decision records (1.5 h).
+
+<details>
+<summary>🔬 <b>Technical notes</b> (click to expand)</summary>
+
+Compare variants on the same questions with paired bootstrap differences. Report counts (for example 11 of 16) as well as percentages. An LLM judge is optional and only used after it agrees with human labels on at least 20 answers; otherwise use exact match and a hand rubric.
+
+</details>
+
+🧪 **Tests.** Evaluation harness runs end to end on a tiny fixture; scores are reproducible for a fixed seed; CI gate script fails when dev Recall@5 drops below the stored baseline minus the margin.
+
+📦 **Outputs**
+
+- `reports/retrieval_comparison.md`
+- `reports/answers_and_citations.md`
+- `reports/failure_analysis.md`
+- `reports/ocr_baseline.md`
+- decision records for retrieval method, reranker, embedding call, cross-language handling.
+
+> 🚪 **Exit gate.** The chosen retrieval setup is justified by numbers on the dev set and confirmed once on the sealed test set; the CI gate margin is decided. Tag the commit s2-evaluation.
+
+❓ **Interview questions covered:** RAG Q7, Q8, Q9, Q13, Q20, Q25, Q26, Q28, Q32; EV Q6, Q19, Q28, Q41.
+
+<sub>[← Stage overview](#sec-9) · [Next stage →](#stage-s3)</sub>
+
+<sub>[↑ Contents](#contents)</sub>
+
+<a id="stage-s3"></a>
+
+### 🛡️ 13. Stage S3: Reliability, scale and access control
+
+| ⏱ Weeks | ⌛ Hours | 🏷 Git tag |
+|---|---|---|
+| 9 to 11 | **9 h** | `s3-reliability` |
+
+> 🎯 **Goal.** Know how the service behaves under load, keep it from failing silently, and enforce who may see what.
+
+🔑 **Entry condition:** S2 exit gate met; retrieval setup chosen.
+
+#### ✅ Tasks
+
+- [ ] **1.** Injection test document: a tender PDF with a hidden instruction; the answer must ignore it; delimit context in the prompt (1 h, week 9).
+- [ ] **2.** Access-control filter: allowed tender IDs (or groups) stored in the payload and injected server-side from the API key; two tests: user A never sees tender B, and a missing filter returns nothing (2 h, week 10).
+- [ ] **3.** Load test with Locust: 1, 5 and 20 concurrent users, a realistic question mix, search-only and full answer, cold and warm cache reported separately (2 h).
+- [ ] **4.** Version-aware cache key: all request parameters as in the course's key, plus the index version and the prompt version (0.5 h); timeouts and retries with backoff; degraded mode that returns ranked sources when the LLM is down (1.5 h).
+- [ ] **5.** Docker Compose for Qdrant and the API; GitHub Actions with ruff, pytest and the evaluation smoke gate (1.5 h).
+- [ ] **6.** Capacity note: memory arithmetic for the 8 GB GPU (weights, KV cache) checked against nvidia-smi under load (0.5 h).
+
+<details>
+<summary>🔬 <b>Technical notes</b> (click to expand)</summary>
+
+Expect search to scale well and answer generation on one 8 GB GPU to queue; the LLM saturation point is the result to report. Service-level targets (p95 for exact lookup, search, first token, full answer) are TBD and set from these measurements. Phoenix and Langfuse both accept OpenTelemetry traces.
+
+</details>
+
+🧪 **Tests.** Injection fixture ignored; ACL test A/B; no-filter-no-results; degraded mode returns sources; cache key changes with index version.
+
+📦 **Outputs**
+
+- `reports/load_test.md` (operating envelope: users x hardware)
+- `docker-compose.yml`
+- .github/workflows
+- capacity note
+- SLO table.
+
+> 🚪 **Exit gate.** Service-level targets set from measurements; a failed request is diagnosable from its trace; access-control and injection tests pass. Tag the commit s3-reliability.
+
+❓ **Interview questions covered:** RAG Q37, Q41, Q46; OP Q7, Q16, Q25, Q28, Q29; EV Q29.
+
+<sub>[← Stage overview](#sec-9) · [Next stage →](#stage-s4)</sub>
+
+<sub>[↑ Contents](#contents)</sub>
+
+<a id="stage-s4"></a>
+
+### 🚀 14. Stage S4: Polish and deploy
+
+| ⏱ Weeks | ⌛ Hours | 🏷 Git tag |
+|---|---|---|
+| 12 | **6 h (shared with Project 2)** | — |
+
+> 🎯 **Goal.** A stranger can clone, run, test and read the results in 15 minutes.
+
+#### ✅ Tasks
+
+- [ ] README in English with a short German summary
+- [ ] architecture diagram
+- [ ] results tables copied from reports/
+- [ ] decision-record index
+- [ ] 3-minute demo video
+- [ ] one demonstrated AWS workflow (image pushed to ECR through an IAM role with no long-lived keys
+- [ ] backup to S3)
+- [ ] repository clean-up.
+
+📦 **Outputs.** Public repository with README, diagrams, reports, decision records, demo video link.
+
+> 🚪 **Exit gate.** Fresh clone passes tests; README results match reports/ exactly.
+
+<sub>[← Stage overview](#sec-9)</sub>
+
+<sub>[↑ Contents](#contents)</sub>
 
 
 ---
 
-## PART 4 · METHOD: Evaluation protocol, experiments, reliability, scaling, observability, security
+## 🟪 PART 4 · METHOD
 
+*Evaluation protocol, experiments, reliability, scaling, observability, security*
 
-### 15. Evaluation protocol
+<a id="sec-15"></a>
+
+### 📐 15. Evaluation protocol
+
+<p align="center"><img src="img/data_split.svg" alt="Tender and question split" width="100%"></p>
 
 Evaluation comes first because every later claim depends on it. The question set is called **G-DE**: 48 questions (mandatory), 32 for development and 16 sealed for testing; grow toward 64 as a stretch.
 
@@ -531,6 +814,8 @@ Evaluation comes first because every later claim depends on it. The question set
 
 #### Failure-analysis table
 
+<p align="center"><img src="img/failure_funnel.svg" alt="Failure labels along the pipeline" width="100%"></p>
+
 Every failed question gets exactly one primary label, found by walking back through the pipeline. The reports show the count per stage before and after each change, so you can explain why the system improved. One table or chart in reports/, not a web dashboard.
 
 | Label | Meaning |
@@ -543,8 +828,11 @@ Every failed question gets exactly one primary label, found by walking back thro
 | Citation | Claim linked to the wrong file or page |
 | Abstention | Answered without enough evidence, or refused although evidence existed |
 
+<sub>[↑ Contents](#contents)</sub>
 
-### 16. Experiments
+<a id="sec-16"></a>
+
+### 🧪 16. Experiments
 
 | Exp | Decision | Baseline | Challenger | Measured by |
 |---|---|---|---|---|
@@ -560,8 +848,11 @@ Every failed question gets exactly one primary label, found by walking back thro
 
 Optional only if time remains: a subset of EnterpriseRAG-Bench for generality (English text only), OmniDocBench for parsing (no German), corpus growth beyond the 112 tenders (needs synthetic distractors), GraphRAG, A2A.
 
+<sub>[↑ Contents](#contents)</sub>
 
-### 17. Reliability, scaling, observability and security
+<a id="sec-17"></a>
+
+### ⚙️ 17. Reliability, scaling, observability and security
 
 
 #### Reliability measures
@@ -601,13 +892,18 @@ Structured trace logs are mandatory: request ID, per-stage timing, retrieval hit
 | Output checks | Every cited source must exist and contain the claim; refuse when evidence is weak; shared refusal sentence |
 | Secrets and supply chain | .env never committed; dependency pinning; pip-audit in CI; pickle files treated as trusted internal artifacts only |
 
+<sub>[↑ Contents](#contents)</sub>
+
 
 ---
 
-## PART 5 · SCOPE, OUTPUTS AND DECISIONS: Mandatory and stretch, risks, deliverables, the interface to Project 2, decisions, sources
+## 🟥 PART 5 · SCOPE, OUTPUTS AND DECISIONS
 
+*Mandatory and stretch, risks, deliverables, the interface to Project 2, decisions, sources*
 
-### 18. Mandatory, stretch, risks and cut order
+<a id="sec-18"></a>
+
+### 📦 18. Mandatory, stretch, risks and cut order
 
 |  | Mandatory (must exist by the end of week 12) | Stretch (only if time allows) |
 |---|---|---|
@@ -627,7 +923,7 @@ Structured trace logs are mandatory: request ID, per-stage timing, retrieval hit
 | The Qdrant collection may be gone; a full re-index takes hours | Treat re-indexing as machine time; it is needed anyway after fixing defect 1 |
 | Small local LLM (1.5B) gives weak answers | Compare 3B in E5; judge retrieval separately from generation |
 | Data terms: may the tenders be shown publicly? | Check the DTAD terms; publish scripts, questions and a small sample, not the corpus |
-| data/raw is the only copy of the tenders | Copy to external storage before any further cleanup or re-indexing |
+| `data/raw` is the only copy of the tenders | Copy to external storage before any further cleanup or re-indexing |
 
 
 #### Cut in this order if you fall behind
@@ -642,11 +938,14 @@ Structured trace logs are mandatory: request ID, per-stage timing, retrieval hit
 - 8. German compound splitting
 - **Never cut:** the baseline, the 48-question set with its sealed test split, the P0 security fixes, per-tender extraction, the access-control filter.
 
+<sub>[↑ Contents](#contents)</sub>
 
-### 19. Deliverables, evidence and interview stories
+<a id="sec-19"></a>
+
+### 🏁 19. Deliverables, evidence and interview stories
 
 - Upgraded repository with a clean layout, a working API and UI, and a pytest suite including the security, regression and access-control tests.
-- **reports/**: corpus_inventory, baseline_v0, fixes, retrieval_comparison, answers_and_citations, failure_analysis, ocr_baseline, load_test. Every number comes from a run.
+- **`reports/**`: corpus_inventory, baseline_v0, fixes, retrieval_comparison, answers_and_citations, failure_analysis, ocr_baseline, load_test. Every number comes from a run.
 - 48-question evaluation set (64 as a stretch) with a sealed test split, the sampling rule and seed, and the harness that scores it.
 - Decision records for the main choices (retrieval method, Jina call, reranker, OCR, caching, access control).
 - Docker Compose stack, GitHub Actions pipeline with the evaluation gate, traces, architecture diagram, 3-minute demo video, README in English with a German summary.
@@ -661,12 +960,12 @@ Structured trace logs are mandatory: request ID, per-stage timing, retrieval hit
 
 | Question an employer asks | Number you will be able to show | Source |
 |---|---|---|
-| Did retrieval actually improve? | Recall@5 and MRR: baseline vs hybrid vs hybrid + rerank = TBD | reports/retrieval_comparison.md |
-| Why did it improve? | Failures per stage, before and after = TBD | reports/failure_analysis.md |
-| Are the citations correct? | Citation precision = TBD | reports/answers_and_citations.md |
-| Does it admit when it does not know, and not refuse too much? | Refusal rate on 8 traps and false-refusal rate on answerable questions = TBD | reports/answers_and_citations.md |
-| How good is the OCR? | CER and WER, Tesseract on 10 pages = TBD | reports/ocr_baseline.md |
-| What happens under load? | p95 at 1 / 5 / 20 users, search-only and full answer = TBD | reports/load_test.md |
+| Did retrieval actually improve? | Recall@5 and MRR: baseline vs hybrid vs hybrid + rerank = TBD | `reports/retrieval_comparison.md` |
+| Why did it improve? | Failures per stage, before and after = TBD | `reports/failure_analysis.md` |
+| Are the citations correct? | Citation precision = TBD | `reports/answers_and_citations.md` |
+| Does it admit when it does not know, and not refuse too much? | Refusal rate on 8 traps and false-refusal rate on answerable questions = TBD | `reports/answers_and_citations.md` |
+| How good is the OCR? | CER and WER, Tesseract on 10 pages = TBD | `reports/ocr_baseline.md` |
+| What happens under load? | p95 at 1 / 5 / 20 users, search-only and full answer = TBD | `reports/load_test.md` |
 | Is it safe? | Access-control tests, injection test, P0 tests = pass or fail | tests/ |
 
 
@@ -674,14 +973,19 @@ Structured trace logs are mandatory: request ID, per-stage timing, retrieval hit
 
 | Story | Structure | Evidence needed |
 |---|---|---|
-| “The system answered from the wrong tender” | Situation: wrong-tender answers; task: find the cause; action: traces showed the shared extract folder and the missing ID; result: per-tender extraction, effect measured | reports/fixes.md, a trace |
-| “Did hybrid search help, or not?” | Four methods on the same 48 questions; what won; what it cost in latency | reports/retrieval_comparison.md |
-| “I made it refuse instead of guess, without refusing everything” | Trap questions, one refusal rule, false-refusal rate | reports/answers_and_citations.md |
+| “The system answered from the wrong tender” | Situation: wrong-tender answers; task: find the cause; action: traces showed the shared extract folder and the missing ID; result: per-tender extraction, effect measured | `reports/fixes.md`, a trace |
+| “Did hybrid search help, or not?” | Four methods on the same 48 questions; what won; what it cost in latency | `reports/retrieval_comparison.md` |
+| “I made it refuse instead of guess, without refusing everything” | Trap questions, one refusal rule, false-refusal rate | `reports/answers_and_citations.md` |
 | “Accuracy is bad: what do you do in two weeks?” | Baseline, failure labels, one fix at a time, sealed test | baseline_v0, failure_analysis |
-| “What happens at 20 users?” | Where it saturates and why | reports/load_test.md |
+| “What happens at 20 users?” | Where it saturates and why | `reports/load_test.md` |
 
+<sub>[↑ Contents](#contents)</sub>
 
-### 20. Interface to Project 2
+<a id="sec-20"></a>
+
+### 🔌 20. Interface to Project 2
+
+<p align="center"><img src="img/p1_p2_link.svg" alt="How Project 2 uses Project 1" width="100%"></p>
 
 Project 2's agents call this project through an MCP server, so retrieval quality is proven once, here. The contract below is version v1; S3 builds the access-control and trace behaviour it relies on, and Project 2 week 10 wraps it.
 
@@ -694,8 +998,11 @@ Project 2's agents call this project through an MCP server, so retrieval quality
 
 Every call carries an API key; the access scope is injected server-side and never supplied by the agent; every response carries a trace ID; rate limits apply.
 
+<sub>[↑ Contents](#contents)</sub>
 
-### 21. Decision log and next steps
+<a id="sec-21"></a>
+
+### 📝 21. Decision log and next steps
 
 | Date | Decision | Status |
 |---|---|---|
@@ -710,7 +1017,7 @@ Every call carries an API key; the access scope is injected server-side and neve
 
 #### Open decisions
 
-- [ ] Back-up location for data/raw (the only copy of the tenders)
+- [ ] Back-up location for `data/raw` (the only copy of the tenders)
 - [ ] May I install Ollama (winget install Ollama.Ollama)? Start Docker Desktop.
 - [ ] DTAD terms: may the tenders and a sample be published?
 - [ ] Project names (“TenderLens” was suggested; no exact match found, similar tender-AI products exist)
@@ -719,30 +1026,36 @@ Every call carries an API key; the access scope is injected server-side and neve
 
 #### Week 1 checklist
 
-- [ ] Copy data/raw to external storage and verify checksums; snapshot or copy any existing Qdrant volume
+- [ ] Copy `data/raw` to external storage and verify checksums; snapshot or copy any existing Qdrant volume
 - [ ] Start Docker Desktop; confirm Qdrant starts and whether the old collection still exists
 - [ ] Install Ollama and a 3B model; create the uv Python 3.12 environment; fix packaging (defects 20, 21)
-- [ ] Run the corpus inventory; commit reports/corpus_inventory.md
+- [ ] Run the corpus inventory; commit `reports/corpus_inventory.md`
 - [ ] Baseline in isolation: evaluate the existing index read-only, or rebuild into baseline_v0 folders; never the default fresh mode on a real collection
 - [ ] Fix the sampling rule, seed and tender split, then draft and review 32 dev questions
-- [ ] Record reports/baseline_v0.md before changing behaviour
+- [ ] Record `reports/baseline_v0.md` before changing behaviour
 - [ ] Fix defects 2 to 5, each with a test
 
+<sub>[↑ Contents](#contents)</sub>
 
-### 22. Sources and verification status
+<a id="sec-22"></a>
+
+### 📚 22. Sources and verification status
+
+<details>
+<summary>▸ <b>Click to expand</b></summary>
 
 Verified means the page or repository was opened or checked by search or API in November 2026.
 
 | Group | Source | Status |
 |---|---|---|
 | Code | This repository (branch chore/repo-cleanup), read file by file | Read, not run |
-| Model usage | Jina embeddings v3 model card and config_sentence_transformers.json (tasks retrieval.query and retrieval.passage) | Verified |
+| Model usage | Jina embeddings v3 model card and `config_sentence_transformers.json` (tasks retrieval.query and retrieval.passage) | Verified |
 | Research | HERB arXiv 2506.23139 · EnterpriseRAG arXiv 2608.11584 · EnterpriseRAG-Bench arXiv 2605.05253 · From BM25 to Corrective RAG arXiv 2604.01733 · OmniDocBench (CVPR 2025) | Verified to exist; findings from abstracts and summaries |
 | Postings | Accenture R00368889 (Hamburg) · Capco 8178266 · RightShip 4982444101 | Opened and read |
 | Postings | European Dynamics D53EAA65D5 · Titan AI (Applied AI Engineer) | Title only; skills not verified |
 | Market | DEV Community 390-posting analysis · Simpleapply · Second Talent (Lightcast) · ODSC · 365 Data Science · Axial Search | Read via search; small or commercial samples |
 | Reference repos | Clinical-RAG, 8hr-MARATHON, ATLAS, IT-Support Copilot, pdichone course; stars and activity of 18 tools checked through the GitHub API on 4 Nov 2026 | Verified |
-| Reference course | jamwithai/production-agentic-rag-course: README, file tree, compose.yml, agent graph, nodes, cache and tracer files read; 10,032 stars, MIT, last push 5 Jun 2026. Your fork (ShalinVachheta017/production-agentic-rag-course) last pushed 5 Apr 2026 | Verified via the GitHub API |
+| Reference course | jamwithai/production-agentic-rag-course: README, file tree, `compose.yml`, agent graph, nodes, cache and tracer files read; 10,032 stars, MIT, last push 5 Jun 2026. Your fork (ShalinVachheta017/production-agentic-rag-course) last pushed 5 Apr 2026 | Verified via the GitHub API |
 | Interview sets | Krish Naik interview prep: 7 sets of 50 questions (agentic AI, FDE, system design, RAG, LLMOps, evals and guardrails, LLM fundamentals); questions read, answers not | Questions verified |
 | Guides | Codebasics AI System Design (13 pages, read); Galileo Mastering RAG (cover only) | Partly read |
 | Corpus | Zip-member comparison across the 105 valid zips by CRC: 101 shared paths, 66 with differing content (159 versions overwritten), 35 identical; nested zips not counted | Measured 4 Nov 2026 |
@@ -750,7 +1063,16 @@ Verified means the page or repository was opened or checked by search or API in 
 | Name check | TenderLens: web search found no exact match | Not a trademark check |
 
 
-### 23. Glossary
+</details>
+
+<sub>[↑ Contents](#contents)</sub>
+
+<a id="sec-23"></a>
+
+### 📖 23. Glossary
+
+<details>
+<summary>▸ <b>Click to expand</b></summary>
 
 | Term | Meaning |
 |---|---|
@@ -770,9 +1092,17 @@ Verified means the page or repository was opened or checked by search or API in 
 | MCP | Model Context Protocol: a standard way for an agent to call tools |
 
 
-### Appendix: decision record template
+</details>
+
+<sub>[↑ Contents](#contents)</sub>
+
+<a id="sec-appendix"></a>
+
+### 🧾 Appendix: decision record template
 
 | 1 Business | 2 Options | 3 Choice | 4 Evidence | 5 Trade-off | 6 Reference |
 |---|---|---|---|---|---|
 | What problem does this solve? | What alternatives were tried? | Why this one? | Which metric or test supports it? | What did it cost (latency, privacy, effort)? | Where are the code, report and record? |
+
+<sub>[↑ Contents](#contents)</sub>
 

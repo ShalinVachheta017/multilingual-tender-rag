@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="767.1" height="426.1" preserveAspectRatio="xMinYMin meet" viewBox="0 0 767 426" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="767.1" height="426.1"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-426)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="0.5" y="0.5" width="766.1" height="425.1" rx="10" ry="10" style="stroke: rgb(83%,87%,89%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<g transform=" matrix(1.55,0,0,1.55,10,10)">
+				<rect x="90" y="226" width="302" height="30" rx="4" ry="4" style="stroke: rgb(4%,12%,22%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,12%,22%); fill-rule: evenodd;"/>
+				<text x="195.39443359375" y="243.316" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,486) scale(1,-1)">MultiDoc Evidence Agent</text>
+				<text x="179.628515625" y="233.516" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,467) scale(1,-1)">LangGraph graph + human approval</text>
+				<rect x="6" y="164" width="150" height="34" rx="4" ry="4" style="stroke: rgb(35%,24%,62%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(35%,24%,62%); fill-rule: evenodd;"/>
+				<text x="49.398046875" y="183.25199999999998" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.2px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,366) scale(1,-1)">Single agent (first)</text>
+				<text x="20.777343749999993" y="173.85199999999998" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.2px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,347) scale(1,-1)">plan, retrieve, extract, compare, verify</text>
+				<path d="M 241,226 L 81,198 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="81 198, 85.04018 196.8524, 84.41035 200.4514" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<path d="M 81,164 L 81,142 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="81 142, 82.82686 145.7819, 79.17314 145.7819" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="166" y="164" width="150" height="34" rx="4" ry="4" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<text x="187.080859375" y="183.25199999999998" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.2px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,366) scale(1,-1)">Research + Comparison agents</text>
+				<text x="197.5873046875" y="173.85199999999998" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.2px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,347) scale(1,-1)">supervisor version (stretch)</text>
+				<path d="M 241,226 L 241,198 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="241 198, 242.8269 201.7819, 239.1731 201.7819" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<path d="M 241,164 L 241,142 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="241 142, 242.8269 145.7819, 239.1731 145.7819" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="326" y="164" width="150" height="34" rx="4" ry="4" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<text x="370.79375" y="183.25199999999998" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.2px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,366) scale(1,-1)">Verification agent</text>
+				<text x="337.578125" y="173.85199999999998" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.2px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,347) scale(1,-1)">checks every claim and source (stretch)</text>
+				<path d="M 241,226 L 401,198 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="401 198, 397.5896 200.4514, 396.9598 196.8524" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<path d="M 401,164 L 401,142 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="401 142, 402.8269 145.7819, 399.1731 145.7819" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="6" y="110" width="470" height="30" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="195.366064453125" y="127.284" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,254) scale(1,-1)">MCP tools (authenticated)</text>
+				<text x="92.304443359375" y="117.684" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,235) scale(1,-1)">search_documents · get_document · read_pages · list_tenders · extract_fields (agent side)</text>
+				<path d="M 241,110 L 241,88 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="241 88, 242.8269 91.78188, 239.1731 91.78188" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="6" y="56" width="470" height="32" rx="4" ry="4" style="stroke: rgb(4%,12%,22%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,12%,22%); fill-rule: evenodd;"/>
+				<text x="164.30087890624998" y="74.28399999999999" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,148) scale(1,-1)">Project 1: Tender RAG 2.0 service (FastAPI)</text>
+				<text x="61.266357421875" y="64.684" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,129) scale(1,-1)">input check → hybrid search → rerank → cited evidence → refuse if weak · access scope injected server-side</text>
+				<rect x="6" y="2" width="150" height="34" rx="4" ry="4" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<text x="69.1998046875" y="21.252" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.2px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,42) scale(1,-1)">Qdrant</text>
+				<text x="52.683398437499996" y="11.851999999999999" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.2px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,23) scale(1,-1)">vectors + payload</text>
+				<path d="M 81,56 L 81,38 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="81 38, 82.82686 41.78188, 79.17314 41.78188" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="166" y="2" width="150" height="34" rx="4" ry="4" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<text x="211.4880859375" y="21.252" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.2px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,42) scale(1,-1)">BM25 + metadata</text>
+				<text x="196.973828125" y="11.851999999999999" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.2px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,23) scale(1,-1)">keyword index, tender table</text>
+				<path d="M 241,56 L 241,38 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="241 38, 242.8269 41.78188, 239.1731 41.78188" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="326" y="2" width="150" height="34" rx="4" ry="4" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<text x="393.603125" y="21.252" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.2px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,42) scale(1,-1)">LLM</text>
+				<text x="327.1630859375" y="11.851999999999999" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.2px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,23) scale(1,-1)">Ollama (hosted model allowed: synthetic data)</text>
+				<path d="M 401,56 L 401,38 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="401 38, 402.8269 41.78188, 399.1731 41.78188" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+			</g>
+		</g>
+	</g>
+</svg>

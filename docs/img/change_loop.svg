@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="767.1" height="268.0" preserveAspectRatio="xMinYMin meet" viewBox="0 0 767 268" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="767.1" height="268.0"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-268)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="0.5" y="0.5" width="766.1" height="267.0" rx="10" ry="10" style="stroke: rgb(83%,87%,89%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<g transform=" matrix(1.55,0,0,1.55,10,10)">
+				<text x="6" y="146" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 9px;fill: rgb(10%,15%,20%); stroke:none;" transform="translate(0,292) scale(1,-1)">How every working session goes</text>
+				<rect x="6" y="80" width="130" height="44" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="48.18330078125" y="104.316" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,208) scale(1,-1)">1 Pick a task</text>
+				<text x="38.469921875" y="94.516" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,189) scale(1,-1)">from the stage plan</text>
+				<rect x="176" y="80" width="130" height="44" rx="4" ry="4" style="stroke: rgb(4%,12%,22%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,12%,22%); fill-rule: evenodd;"/>
+				<text x="213.76171875" y="104.316" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,208) scale(1,-1)">2 Write the test</text>
+				<text x="208.68330078125" y="94.516" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,189) scale(1,-1)">or the question first</text>
+				<rect x="346" y="80" width="130" height="44" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="375.74423828125" y="104.316" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,208) scale(1,-1)">3 Change one thing</text>
+				<text x="381.43310546875" y="94.516" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,189) scale(1,-1)">Type A or Type B</text>
+				<rect x="6" y="14" width="130" height="44" rx="4" ry="4" style="stroke: rgb(4%,12%,22%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,12%,22%); fill-rule: evenodd;"/>
+				<text x="53.68662109375" y="38.315999999999995" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,76) scale(1,-1)">6 Commit</text>
+				<text x="44.17177734375" y="28.515999999999995" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,57) scale(1,-1)">tag at stage exit</text>
+				<rect x="176" y="14" width="130" height="44" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="201.938671875" y="38.315999999999995" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,76) scale(1,-1)">5 Write the report line</text>
+				<text x="213.96953125" y="28.515999999999995" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,57) scale(1,-1)">reports/fixes.md</text>
+				<rect x="346" y="14" width="130" height="44" rx="4" ry="4" style="stroke: rgb(4%,12%,22%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,12%,22%); fill-rule: evenodd;"/>
+				<text x="392.4119140625" y="38.315999999999995" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,76) scale(1,-1)">4 Measure</text>
+				<text x="377.1970703125" y="28.515999999999995" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,57) scale(1,-1)">against the baseline</text>
+				<path d="M 137,102 L 175,102 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="175 102, 171.2181 103.8269, 171.2181 100.1731" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<path d="M 307,102 L 345,102 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="345 102, 341.2181 103.8269, 341.2181 100.1731" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<path d="M 411,79 L 411,59 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="411 59, 412.8269 62.78188, 409.1731 62.78188" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<path d="M 345,36 L 307,36 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="307 36, 310.7819 34.17314, 310.7819 37.82686" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<path d="M 175,36 L 137,36 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="137 36, 140.7819 34.17314, 140.7819 37.82686" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<path d="M 71,59 L 71,79 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="71 79, 69.17314 75.21812, 72.82686 75.21812" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+			</g>
+		</g>
+	</g>
+</svg>

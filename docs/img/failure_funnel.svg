@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="767.1" height="181.20000000000002" preserveAspectRatio="xMinYMin meet" viewBox="0 0 767 181" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="767.1" height="181.20000000000002"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-181)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="0.5" y="0.5" width="766.1" height="180.20000000000002" rx="10" ry="10" style="stroke: rgb(83%,87%,89%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<g transform=" matrix(1.55,0,0,1.55,10,10)">
+				<text x="6" y="92" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 9px;fill: rgb(10%,15%,20%); stroke:none;" transform="translate(0,184) scale(1,-1)">Every failed question gets exactly one label: the first stage where it went wrong</text>
+				<rect x="6.0" y="44" width="61.14285714285714" height="30" rx="4" ry="4" style="stroke: rgb(4%,43%,43%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,43%,43%); fill-rule: evenodd;"/>
+				<text x="21.238469587053565" y="56.653999999999996" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,113) scale(1,-1)">Ingestion</text>
+				<text x="24.58939732142857" y="30" style="font-family: Arial, Helvetica, sans-serif; font-size: 5.6px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,60) scale(1,-1)">file lost or</text>
+				<text x="22.877678571428568" y="22" style="font-family: Arial, Helvetica, sans-serif; font-size: 5.6px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,44) scale(1,-1)">overwritten</text>
+				<path d="M 67.642857,59 L 73.642857,59 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="73.64286 59, 69.86098 60.82686, 69.86098 57.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="74.14285714285714" y="44" width="61.14285714285714" height="30" rx="4" ry="4" style="stroke: rgb(4%,43%,43%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,43%,43%); fill-rule: evenodd;"/>
+				<text x="97.0478062220982" y="56.653999999999996" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,113) scale(1,-1)">OCR</text>
+				<text x="90.08401227678571" y="30" style="font-family: Arial, Helvetica, sans-serif; font-size: 5.6px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,60) scale(1,-1)">text or table</text>
+				<text x="88.68401227678571" y="22" style="font-family: Arial, Helvetica, sans-serif; font-size: 5.6px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,44) scale(1,-1)">wrongly read</text>
+				<path d="M 135.785714,59 L 141.785714,59 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="141.7857 59, 138.0038 60.82686, 138.0038 57.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="142.28571428571428" y="44" width="61.14285714285714" height="30" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="158.28224051339285" y="56.653999999999996" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,113) scale(1,-1)">Retrieval</text>
+				<text x="155.42413504464287" y="30" style="font-family: Arial, Helvetica, sans-serif; font-size: 5.6px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,60) scale(1,-1)">right evidence</text>
+				<text x="161.17999441964287" y="22" style="font-family: Arial, Helvetica, sans-serif; font-size: 5.6px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,44) scale(1,-1)">not found</text>
+				<path d="M 203.928571,59 L 209.928571,59 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="209.9286 59, 206.1467 60.82686, 206.1467 57.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="210.42857142857142" y="44" width="61.14285714285714" height="30" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="227.3903564453125" y="56.653999999999996" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,113) scale(1,-1)">Ranking</text>
+				<text x="228.544921875" y="30" style="font-family: Arial, Helvetica, sans-serif; font-size: 5.6px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,60) scale(1,-1)">found, but</text>
+				<text x="222.7890625" y="22" style="font-family: Arial, Helvetica, sans-serif; font-size: 5.6px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,44) scale(1,-1)">ranked too low</text>
+				<path d="M 272.071429,59 L 278.071429,59 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="278.0714 59, 274.2896 60.82686, 274.2896 57.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="278.57142857142856" y="44" width="61.14285714285717" height="30" rx="4" ry="4" style="stroke: rgb(7%,60%,61%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(7%,60%,61%); fill-rule: evenodd;"/>
+				<text x="290.93096749441963" y="56.653999999999996" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,113) scale(1,-1)">Generation</text>
+				<text x="293.2670758928571" y="30" style="font-family: Arial, Helvetica, sans-serif; font-size: 5.6px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,60) scale(1,-1)">answer goes</text>
+				<text x="287.9705915178571" y="22" style="font-family: Arial, Helvetica, sans-serif; font-size: 5.6px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,44) scale(1,-1)">beyond evidence</text>
+				<path d="M 340.214286,59 L 346.214286,59 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="346.2143 59, 342.4324 60.82686, 342.4324 57.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="346.71428571428567" y="44" width="61.14285714285717" height="30" rx="4" ry="4" style="stroke: rgb(7%,60%,61%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(7%,60%,61%); fill-rule: evenodd;"/>
+				<text x="364.4459193638392" y="56.653999999999996" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,113) scale(1,-1)">Citation</text>
+				<text x="365.3023158482142" y="30" style="font-family: Arial, Helvetica, sans-serif; font-size: 5.6px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,60) scale(1,-1)">wrong file</text>
+				<text x="361.0968470982142" y="22" style="font-family: Arial, Helvetica, sans-serif; font-size: 5.6px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,44) scale(1,-1)">or page cited</text>
+				<path d="M 408.357143,59 L 414.357143,59 Z" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1.1;"/>
+				<polygon points="414.3571 59, 410.5753 60.82686, 410.5753 57.17314" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 1; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<rect x="414.85714285714283" y="44" width="61.14285714285717" height="30" rx="4" ry="4" style="stroke: rgb(10%,65%,65%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(10%,65%,65%); fill-rule: evenodd;"/>
+				<text x="427.41377650669637" y="56.653999999999996" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,113) scale(1,-1)">Abstention</text>
+				<text x="416.1666573660714" y="30" style="font-family: Arial, Helvetica, sans-serif; font-size: 5.6px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,60) scale(1,-1)">answered w/o evidence</text>
+				<text x="422.3955636160714" y="22" style="font-family: Arial, Helvetica, sans-serif; font-size: 5.6px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,44) scale(1,-1)">or wrongly refused</text>
+			</g>
+		</g>
+	</g>
+</svg>

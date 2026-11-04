@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="767.1" height="224.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 767 224" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="767.1" height="224.6"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-224)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="0.5" y="0.5" width="766.1" height="223.6" rx="10" ry="10" style="stroke: rgb(83%,87%,89%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<g transform=" matrix(1.55,0,0,1.55,10,10)">
+				<text x="6" y="118" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 9px;fill: rgb(10%,15%,20%); stroke:none;" transform="translate(0,236) scale(1,-1)">22 known defects</text>
+				<text x="6" y="96" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(10%,15%,20%); stroke:none;" transform="translate(0,192) scale(1,-1)">By priority</text>
+				<rect x="6" y="62" width="105.31818181818181" height="28" rx="4" ry="4" style="stroke: rgb(72%,10%,10%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(72%,10%,10%); fill-rule: evenodd;"/>
+				<text x="49.454598721590905" y="73.654" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,147) scale(1,-1)">P0 · 5</text>
+				<rect x="112.81818181818181" y="62" width="254.86363636363637" height="28" rx="4" ry="4" style="stroke: rgb(70%,32%,3%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(70%,32%,3%); fill-rule: evenodd;"/>
+				<text x="229.1267822265625" y="73.654" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,147) scale(1,-1)">P1 · 12</text>
+				<rect x="369.1818181818182" y="62" width="105.31818181818181" height="28" rx="4" ry="4" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<text x="412.6364169034091" y="73.654" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,147) scale(1,-1)">P2 · 5</text>
+				<text x="6" y="42" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(10%,15%,20%); stroke:none;" transform="translate(0,84) scale(1,-1)">By fix stage</text>
+				<rect x="6" y="8" width="126.68181818181819" height="28" rx="4" ry="4" style="stroke: rgb(4%,43%,43%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,43%,43%); fill-rule: evenodd;"/>
+				<text x="60.13641690340909" y="19.654" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,39) scale(1,-1)">S0 · 6</text>
+				<rect x="134.1818181818182" y="8" width="297.59090909090907" height="28" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="271.85405495383526" y="19.654" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,39) scale(1,-1)">S1 · 14</text>
+				<rect x="433.27272727272725" y="8" width="19.863636363636374" height="28" rx="4" ry="4" style="stroke: rgb(10%,65%,65%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(10%,65%,65%); fill-rule: evenodd;"/>
+				<text x="438.98469682173294" y="19.654" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,39) scale(1,-1)">S3</text>
+				<rect x="454.6363636363636" y="8" width="19.863636363636374" height="28" rx="4" ry="4" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<text x="464.5681818181818" y="19.654" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.9px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,39) scale(1,-1)"></text>
+				<text x="307.83710937499995" y="2" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.2px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,4) scale(1,-1)">S3 = cache key (1) · stretch = German compound splitting (1)</text>
+			</g>
+		</g>
+	</g>
+</svg>
