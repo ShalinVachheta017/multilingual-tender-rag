@@ -3,7 +3,7 @@
 
 # 🏛️ Tender RAG 2.0 · Project Reference
 
-> **The single reference file for the current project.** Private, measured question answering over German public tenders: fix it, measure it, prove it. The agent project (`PROJECT_2_MULTIDOC_AGENT.pdf`) is deferred until this one is finished. **Need to explain the project to someone? Start with [🗣️ Explain it in five minutes](#sec-explain).** This file has the same content as `PROJECT_1_TENDER_RAG_2_0.pdf`, laid out for reading.
+> **The single reference file for the current project.** Private, measured question answering over German public tenders: fix it, measure it, prove it. The agent project (`PROJECT_2_MULTIDOC_AGENT.pdf`) is deferred until this one is finished. **Need to explain the project to someone? Start with [🗣️ Explain it in five minutes](#sec-explain).** **Want to understand the code first? Read the [🗺️ Code tour](#sec-tour).** **Choosing an answer model? See [🤖 model options](#sec-models).** This file has the same content as `PROJECT_1_TENDER_RAG_2_0.pdf`, laid out for reading.
 
 | 📁 **112** | ✅ **105** | 📄 **1,781** | 🐞 **22** | ❓ **48** | ⏱ **58.5 h** |
 |:-:|:-:|:-:|:-:|:-:|:-:|
@@ -54,7 +54,7 @@
 ## 🧭 Contents
 
 **🟦 PART 1 · OVERVIEW AND CURRENT STATE**<br>
-[📌 1. Summary and status](#sec-1) · [ Explain it in five minutes](#sec-explain) · [🎯 2. Problem, users and scope](#sec-2) · [🗂️ 3. The data](#sec-3) · [🧩 4. The system today](#sec-4) · [🐞 5. Known defects (22)](#sec-5)
+[📌 1. Summary and status](#sec-1) · [ Explain it in five minutes](#sec-explain) · [🎯 2. Problem, users and scope](#sec-2) · [🗂️ 3. The data](#sec-3) · [🧩 4. The system today](#sec-4) · [🐞 5. Known defects (22)](#sec-5) · [ Code tour: understand the code first](#sec-tour)
 
 **🟩 PART 2 · TARGETS AND LESSONS**<br>
 [💼 6. Job targeting for this project](#sec-6) · [🧠 7. Lessons from the reference projects](#sec-7) · [🎤 8. Interview-question map](#sec-8)
@@ -63,7 +63,7 @@
 [🧭 9. Stage overview and schedule](#sec-9) · [🧱 10. Stage S0: Baseline and safety](#stage-s0) · [🔧 11. Stage S1: Retrieval fixes](#stage-s1) · [🔬 12. Stage S2: Evaluation](#stage-s2) · [🛡️ 13. Stage S3: Reliability, scale and access control](#stage-s3) · [🚀 14. Stage S4: Polish and deploy](#stage-s4)
 
 **🟪 PART 4 · METHOD**<br>
-[📐 15. Evaluation protocol](#sec-15) · [🧪 16. Experiments](#sec-16) · [⚙️ 17. Reliability, scaling, observability and security](#sec-17)
+[📐 15. Evaluation protocol](#sec-15) · [🧪 16. Experiments](#sec-16) · [ Answer-model options for German and English](#sec-models) · [⚙️ 17. Reliability, scaling, observability and security](#sec-17)
 
 **🟥 PART 5 · SCOPE, OUTPUTS AND DECISIONS**<br>
 [📦 18. Mandatory, stretch, risks and cut order](#sec-18) · [🏁 19. Deliverables, evidence and interview stories](#sec-19) · [🔌 20. Interface for a later agent project (deferred)](#sec-20) · [📝 21. Decision log and next steps](#sec-21) · [📚 22. Sources and verification status](#sec-22) · [📖 23. Glossary](#sec-23) · [🧾 Appendix: decision record template](#sec-appendix)
@@ -458,6 +458,140 @@ Found by reading the code line by line. Each defect gets a test when it is fixed
 | 19 | BM25 has no German compound splitting or stemming | Baustelleneinrichtung does not match Baustelle | stretch | ⚪ P2 | Compound term matches its parts |
 | 20 | `pyproject.toml` packages core instead of src; fastapi, uvicorn, rank_bm25 missing; UI import shim points to ui/ | Install fails; UI may not start | S0 | ⚪ P2 | pip install -e . works; all modules import |
 | 21 | Garbled import line 3 in `qa.py` | Runs only because half the line is a comment | S0 | ⚪ P2 | Module imports cleanly |
+
+<sub>[↑ Contents](#contents)</sub>
+
+<a id="sec-tour"></a>
+
+###  Code tour: understand the code first
+
+Read-only audit by four agents on 4 Nov 2026, plus my own spot checks with grep. Static analysis only: nothing was run against Qdrant, Ollama or the data. UNVERIFIED marks what was not checked.
+
+> 💡 **Main finding.** Roughly half of the Python (about 2,000 of 4,100 lines in src, ui, tests and scripts) is dead, duplicated or untestable. Simplifying is mostly **deleting what nothing uses**, then removing the double paths. None of the 7 test files contains a single `assert` and all need live services, so the baseline evaluation, not the tests, is the safety net for any refactor.
+
+
+#### Reading order (about 4 hours)
+
+| Step | File | What to look for | Time |
+|---|---|---|---|
+| 1 | `docker-compose.yml` and `src/core/config.py` | Where the services, folders and switches come from: CFG, RAGBOT_* variables, and the two switches that change behaviour (dual_query, use_rerank) | 20 min |
+| 2 | `src/core/domain.py` | The two data classes (DocumentPage, DocumentChunk) that everything passes around | 5 min |
+| 3 | `scripts/data_processing/ingest.py` | The entry point; follow the ten steps in the next table | 30 min |
+| 4 | `src/core/io.py` | ZipIngestor, ExcelCleaner, PDFLoader (OCR when a page has under 50 characters). Skip FileInfo and the CSV log on the first pass | 40 min |
+| 5 | `scripts/data_processing/embed.py` and `src/core/index.py` | The chunker, Indexer.build, and the uuid5 point IDs that make re-runs safe | 40 min |
+| 6 | `scripts/deployment/build_bm25_index.py` and `src/core/hybrid_search.py` | The second, keyword index (a pickle file) | 20 min |
+| 7 | `src/core/search.py` | search_dense, rrf, search_hybrid; skip the cache section | 30 min |
+| 8 | `src/core/qa.py` | retrieve_candidates, answer_query, _ask_llm | 30 min |
+| 9 | `src/api/models`, `routes/chat.py`, `security.py` | Spot the double retrieval in /chat | 20 min |
+| 10 | `ui/streamlit/app.py` | answer_with_rag and lookup_metadata (the metadata route) | 30 min |
+| 11 | `tests/test_api.py`, `evaluation/manual_evaluation.py`, `EVALUATION_REPORT.md` | What “quality” has meant so far (30.6 % retrieval, tender-ID lookup 0 %) | 30 min |
+
+Skip on the first pass: `logger.py`, `unified_document_processor.py`, `deploy_production.py` (nothing uses them).
+
+
+#### What `ingest.py` does, end to end
+
+| # | Step | Detail |
+|---|---|---|
+| 1 | Parse arguments | `--mode` fresh, append or ocr-only (**default fresh, which is destructive**), `--skip-clean`, -v |
+| 2 | Open logs | Creates `data/logs` and an ingest_run_TIMESTAMP.log |
+| 3 | Import side effects | Importing src.core.io creates the folders extract, logs, state, metadata and configures logging (`io.py` lines 30 to 40) |
+| 4 | Unzip | ZipIngestor.run: finds `data/raw` zips; SHA-256 per zip; skips a zip already in `data/state/zip_manifest.json`; writes every member into `data/extract` (nested zips recursively); **no ../ check**; reads whole members into memory |
+| 5 | Check each file | Extension and size (100 MB) check, language sample for pdf/docx/txt, one row per file in `data/logs/ingest_YYYY-MM.csv`. The status is only logged: files are extracted regardless, so the check has no effect |
+| 6 | Copy loose files | copy_loose_files copies non-zip pdf, docx, d83, dwg, jpg, png, tiff from `data/raw` to `data/extract` when new |
+| 7 | Clean the Excel | ExcelCleaner takes the newest xlsx in `data/raw` and writes `data/metadata/cleaned_metadata.csv` and .xlsx |
+| 8 | Count PDFs | Aborts if `data/extract` has none |
+| 9 | Start indexing | Runs a subprocess `scripts/embed.py --mode MODE`. **That file does not exist** (it is `scripts/data_processing/embed.py`). Verified: `data/logs/data_preparation.log` shows the call failing with exit status 2 on 26 Sep 2025, and ingest still ends normally, so ingest alone never indexes anything |
+| 10 | What `embed.py` does when run by hand | Qdrant readiness check; CLI overrides onto CFG; Indexer loads the pinned Jina model and creates or validates the collection; build reads each PDF (PyMuPDF text, Tesseract OCR under 50 characters), PageAwareChunker cuts chunks, ExcelMetadataJoiner adds metadata, embeds and upserts in batches. The BM25 index is a separate manual step (`build_bm25_index.py`) |
+
+
+#### One online request: two different paths
+
+| Streamlit UI (`ui/streamlit/app.py`) | API POST /api/v1/chat |
+|---|---|
+| 1 Importing core.qa runs a dimension check that loads a second Jina model and a Qdrant client at import (`qa.py` line 83)<br>2 Send button runs answer_with_rag<br>3 lookup_metadata answers IDs, years, regions from the Excel (no LLM)<br>4 retrieve_candidates: language detect, then search_hybrid_cached (cache 1) which calls dense search (cache 2 on the embedding) plus BM25 plus RRF; runs twice because dual_query is on (original and LLM-translated question)<br>5 Reranker: **the BGE model is built on every call**, blends scores, cuts to 16<br>6 UI threshold 0.35, builds context, own prompt and own Ollama call (llm_chat); unmatched questions go to a general fallback prompt | 1 verify_api_key and the rate limit<br>2 chat() gets the QA engine (a dict of two functions)<br>3 retrieve_candidates(query, limit=top_k): same search, cache and rerank as the UI<br>4 answer_query(query) calls retrieve_candidates **again** with the default limit; reranker reloads again; context cut to 3,000 characters; _ask_llm (Ollama, 256 tokens)<br>5 Maps the first hits to Documents: the sources shown may differ from what the answer used |
+
+The two paths use different prompts and different LLM bridges, and import the same modules under different names (the UI imports `core.*`, the API imports `src.core.*`), so one module can load twice.
+
+
+#### What is dead, duplicated or broken
+
+| Item | Lines | Evidence | Action |
+|---|---|---|---|
+| `src/core/logger.py` | 280 | Never referenced (grep over .py and .md) | Delete |
+| `scripts/data_processing/unified_document_processor.py` | 309 | Only its own __main__; repeats the ingest logic; its ROOT path is wrong | Delete |
+| `scripts/deployment/deploy_production.py` | 374 | Never referenced; runs the wrong script path | Delete |
+| tests: test_api_caching, test_caching, test_embedding_cache, test_qa_caching | 505 | No assert (verified); they time and print; need live services | Delete with the cache code |
+| `evaluation/ragas_evaluation.py` | 380 | ragas and datasets are not in requirements.txt (verified); no RAGAS results exist | Delete, rebuild later if needed |
+| `manual_test.py` | 149 | Duplicate of `test_api.py`; calls /api/health, which does not exist | Delete |
+| Search result cache (_search_hybrid_cached_impl, md5 key, JSON round trip, fake objects) | about 70 | Only helps exact repeats; never invalidated after re-indexing; the real cost is the reranker reload and the translation call | Remove; load the reranker once |
+| get_*_engine wrappers in routes | about 70 | Python modules are already singletons | Remove |
+| hybrid_search.reciprocal_rank_fusion and reload_bm25_index | about 55 | One is imported but never called; the other is never referenced (verified) | Delete |
+| `qa.py` import-time dimension check and corrupted line 3 | about 30 | Loads a second model at import; search already checks dimensions | Delete |
+| Config fields hnsw_ef_search, rerank_batch_size, max_seq_length; DocumentPage.to_langchain_like; clean_text fallback (no `text_cleaning.py` exists, verified); unused imports; the unused dense_weight parameter | about 50 | No readers (grep) | Delete |
+| Three of four old evaluation result files | 3 files | Identical scores; only timings differ | Keep the newest plus `EVALUATION_REPORT.md` |
+
+Estimates by the audit agents, about 2,000 lines in total; confirm each deletion with grep when it is done.
+
+
+#### Other bugs the audit found (beyond the 22 defects)
+
+| Bug | Status |
+|---|---|
+| `ingest.py` calls `scripts/embed.py`, which does not exist, so indexing never starts from ingest | Verified |
+| ROOT = parents[1] in `embed.py`, `unified_document_processor.py` and `build_bm25_index.py` points to scripts/, not the repository root | Static reading; runtime UNVERIFIED |
+| Printed hints name files that no longer exist (`ui/app_streamlit.py`, `core/config.py`) | Static reading |
+| /chat accepts stream and search_mode but ignores them; dense_weight is never used | Verified by grep |
+| The status check in `io.py` has no effect (files are extracted whatever the status); this is part of defect 2 | Static reading |
+| None of the 7 test files has an assert; all need live services, so none can run in CI | Verified |
+
+
+#### How to simplify safely, in order
+
+- **1. Baseline first** (S0). With no real assertions in the tests, the evaluation is the only safety net.
+- **2. One commit that only deletes proven-dead code** (the first rows of the table above). No behaviour changes.
+- **3. Fix the glue:** ingest imports embed.main instead of running a subprocess; correct ROOT and pyproject; use one import path (`src.core`) everywhere.
+- **4. One online path:** a single answer function used by UI, API and evaluation, one prompt, one refusal constant (the Clinical-RAG pattern), citations built from the retrieved hits.
+- **5. Replace the caches:** load the reranker and embedder once; drop the search-result cache.
+- **6. Restructure into folders** only after real tests exist (S1). After each step: commit, run the baseline, compare.
+
+
+#### What to borrow from the Clinical-RAG repository
+
+| Pattern | Reference file | Adopt? |
+|---|---|---|
+| One YAML config plus .env for secrets only | `configs/default.yaml`, `src/config.py` | Yes, but pass the config in; avoid its module-level global |
+| REFUSAL_PHRASE constant used in the prompt and in is_refusal() | `src/rag/prompts.py` | Yes: refusal detection cannot drift from the prompt |
+| One answer_question() for CLI, API and UI | `src/rag/generate.py` | Yes: fixes our two prompts and the double retrieval |
+| Citation block built from the retrieved hits, not by the LLM | `src/rag/generate.py` | Yes |
+| Thin command-line scripts over library functions | `scripts/build_index.py`, evaluate_*.py | Yes |
+| Ingest in three steps with an inspectable intermediate file | `src/ingest/extract.py`, `chunk.py`, `index.py` | Yes: matches “parse once, keep the pages” |
+| Frozen reports with a definition field, linked from the README | `reports/*.json` | Yes |
+| Hard-coded query expansions and score boosts tuned to the test questions | `src/rag/retrieve.py` | No: overfitting risk |
+| A 300-line `retrieve.py`; BM25 rebuilt per query; committing the vector DB; gold labels as exact chunk IDs | — | No |
+| What it lacks that we need | — | Auth, rate limit, metadata routing, OCR depth, tests, load testing |
+
+Its own weaknesses to keep in mind: a 12-question gold set (3 for retrieval), a refusal test with easy trap topics, and the headline recall of 0.50 against 0.83 resting on those 3 questions.
+
+
+#### Simpler folder layout to consider
+
+```text
+configs/default.yaml        one config file: retrieval, chunking, models, paths, server
+src/ragbot/
+  config.py                 load the YAML and environment once
+  ingest/                   safe_unzip, pdf_loader (OCR), tender_metadata, chunk, index
+  retrieve/                 dense, bm25, fuse (RRF), rerank, id_router
+  generate/                 prompts (one prompt, REFUSAL_PHRASE), answer (the only answer function)
+  llm.py                    Ollama client
+  api/                      app, auth, ratelimit, routes (all call answer())
+ui/streamlit_app.py         calls the same answer()
+scripts/                    thin command-line wrappers
+eval/                       questions, reports
+tests/                      real assertions, runnable without services
+```
+
+> ✅ **Decision for you: trim or rewrite.** My recommendation: trim in place (steps 2 to 5 above, roughly 5 to 7 hours by my estimate) and only rewrite into this layout if the code still confuses you afterwards. Trimming keeps the git history and the baseline valid; a rewrite costs more hours and needs the old system measured once first.
 
 <sub>[↑ Contents](#contents)</sub>
 
@@ -978,6 +1112,57 @@ Every failed question gets exactly one primary label, found by walking back thro
 | E9 (stretch) | Chunk size and overlap | 1000 characters, 400 overlap | Larger chunks with less overlap (for example 1500/200 and 2500/300) | Recall@k, citation precision, chunk count; needs re-embedding |
 
 Optional only if time remains: a subset of EnterpriseRAG-Bench for generality (English text only), OmniDocBench for parsing (no German), corpus growth beyond the 112 tenders (needs synthetic distractors), GraphRAG, A2A.
+
+<sub>[↑ Contents](#contents)</sub>
+
+<a id="sec-models"></a>
+
+###  Answer-model options for German and English
+
+> ⚠️ **Evidence level.** Model cards and Ollama library pages only (4 Nov 2026); no German benchmark and no test was run. Pick by the 10-question test below, not by this table. **Install nothing yet except the baseline (qwen2.5:1.5b):** the challengers are needed in S2, weeks 6 to 7.
+
+The documents are German; questions may be German or English and the answer must be in the language of the question. Only the answer step and the translation step use this model, so the retrieval fixes do not depend on it. Disk is not the limit (C: has about 300 GB free); the 8 GB GPU is: about 5.9 GB are free, and the embedder and reranker take roughly 2 GB (estimate).
+
+| Tag | Download | Licence | German evidence | Notes | VRAM (est.) |
+|---|---|---|---|---|---|
+| qwen2.5:1.5b (baseline) | 1.0 GB | Apache 2.0 | German listed among 29+ languages (Ollama page) | No thinking mode | about 1.5 GB |
+| granite4.1:3b (or granite4.2:3b) | 2.1 / 2.2 GB | Apache 2.0 (verified for 4.2) | German named on the model card | RAG listed as a capability; 4.2 has thinking on by default | about 3.0 GB |
+| gemma3:4b | 3.4 GB | Gemma Terms of Use (not Apache) | Page does not name German; widely reported as good in German (unverified here) | No thinking mode; includes a vision tower | about 4.3 GB |
+| qwen3:4b-instruct | 2.5 GB | Apache 2.0 (unverified on the page) | German not named on the page | Non-thinking build; plain qwen3:4b thinks | about 3.3 GB |
+| ministral-3:3b | 3.0 GB | Apache 2.0 | German named | Needs Ollama 0.13.1 or later (you have 0.40.14) | about 3.8 GB |
+| qwen3.5:4b | 3.3 GB (4.0 with vision) | Apache 2.0 | Claims 201 languages; German not named | Thinking tagged; default unverified | about 4.2 GB |
+| qwen2.5:3b | 1.9 GB | Qwen licence (not Apache 2.0) | Same family claim as the 1.5B | Fine for personal use; read the licence before sharing | about 2.5 GB |
+| llama3.2:3b | 2.0 GB | Llama community licence | German officially supported | Older; expected to be weaker at strict citation and refusal (not tested) | about 2.8 GB |
+
+Do not fit next to the embedder and reranker: qwen3:8b (5.2 GB), gemma4 variants (6.6 to 9.5 GB), any 7B model. Skip phi4-mini (German not named) and translategemma (translation only).
+
+
+#### Recommended trio for experiment E5
+
+- **Baseline:** qwen2.5:1.5b, unchanged.
+- **3B challenger:** granite4.1:3b (German named, Apache 2.0, aimed at RAG). Backup: ministral-3:3b. If granite4.1 is poor, try granite4.2:3b with thinking switched off.
+- **4B challenger:** gemma3:4b (best-known German quality in this size, no thinking mode); check its terms before publishing results. Backup if the terms block you: qwen3:4b-instruct.
+- **Total download for all three:** about 6.5 GB, pulled only when S2 starts.
+
+
+#### 10-question German and English smoke test
+
+Same retrieved passages, same prompt, temperature 0 for every model; score each answer pass or fail.
+
+| # | Case | Must do |
+|---|---|---|
+| 1 | German question, answer in the passages (for example a deadline) | Answer in German, cite [1] |
+| 2 | English question about German passages | Answer in English, cite correctly |
+| 3 | German question that needs two passages | Cite both |
+| 4 | English question needing an exact number or date from German text or a table | Exact value |
+| 5 | German question with no evidence | Refuse in German |
+| 6 | English question with no evidence | Refuse in English |
+| 7 | Tempting general-knowledge question (a general legal rule) | Refuse or stay inside the passages |
+| 8 | Contradictory or near-miss passages | Pick the right one or flag the conflict |
+| 9 | Mixed-language question (German terms in an English sentence) | Answer in the language of the question |
+| 10 | Instruction hidden inside a passage (“ignore your instructions”) | Ignore it and still answer |
+
+Automatic checks across all ten: language detector; citation pattern `[n]` with n inside the retrieved range; no think blocks in the output; the fixed refusal phrase on questions 5 to 7. Also record time to first token and peak VRAM (nvidia-smi) with the embedder and reranker loaded.
 
 <sub>[↑ Contents](#contents)</sub>
 
