@@ -12,27 +12,27 @@
 		<g transform="">
 			<rect x="0.5" y="0.5" width="766.1" height="192.6" rx="10" ry="10" style="stroke: rgb(83%,87%,89%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
 			<g transform=" matrix(1.55,0,0,1.55,10,10)">
-				<text x="6" y="96" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 9px;fill: rgb(10%,15%,20%); stroke:none;" transform="translate(0,192) scale(1,-1)">Where the 75.5 project hours go</text>
-				<rect x="6" y="40" width="73.20198675496688" height="40" rx="4" ry="4" style="stroke: rgb(4%,43%,43%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,43%,43%); fill-rule: evenodd;"/>
-				<text x="38.07535861185844" y="62.284" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,124) scale(1,-1)">S0</text>
-				<text x="35.39972384623344" y="52.684" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,105) scale(1,-1)">12 h</text>
-				<rect x="80.70198675496688" y="40" width="113.6655629139073" height="40" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
-				<text x="133.00913344629552" y="62.284" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,124) scale(1,-1)">S1</text>
-				<text x="127.24775649317053" y="52.684" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,105) scale(1,-1)">18.5 h</text>
-				<rect x="195.86754966887418" y="40" width="79.42715231788077" height="40" rx="4" ry="4" style="stroke: rgb(7%,60%,61%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(7%,60%,61%); fill-rule: evenodd;"/>
-				<text x="231.05549106218956" y="62.284" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,124) scale(1,-1)">S2</text>
-				<text x="228.37985629656455" y="52.684" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,105) scale(1,-1)">13 h</text>
-				<rect x="276.79470198675494" y="40" width="54.526490066225165" height="40" rx="4" ry="4" style="stroke: rgb(10%,65%,65%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(10%,65%,65%); fill-rule: evenodd;"/>
-				<text x="299.5323122542425" y="62.284" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,124) scale(1,-1)">S3</text>
-				<text x="298.9144411604925" y="52.684" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,105) scale(1,-1)">9 h</text>
-				<rect x="332.8211920529801" y="40" width="104.32781456953643" height="40" rx="4" ry="4" style="stroke: rgb(35%,24%,62%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(35%,24%,62%); fill-rule: evenodd;"/>
-				<text x="380.4594645721233" y="62.284" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,124) scale(1,-1)">P2</text>
-				<text x="377.7838298064983" y="52.684" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,105) scale(1,-1)">17 h</text>
-				<rect x="438.64900662251654" y="40" width="35.85099337748346" height="40" rx="4" ry="4" style="stroke: rgb(4%,12%,22%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,12%,22%); fill-rule: evenodd;"/>
-				<text x="452.04886854563324" y="62.284" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,124) scale(1,-1)">S4</text>
-				<text x="451.43099745188323" y="52.684" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.4px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,105) scale(1,-1)">6 h</text>
-				<text x="6" y="22" style="font-family: Arial, Helvetica, sans-serif; font-size: 7px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,44) scale(1,-1)">S0 to S3 = 52.5 h for Project 1 · P2 = 17 h for Project 2 · S4 = 6 h shared polish week</text>
-				<text x="6" y="8" style="font-family: Arial, Helvetica, sans-serif; font-size: 7px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,16) scale(1,-1)">75.5 h in total, about 6.3 h per week over 12 weeks (6 h per week = 72 h; see the cut list)</text>
+				<text x="6" y="96" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 9px;fill: rgb(10%,15%,20%); stroke:none;" transform="translate(0,192) scale(1,-1)">Where the 71.5 planned hours go (58.5 mandatory + 13 stretch or buffer)</text>
+				<rect x="6" y="40" width="77.38111888111888" height="40" rx="4" ry="4" style="stroke: rgb(4%,43%,43%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,43%,43%); fill-rule: evenodd;"/>
+				<text x="40.40955358118444" y="62.21999999999999" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.0px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,124) scale(1,-1)">S0</text>
+				<text x="37.87854772180944" y="53.019999999999996" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.0px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,106) scale(1,-1)">12 h</text>
+				<rect x="84.88111888111888" y="40" width="120.1083916083916" height="40" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="140.65430882593967" y="62.21999999999999" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.0px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,124) scale(1,-1)">S1</text>
+				<text x="135.20435765406467" y="53.019999999999996" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.0px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,106) scale(1,-1)">18.5 h</text>
+				<rect x="206.48951048951048" y="40" width="83.95454545454547" height="40" rx="4" ry="4" style="stroke: rgb(7%,60%,61%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(7%,60%,61%); fill-rule: evenodd;"/>
+				<text x="244.1857773574082" y="62.21999999999999" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.0px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,124) scale(1,-1)">S2</text>
+				<text x="241.6547714980332" y="53.019999999999996" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.0px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,106) scale(1,-1)">13 h</text>
+				<rect x="291.94405594405595" y="40" width="57.660839160839146" height="40" rx="4" ry="4" style="stroke: rgb(10%,65%,65%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(10%,65%,65%); fill-rule: evenodd;"/>
+				<text x="316.4934696651005" y="62.21999999999999" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.0px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,124) scale(1,-1)">S3</text>
+				<text x="315.9089970088505" y="53.019999999999996" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.0px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,106) scale(1,-1)">9 h</text>
+				<rect x="351.1048951048951" y="40" width="37.94055944055941" height="40" rx="4" ry="4" style="stroke: rgb(4%,12%,22%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,12%,22%); fill-rule: evenodd;"/>
+				<text x="365.7941689657998" y="62.21999999999999" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 7.0px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,124) scale(1,-1)">S4</text>
+				<text x="365.2096963095498" y="53.019999999999996" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.0px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,106) scale(1,-1)">6 h</text>
+				<rect x="390.5454545454545" y="40" width="83.95454545454544" height="40" rx="4" ry="4" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<text x="409.05373313210225" y="62.156000000000006" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,124) scale(1,-1)">Stretch / buffer</text>
+				<text x="426.09997336647723" y="53.35600000000001" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.6px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,106) scale(1,-1)">13 h</text>
+				<text x="6" y="22" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.8px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,44) scale(1,-1)">Mandatory = S0 to S4 = 58.5 h · stretch or buffer = 13 h (holidays, E4, E7, E8, E9, GAEB, rehearsing the explanation)</text>
+				<text x="6" y="8" style="font-family: Arial, Helvetica, sans-serif; font-size: 6.8px;fill: rgb(35%,41%,48%); stroke:none;" transform="translate(0,16) scale(1,-1)">12 weeks at about 6 h per week = 72 h; Project 2 (the agent) is deferred until this project is finished</text>
 			</g>
 		</g>
 	</g>

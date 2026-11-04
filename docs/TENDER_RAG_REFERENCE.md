@@ -3,11 +3,11 @@
 
 # 🏛️ Tender RAG 2.0 · Project Reference
 
-> **The single reference file for the current project.** Private, measured question answering over German public tenders: fix it, measure it, prove it. The future agent project has its own PDF (`PROJECT_2_MULTIDOC_AGENT.pdf`); this file has the same content as `PROJECT_1_TENDER_RAG_2_0.pdf`, laid out for reading.
+> **The single reference file for the current project.** Private, measured question answering over German public tenders: fix it, measure it, prove it. The agent project (`PROJECT_2_MULTIDOC_AGENT.pdf`) is deferred until this one is finished. **Need to explain the project to someone? Start with [🗣️ Explain it in five minutes](#sec-explain).** This file has the same content as `PROJECT_1_TENDER_RAG_2_0.pdf`, laid out for reading.
 
-| 📁 **112** | ✅ **105** | 📄 **1,781** | 🐞 **22** | ❓ **48** | ⏱ **75.5 h** |
+| 📁 **112** | ✅ **105** | 📄 **1,781** | 🐞 **22** | ❓ **48** | ⏱ **58.5 h** |
 |:-:|:-:|:-:|:-:|:-:|:-:|
-| tenders | valid zips | extracted files | known defects | test questions | project hours |
+| tenders | valid zips | extracted files | known defects | test questions | mandatory hours |
 
 **Version 1.2** · 4 Nov 2026 · branch `chore/repo-cleanup` · **Status:** *plan. Part 1 describes the code as read, not as run. Nothing is built or measured yet.*
 
@@ -20,9 +20,9 @@
 | [S0](#stage-s0) | Baseline and safety | 1–2 | 12 | ▱▱▱▱▱▱▱▱▱▱ 0 % | `s0-baseline` |
 | [S1](#stage-s1) | Retrieval fixes | 3–5 | 18.5 | ▱▱▱▱▱▱▱▱▱▱ 0 % | `s1-retrieval-fixes` |
 | [S2](#stage-s2) | Evaluation | 6–7 | 13 | ▱▱▱▱▱▱▱▱▱▱ 0 % | `s2-evaluation` |
-| [S3](#stage-s3) | Reliability, scale, access control | 9–11 | 9 | ▱▱▱▱▱▱▱▱▱▱ 0 % | `s3-reliability` |
-| [S4](#stage-s4) | Polish and deploy | 12 | 6 (shared) | ▱▱▱▱▱▱▱▱▱▱ 0 % | — |
-| P2 | Project 2: MultiDoc Evidence Agent | 8–12 | 17 | (separate PDF) | — |
+| [S3](#stage-s3) | Reliability, scale, access control | 8–10 | 9 | ▱▱▱▱▱▱▱▱▱▱ 0 % | `s3-reliability` |
+| [S4](#stage-s4) | Polish and deploy | 12 | 6 | ▱▱▱▱▱▱▱▱▱▱ 0 % | — |
+| — | Stretch work or buffer (E4, E7, E8, E9, GAEB, holidays) | 8–11 | 13 | optional | — |
 
 <details>
 <summary>▸ <b>How to read this file</b></summary>
@@ -54,7 +54,7 @@
 ## 🧭 Contents
 
 **🟦 PART 1 · OVERVIEW AND CURRENT STATE**<br>
-[📌 1. Summary and status](#sec-1) · [🎯 2. Problem, users and scope](#sec-2) · [🗂️ 3. The data](#sec-3) · [🧩 4. The system today](#sec-4) · [🐞 5. Known defects (22)](#sec-5)
+[📌 1. Summary and status](#sec-1) · [ Explain it in five minutes](#sec-explain) · [🎯 2. Problem, users and scope](#sec-2) · [🗂️ 3. The data](#sec-3) · [🧩 4. The system today](#sec-4) · [🐞 5. Known defects (22)](#sec-5)
 
 **🟩 PART 2 · TARGETS AND LESSONS**<br>
 [💼 6. Job targeting for this project](#sec-6) · [🧠 7. Lessons from the reference projects](#sec-7) · [🎤 8. Interview-question map](#sec-8)
@@ -66,7 +66,7 @@
 [📐 15. Evaluation protocol](#sec-15) · [🧪 16. Experiments](#sec-16) · [⚙️ 17. Reliability, scaling, observability and security](#sec-17)
 
 **🟥 PART 5 · SCOPE, OUTPUTS AND DECISIONS**<br>
-[📦 18. Mandatory, stretch, risks and cut order](#sec-18) · [🏁 19. Deliverables, evidence and interview stories](#sec-19) · [🔌 20. Interface to Project 2](#sec-20) · [📝 21. Decision log and next steps](#sec-21) · [📚 22. Sources and verification status](#sec-22) · [📖 23. Glossary](#sec-23) · [🧾 Appendix: decision record template](#sec-appendix)
+[📦 18. Mandatory, stretch, risks and cut order](#sec-18) · [🏁 19. Deliverables, evidence and interview stories](#sec-19) · [🔌 20. Interface for a later agent project (deferred)](#sec-20) · [📝 21. Decision log and next steps](#sec-21) · [📚 22. Sources and verification status](#sec-22) · [📖 23. Glossary](#sec-23) · [🧾 Appendix: decision record template](#sec-appendix)
 
 
 
@@ -80,7 +80,7 @@
 
 ### 📌 1. Summary and status
 
-> ✅ **Decision.** Upgrade the existing German tender RAG system in place into a measured, reliable, production-style service. The order is fixed: **evaluation first, reliability second, scaling third**. Every change has a reason, a test and a before/after number. This project takes about 52.5 of the 75.5 hours planned for both projects (weeks 1 to 7 and 9 to 11) plus a share of the polish week.
+> ✅ **Decision.** Upgrade the existing German tender RAG system in place into a measured, reliable, production-style service. The order is fixed: **evaluation first, reliability second, scaling third**. Every change has a reason, a test and a before/after number. The mandatory work is 58.5 hours across S0 to S4 over 12 weeks; about 13 more hours are stretch work or buffer. The agent project (Project 2) is deferred until this one is finished.
 
 | Item | Value |
 |---|---|
@@ -89,7 +89,7 @@
 | Roles it targets | AI Engineer, GenAI Engineer, RAG / Document-AI Engineer (junior to 3 years); evidence also useful for Forward Deployed Engineer roles |
 | Core evidence | Before/after retrieval metrics, citation precision, refusal and false-refusal rate, failure analysis per stage, p95 latency at 1/5/20 users |
 | Stack | Python, FastAPI, Qdrant, Jina embeddings v3, BM25, BGE reranker, Ollama, pytest, Docker, GitHub Actions, Langfuse or Phoenix |
-| Hours | S0 12 · S1 18.5 · S2 13 · S3 9 = 52.5 h, plus a shared 6 h polish week |
+| Hours | S0 12 · S1 18.5 · S2 13 · S3 9 · S4 6 = 58.5 h mandatory, plus about 13 h of stretch work or buffer (at 6 h per week) |
 | Machine | RTX 4060 Laptop GPU with 8 GB; Python 3.14 installed (project needs a 3.12 environment); Docker installed but stopped; Ollama not installed |
 
 > ⚠️ **Honest status.** Everything about the current system comes from reading the source code. Qdrant and Ollama are not running on this machine, so nothing has been executed and no quality number exists. The old 30.6 % “retrieval quality” in `evaluation/EVALUATION_REPORT.md` came from heuristic manual scoring; it is not a Recall@k. All targets here are marked TBD until the baseline is measured.
@@ -101,7 +101,138 @@
 - **From the review:** read-only or isolated baseline; test questions sampled by held-out tender and sealed with a hash; code fixes (Type A) and corpus changes (Type B) measured separately; manual citation checks; supersession needs evidence; failure-analysis table; mandatory versus stretch split.
 - **From the interview question sets:** false-refusal rate; aggregation questions through the metadata route; a cross-language experiment; re-indexing into a new collection with an alias; version tags in every trace; an injection test document; a CI evaluation gate; a passages-per-answer sweep; a contextual chunk header (stretch); an access-control filter promoted to mandatory.
 - **From the jamwithai course repository:** factories and dependency injection (they also fix the reranker and embedder reloads), a test layout of unit, api and integration, Makefile, ruff and pre-commit, a git tag per stage, a ready Langfuse compose template, a cache key from all request parameters, and two stretch experiments (BM25 inside Qdrant, chunk-size sweep).
-- **Hours:** 72 became 75.5 (about 6.3 h per week). Section 18 shows what to drop to get back to exactly 6 h per week.
+- **Focus:** Project 2 (the agent) is deferred until this project is finished; its 17 hours become slack, used for stretch experiments, holiday buffer and rehearsing how to explain the project.
+
+<sub>[↑ Contents](#contents)</sub>
+
+<a id="sec-explain"></a>
+
+###  Explain it in five minutes
+
+If someone asks “what is this project?”, use this page. Say the pitch first, walk the diagram from left to right, then the folders, then the decisions. Everything here is detailed later in the numbered sections.
+
+> ⚠️ **Rule for honesty.** Today the code exists but the evaluation and the fixes are planned. Until reports/ contains numbers, say what is planned and why, not what was achieved. Once a number exists, quote it with the report it came from.
+
+
+#### The 30-second pitch
+
+> 💡 **Pitch.** Public tenders in Germany arrive as zips of 10 to 100 files, many of them scanned. I built a private question-answering system over 112 of them that runs fully on my own machine: you ask in German or English and get an answer with the file and page, or an honest refusal. While checking it I found it could answer from the wrong tender, so I measure everything against a question set with a sealed test split, fix one defect at a time, and keep a report for every change.
+
+
+#### The five-minute story, in seven steps
+
+| Step | What to say | Evidence in this document |
+|---|---|---|
+| 1 The problem | A bid manager spends hours per tender finding deadlines, authorities, required declarations and risks. The answers are in the documents, not in a language model's memory, and decisions need the exact page. | Section 2 |
+| 2 The data | 112 tenders from DTAD: 105 readable zips, about 1,160 PDFs with 10,358 pages at the top level, 8 % of pages are scans, plus 106 Word files and 85 GAEB bills of quantities. | Section 3 |
+| 3 The pipeline | Offline: unzip, read text (OCR only for scans), cut into chunks, embed, store in Qdrant. Online: route exact IDs to a table, otherwise search with vectors and keywords, rerank, then answer with sources. | Section 4 |
+| 4 What was wrong | Reading the code and comparing file checksums showed that tenders were unzipped into one shared folder, so 159 file versions were overwritten and chunks lost their tender. The search also used a candidate pool of only 5 to 16 results, and the embedding model appears not to be called in its retrieval mode (to be tested in E2). | Section 5 |
+| 5 How it is fixed safely | Baseline first, read-only. Then one change at a time, each with a test and a before/after number. Code fixes and data changes are measured separately. | Sections 10 to 11 |
+| 6 How it is proven | 48 questions in 8 categories, 16 of them sealed for the final test, hand-checked citations, a failure label for every wrong answer, and a refusal rate that also counts wrongly refused questions. | Sections 12 and 15 |
+| 7 How it stays reliable | New index per change with an alias switch, version tags in every trace, a cache that knows the index version, an access filter, an injection test and a load test at 1, 5 and 20 users. | Sections 13 and 17 |
+
+
+#### Architecture: what each box is for
+
+| Box | What it does | Why it is there | If it fails or is removed |
+|---|---|---|---|
+| Safe ingest | Unzips each tender into its own folder with path and size checks; logs every file | Zips are untrusted input; the tender identity must survive | Broken zips are quarantined; wrong-tender answers return |
+| Parser and OCR | Reads the text layer; OCR only for pages with almost no text; also Word and Excel | 8 % of pages are scans; OCR everything would waste hours | Scanned pages become invisible |
+| Chunker | Cuts text into 1,000-character pieces and remembers file and page | Models have input limits; small pieces give precise citations | Whole documents are too coarse to cite |
+| Metadata table (Excel) | Answers IDs, counts and lists without a language model | Exact facts must never be guessed | Counting questions get hallucinated answers |
+| Embeddings and Qdrant | Jina v3 vectors with tender and page in the payload; one collection per index version | Finds meaning across German and English; filters by tender | Paraphrased questions are missed |
+| BM25 keyword search | Scores exact words, IDs and form numbers | Vectors are weak on exact strings | Questions like “Formblatt 124” are missed |
+| Fusion and reranker | Merges the two rankings (RRF), then a cross-encoder re-orders the best 100 | Better ordering than either list alone | Right passage found but ranked too low |
+| Answer step (Ollama) | Prompt with numbered sources, refuses when evidence is weak | Answers must be grounded and citable | Plausible but unsupported text |
+| API and UI | FastAPI with a key and rate limit; Streamlit chat on top | One entry point, same answer everywhere | UI and API disagree |
+| Traces and reports | Every request is traced with version tags; every change has a report | You can diagnose any wrong answer and reproduce any number | No way to prove an improvement |
+| Evaluation harness | Runs the question file and scores retrieval, answers, citations and refusals | The only way to know whether a change helped | Progress is a feeling, not a number |
+
+
+#### Folder structure: why each folder exists
+
+**Today** (the repository as it is):
+
+```text
+multilingual-tender-rag/
+├── src/
+│   ├── core/            config, io (zip, PDF, OCR, Excel), index, search, hybrid_search, qa
+│   └── api/             FastAPI: main, security, routes (search, chat), request/response models
+├── scripts/             command-line entry points: ingest, embed, build BM25, validation
+├── ui/streamlit/        chat UI
+├── tests/               7 test files
+├── evaluation/          old manual evaluation, query lists, old results
+├── docs/                this reference, stage PDFs, diagrams, planning images
+├── data/                NOT in git: raw zips, extracted files, metadata, state, logs
+├── docker-compose.yml   Qdrant
+└── pyproject.toml, requirements.txt, README.md
+```
+
+**Target** (a proposal, reached gradually inside S1; names are not final):
+
+```text
+src/
+├── main.py              app and lifespan: builds every client once at start-up
+├── dependencies.py      get_* helpers that read the clients from app.state
+├── config.py            settings (RAGBOT_* environment variables)
+├── routers/             thin HTTP layer: health, search, ask
+├── schemas/             request and response models
+└── services/
+    ├── ingestion/       safe_unzip, pdf_loader (OCR), docx_loader, xlsx_loader, tender_metadata
+    ├── indexing/        chunker, indexer (new collection plus alias)
+    ├── retrieval/       dense, bm25, fusion (RRF), reranker, id_router
+    ├── llm/             ollama_client, prompts/ (versioned)
+    ├── cache/           cache key with index version and prompt version
+    └── tracing/         structured traces with version tags
+tests/                   unit/  api/  integration/
+evaluation/              gold/ (dev.jsonl, test.jsonl, split.json), run_eval.py
+reports/                 baseline_v0, fixes, retrieval_comparison, failure_analysis, load_test
+scripts/                 thin command-line wrappers
+data/                    not in git
+```
+
+| Rule | Reason |
+|---|---|
+| Routers stay thin; the work lives in services | Services can be tested without a web server |
+| One place creates the clients (lifespan), everything else receives them | Fixes the reranker and embedder reloads and makes tests easy to fake |
+| ingestion, indexing, retrieval and llm are separate | Each can be swapped and measured on its own (E1 to E9) |
+| evaluation/ and reports/ are first-class folders | The project is judged by its evidence, not only its code |
+| data/ never enters git | The tenders are not ours to publish; only scripts, questions and a small sample are |
+| Restructure after the baseline, one piece at a time | The baseline must measure today's code unchanged |
+
+
+#### The main decisions and why
+
+| Decision | Why | Alternative considered | What will decide it |
+|---|---|---|---|
+| Everything runs locally | Private documents; German companies prefer local pipelines | Hosted LLM and embedding APIs | Quality gap of a small local model (E5) |
+| Qdrant for vectors | Filters, local, native hybrid support | pgvector, OpenSearch | Kept unless a test shows a problem |
+| Hybrid search (vectors + BM25) | IDs and form numbers need exact matching | Dense only | E1 |
+| Cross-encoder reranker | Large ordering gain in comparable projects | No reranker | E1: gain against added latency |
+| Jina v3 called with its retrieval task | Model card says retrieval needs the task; our code did not use it | bge-m3 | E2 |
+| Parse once, keep pages, OCR only scans | 8 % of pages need OCR; parsing is slow | OCR everything, parse on every index | Corpus inventory; E4 |
+| One folder per tender, tender ID in every chunk | Fixes wrong-tender answers and the 159 overwritten versions | Shared folder (today) | S1 Type B result |
+| IDs and counts from a table, not the LLM | Exact answers, no hallucination | RAG for everything | Aggregation questions in the set |
+| Evaluation before features; sealed test split | Prove improvements; avoid tuning to the test | Demo-driven development | Section 15 |
+| Refuse on weak evidence; verify citations by hand | People bid on these answers | Always answer | False-refusal and citation precision |
+| New collection plus alias for every re-index | Rollback and no downtime | Delete and recreate | Alias test |
+| Version tags in traces and in the cache key | Reproducible numbers, no stale answers | No versioning | Cache-key test |
+
+
+#### Questions people ask, with short answers
+
+| Question | Short answer |
+|---|---|
+| Why not just ask ChatGPT? | The answers are in private, specific documents, and each answer needs a file and a page. Retrieval gives the evidence; the model only writes from it. |
+| Why RAG and not fine-tuning? | Tenders change daily and answers need citations. Updating an index is cheap; retraining a model is not. |
+| How do you know it works? | A 48-question set with a sealed test split, hand-checked citations and a failure label for every wrong answer. Until the reports exist, say this is the plan. |
+| What was the hardest bug? | Tender identity: tenders were unzipped into one folder, overwriting 159 file versions, found by comparing file checksums across zips. |
+| How do you stop hallucinations? | Refuse when evidence is weak, verify citations, and measure both wrong answers and wrongly refused questions. |
+| What about scanned pages? | About 8 % of pages need OCR. Tesseract reads them; its error rate is measured on 10 hand-transcribed pages. |
+| English questions on German documents? | Multilingual embeddings; experiment E6 compares them with translating the question first. |
+| How does it scale? | Planned load test at 1, 5 and 20 users. Search should scale; answer generation on one 8 GB GPU will queue, and that saturation point is the result to report. |
+| What would you do next? | Contextual chunk headers, BM25 inside Qdrant, and an agent that compares several tenders (the deferred second project). |
+| What are the limits? | A small local model, 112 tenders, no GAEB completeness yet, a small question set (only large differences are meaningful), and results only as good as the hand-checked labels. |
 
 <sub>[↑ Contents](#contents)</sub>
 
@@ -493,33 +624,33 @@ From the seven Krish Naik interview sets (350 questions; questions read, answers
 | S0 Baseline and safety | 1 to 2 | 12 | Safe start, first honest score | Backup verified; baseline and failure labels committed; P0 tests pass; nothing real modified |
 | S1 Retrieval fixes | 3 to 5 | 18.5 | Remove defects that corrupt retrieval, one at a time | Each fix tested and measured; full re-index; no wrong-tender answers on dev questions |
 | S2 Evaluation | 6 to 7 | 13 | Frozen, fair comparison | Final setup justified on dev, confirmed once on the sealed test split; CI gate threshold set |
-| S3 Reliability, scale, access | 9 to 11 | 9 | Behaviour under load, no silent failures, who may see what | SLOs from measurements; ACL and injection tests pass; failed request diagnosable |
-| S4 Polish and deploy | 12 | 6 (shared) | A stranger can run and read it | README, diagrams, demo, one AWS workflow |
+| S3 Reliability, scale, access | 8 to 10 | 9 | Behaviour under load, no silent failures, who may see what | SLOs from measurements; ACL and injection tests pass; failed request diagnosable |
+| S4 Polish and deploy | 12 | 6 | A stranger can run and read it | README, diagrams, demo, one AWS workflow |
 
 **Tag every stage exit** in git (s0-baseline, s1-retrieval-fixes, s2-evaluation, s3-reliability), as the course tags week1.0 to week7.0, and cite the tag in the matching report so every number can be reproduced from its commit.
 
 
-#### Week by week (both projects)
+#### Week by week
 
-| Week | Starts | Hours | Load | Project 1: Tender RAG 2.0 | Project 2: MultiDoc Evidence Agent |
-|---|---|---|---|---|---|
-| W1 | 5 Nov | 6 | ▮▮▮▮▮▮ | S0: backup, snapshot, environment, corpus inventory | — |
-| W2 | 12 Nov | 6 | ▮▮▮▮▮▮ | S0: read-only baseline, sampling rule and seed, 32 dev questions, P0 security fixes | — |
-| W3 | 19 Nov | 6 | ▮▮▮▮▮▮ | S1 Type A: candidate pool, BM25 order, reranker loaded once, one retrieval, context budget | — |
-| W4 | 26 Nov | 6 | ▮▮▮▮▮▮ | S1 Type A: one answer pipeline, ID detection, Jina task re-embedding into a new collection with alias, trace logs | — |
-| W5 | 3 Dec | 6.5 | ▮▮▮▮▮▮▯ | S1 Type B: per-tender extraction, ID filter, metadata join, DOCX and XLSX, re-index; seal 16 test questions | — |
-| W6 | 10 Dec | 6.5 | ▮▮▮▮▮▮▯ | S2: E1 search methods, E6 cross-language, E2 and E3 results | — |
-| W7 | 17 Dec | 6.5 | ▮▮▮▮▮▮▯ | S2: E5 answers, E4 OCR baseline, sealed test run, citation checks, failure analysis, reports | — |
-| W8 | 24 Dec | 5 | ▮▮▮▮▮ | — (holiday week) | P2-1: plain-Python agent drill, LangGraph toy graph (5 h) |
-| W9 | 31 Dec | 6 | ▮▮▮▮▮▮ | S3: injection test fixture (1 h) | P2-2: contract generator, single agent (5 h) |
-| W10 | 7 Jan | 7 | ▮▮▮▮▮▮▮ | S3: access-control filter, load test, cache key, timeouts and degraded mode (6 h) | P2-3: MCP server (1 h) |
-| W11 | 14 Jan | 7 | ▮▮▮▮▮▮▮ | S3: Docker, CI gate, capacity note (2 h) | P2-3 finish, P2-4 LangSmith, P2-5 safety tests (5 h) |
-| W12 | 21 Jan | 7 | ▮▮▮▮▮▮▮ | S4: README, diagrams, demo, one AWS workflow (6 h, shared) | P2-5 finish (1 h) |
-| **Total** |  | **75.5** | ▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▯ | **52.5 h** in S0 to S3 plus the shared polish | **17 h** |
+| Week | Starts | Hours | Load | Work in this project |
+|---|---|---|---|---|
+| W1 | 5 Nov | 6 | ▮▮▮▮▮▮ | S0: backup, snapshot, environment, corpus inventory |
+| W2 | 12 Nov | 6 | ▮▮▮▮▮▮ | S0: read-only baseline, sampling rule and seed, 32 dev questions, P0 security fixes |
+| W3 | 19 Nov | 6 | ▮▮▮▮▮▮ | S1 Type A: candidate pool, BM25 order, reranker loaded once, one retrieval, context budget |
+| W4 | 26 Nov | 6 | ▮▮▮▮▮▮ | S1 Type A: one answer pipeline, ID detection, Jina task re-embedding into a new collection with alias, trace logs |
+| W5 | 3 Dec | 6.5 | ▮▮▮▮▮▮▯ | S1 Type B: per-tender extraction, ID filter, metadata join, DOCX and XLSX, re-index; seal 16 test questions |
+| W6 | 10 Dec | 6.5 | ▮▮▮▮▮▮▯ | S2: E1 search methods, E6 cross-language, E2 and E3 results |
+| W7 | 17 Dec | 6.5 | ▮▮▮▮▮▮▯ | S2: E5 answers, E4 OCR baseline, sealed test run, citation checks, failure analysis, reports |
+| W8 | 24 Dec | 5 | ▮▮▮▮▮ | S3: injection test document (1 h), access-control filter (2 h); 2 h buffer for the holidays |
+| W9 | 31 Dec | 5 | ▮▮▮▮▮ | S3: version-aware cache key, timeouts and degraded mode (2 h), Docker and CI gate (1.5 h), capacity note (0.5 h); 1 h buffer |
+| W10 | 7 Jan | 6 | ▮▮▮▮▮▮ | S3: load test at 1/5/20 users (2 h); stretch (4 h): GAEB text parsing, OCR challenger E4 |
+| W11 | 14 Jan | 6 | ▮▮▮▮▮▮ | Stretch or buffer: E7 contextual header, E9 chunk sweep, E8 BM25 in Qdrant (pick by what the failure analysis shows); rehearse the explanation |
+| W12 | 21 Jan | 6 | ▮▮▮▮▮▮ | S4: README, diagrams, demo, one AWS workflow |
+| **Total** |  | **71.5** | ▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▯ | **58.5 h mandatory** (S0 to S4) + **13 h** stretch or buffer |
 
 <p align="center"><img src="img/timeline.svg" alt="Timeline in weeks" width="100%"></p>
 
-Hours are my estimates (not measured). Weeks 8 and 9 fall over Christmas and New Year, so they hold flexible learning work instead of benchmarks that need long machine runs.
+Hours are my estimates (not measured). Weeks 8 and 9 fall over Christmas and New Year, so they hold S3 work that needs no long machine runs.
 
 <sub>[↑ Contents](#contents)</sub>
 
@@ -689,7 +820,7 @@ Compare variants on the same questions with paired bootstrap differences. Report
 
 | ⏱ Weeks | ⌛ Hours | 🏷 Git tag |
 |---|---|---|
-| 9 to 11 | **9 h** | `s3-reliability` |
+| 8 to 10 | **9 h** | `s3-reliability` |
 
 > 🎯 **Goal.** Know how the service behaves under load, keep it from failing silently, and enforce who may see what.
 
@@ -697,8 +828,8 @@ Compare variants on the same questions with paired bootstrap differences. Report
 
 #### ✅ Tasks
 
-- [ ] **1.** Injection test document: a tender PDF with a hidden instruction; the answer must ignore it; delimit context in the prompt (1 h, week 9).
-- [ ] **2.** Access-control filter: allowed tender IDs (or groups) stored in the payload and injected server-side from the API key; two tests: user A never sees tender B, and a missing filter returns nothing (2 h, week 10).
+- [ ] **1.** Injection test document: a tender PDF with a hidden instruction; the answer must ignore it; delimit context in the prompt (1 h, week 8).
+- [ ] **2.** Access-control filter: allowed tender IDs (or groups) stored in the payload and injected server-side from the API key; two tests: user A never sees tender B, and a missing filter returns nothing (2 h, week 8).
 - [ ] **3.** Load test with Locust: 1, 5 and 20 concurrent users, a realistic question mix, search-only and full answer, cold and warm cache reported separately (2 h).
 - [ ] **4.** Version-aware cache key: all request parameters as in the course's key, plus the index version and the prompt version (0.5 h); timeouts and retries with backoff; degraded mode that returns ranked sources when the LLM is down (1.5 h).
 - [ ] **5.** Docker Compose for Qdrant and the API; GitHub Actions with ruff, pytest and the evaluation smoke gate (1.5 h).
@@ -735,7 +866,7 @@ Expect search to scale well and answer generation on one 8 GB GPU to queue; the 
 
 | ⏱ Weeks | ⌛ Hours | 🏷 Git tag |
 |---|---|---|
-| 12 | **6 h (shared with Project 2)** | — |
+| 12 | **6 h** | — |
 
 > 🎯 **Goal.** A stranger can clone, run, test and read the results in 15 minutes.
 
@@ -917,8 +1048,8 @@ Structured trace logs are mandatory: request ID, per-stage timing, retrieval hit
 
 | Risk | Mitigation |
 |---|---|
-| About 76 hours is slightly above 6 h per week | Cut list below; baseline and question set are protected |
-| Christmas and New Year in weeks 8 and 9 | Those weeks hold flexible Project 2 learning work; benchmarks run in weeks 6 to 7 and 10 |
+| Mandatory work (58.5 h) plus stretch work should fit 12 weeks at 6 h per week, with about 13 h of slack | Cut list below; baseline and question set are protected |
+| Christmas and New Year in weeks 8 and 9 | Those weeks hold S3 work that needs no long machine runs (injection test, access filter, Docker, CI); the load test is in week 10 |
 | Docker or Ollama problems on this machine | Do the setup first in S0; keep a CPU-only fallback for tests |
 | The Qdrant collection may be gone; a full re-index takes hours | Treat re-indexing as machine time; it is needed anyway after fixing defect 1 |
 | Small local LLM (1.5B) gives weak answers | Compare 3B in E5; judge retrieval separately from generation |
@@ -931,7 +1062,7 @@ Structured trace logs are mandatory: request ID, per-stage timing, retrieval hit
 - 1. 3 / 5 / 8 passages sweep in E5 (0.5 h)
 - 2. E6 cross-language experiment (0.5 h)
 - 3. Injection test document in Project 1 (1 h)
-- 4. Capacity note (0.5 h). Items 1 to 4 return 2.5 h; a lighter load-test mix (1 h less) brings the total to 72 h, exactly 6 h per week
+- 4. Capacity note (0.5 h)
 - 5. Questions beyond 48; the OCR challenger engine
 - 6. Full cloud deployment (keep one demonstrated AWS workflow)
 - 7. GAEB text indexing
@@ -983,11 +1114,11 @@ Structured trace logs are mandatory: request ID, per-stage timing, retrieval hit
 
 <a id="sec-20"></a>
 
-### 🔌 20. Interface to Project 2
+### 🔌 20. Interface for a later agent project (deferred)
 
 <p align="center"><img src="img/p1_p2_link.svg" alt="How Project 2 uses Project 1" width="100%"></p>
 
-Project 2's agents call this project through an MCP server, so retrieval quality is proven once, here. The contract below is version v1; S3 builds the access-control and trace behaviour it relies on, and Project 2 week 10 wraps it.
+A later agent project (Project 2, deferred until this project is finished) would call this one through an MCP server, so retrieval quality is proven once, here. The contract below is version v1; S3 builds the access-control and trace behaviour it relies on.
 
 | Tool | Input | Output |
 |---|---|---|
@@ -1008,7 +1139,8 @@ Every call carries an API key; the access scope is injected server-side and neve
 |---|---|---|
 | 4 Nov 2026 | Portfolio is 2 MLOps projects (existing) and 2 RAG projects; the fraud-detection project was dropped | Decided |
 | 4 Nov 2026 | Project 1 is built in this repository; Project 2 gets a new repository | Decided |
-| 4 Nov 2026 | Hours: 6 per week assumed from your answer; this plan needs about 6.3 on average (75.5 total) | Please confirm |
+| 4 Nov 2026 | Hours: 6 per week assumed from your answer. Project 1 needs 58.5 mandatory hours, leaving about 13 h of stretch work or buffer | Please confirm |
+| 4 Nov 2026 | Project 2 (the agent) is deferred until Project 1 is finished | Decided |
 | 4 Nov 2026 | Langfuse in Project 1 (time-boxed 1.5 h, Phoenix as fallback); LangSmith in Project 2 | Langfuse and LangSmith agreed; time-box is new |
 | 4 Nov 2026 | Jina v3 stays the default embedding model; bge-m3 only as a challenger if E2 shows a problem | Decided |
 | 4 Nov 2026 | Access-control filter promoted to mandatory (you asked to implement all the additions) | Assumed; please confirm |

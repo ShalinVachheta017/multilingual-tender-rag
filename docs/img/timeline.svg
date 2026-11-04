@@ -44,16 +44,16 @@
 				<text x="286.1966796875" y="117.688" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.8px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,235) scale(1,-1)">13 h</text>
 				<text x="0" y="98" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.2px;fill: rgb(10%,15%,20%); stroke:none;" transform="translate(0,196) scale(1,-1)">S3 Reliability + access</text>
 				<path d="M 104,90 L 482,90 Z" style="stroke: rgb(89%,91%,93%); stroke-linecap: butt; stroke-width: 0.4;"/>
-				<rect x="357.0" y="93" width="92.5" height="14" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
-				<text x="372.2681640625" y="97.688" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.8px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,195) scale(1,-1)">9 h (W9, W10, W11)</text>
-				<text x="0" y="78" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.2px;fill: rgb(10%,15%,20%); stroke:none;" transform="translate(0,156) scale(1,-1)">S4 Polish + deploy</text>
+				<rect x="325.5" y="93" width="92.5" height="14" rx="4" ry="4" style="stroke: rgb(5%,54%,55%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(5%,54%,55%); fill-rule: evenodd;"/>
+				<text x="346.4392578125" y="97.688" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.8px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,195) scale(1,-1)">9 h (W8 to W10)</text>
+				<text x="0" y="78" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.2px;fill: rgb(10%,15%,20%); stroke:none;" transform="translate(0,156) scale(1,-1)">Stretch or buffer</text>
 				<path d="M 104,70 L 482,70 Z" style="stroke: rgb(89%,91%,93%); stroke-linecap: butt; stroke-width: 0.4;"/>
-				<rect x="451.5" y="73" width="29.5" height="14" rx="4" ry="4" style="stroke: rgb(4%,12%,22%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,12%,22%); fill-rule: evenodd;"/>
-				<text x="461.33759765625" y="77.688" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.8px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,155) scale(1,-1)">6 h</text>
-				<text x="0" y="58" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.2px;fill: rgb(10%,15%,20%); stroke:none;" transform="translate(0,116) scale(1,-1)">Project 2 (other PDF)</text>
+				<rect x="388.5" y="73" width="61.0" height="14" rx="4" ry="4" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
+				<text x="386.4078125" y="77.688" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.8px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,155) scale(1,-1)">13 h stretch + buffer</text>
+				<text x="0" y="58" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.2px;fill: rgb(10%,15%,20%); stroke:none;" transform="translate(0,116) scale(1,-1)">S4 Polish + deploy</text>
 				<path d="M 104,50 L 482,50 Z" style="stroke: rgb(89%,91%,93%); stroke-linecap: butt; stroke-width: 0.4;"/>
-				<rect x="325.5" y="53" width="155.5" height="14" rx="4" ry="4" style="stroke: rgb(35%,41%,48%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(35%,41%,48%); fill-rule: evenodd;"/>
-				<text x="365.644140625" y="57.688" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.8px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,115) scale(1,-1)">17 h, see Project 2 plan</text>
+				<rect x="451.5" y="53" width="29.5" height="14" rx="4" ry="4" style="stroke: rgb(4%,12%,22%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(4%,12%,22%); fill-rule: evenodd;"/>
+				<text x="461.33759765625" y="57.688" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 6.8px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,115) scale(1,-1)">6 h</text>
 				<text x="0" y="38" style="font-family: Arial, Helvetica, sans-serif; font-size: 7.2px;fill: rgb(10%,15%,20%); stroke:none;" transform="translate(0,76) scale(1,-1)">Holiday risk</text>
 				<path d="M 104,30 L 482,30 Z" style="stroke: rgb(89%,91%,93%); stroke-linecap: butt; stroke-width: 0.4;"/>
 				<rect x="325.5" y="33" width="61.0" height="14" rx="4" ry="4" style="stroke: rgb(70%,32%,3%); stroke-linecap: butt; stroke-width: 0.5; fill: rgb(70%,32%,3%); fill-rule: evenodd;"/>
