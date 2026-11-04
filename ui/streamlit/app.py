@@ -21,20 +21,13 @@ RAG Bot (Local): Qdrant + Ollama
 """
 
 import os, re, logging
-from typing import List, Dict, Any, Tuple, Optional
+from typing import List, Dict, Any, Tuple
 from pathlib import Path
-import sys
 import pandas as pd
 
-# ---- import shim so 'core' is always importable ----
-ROOT = Path(__file__).resolve().parent.parent  # project root
-for p in (ROOT, ROOT / "core"):
-    sp = str(p)
-    if sp not in sys.path:
-        sys.path.insert(0, sp)
-
-from core.config import CFG
-from core.qa import retrieve_candidates  # NEW retriever
+# Needs `pip install -e .` once, so that `src` can be imported from anywhere.
+from src.core.config import CFG
+from src.core.qa import retrieve_candidates
 
 # --- Logging ---
 logger = logging.getLogger("app_streamlit")

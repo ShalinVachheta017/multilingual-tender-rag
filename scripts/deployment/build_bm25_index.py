@@ -11,11 +11,6 @@ Run this after embedding documents into Qdrant.
 from __future__ import annotations
 
 import sys
-from pathlib import Path
-
-# Add project root to path
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
 
 from qdrant_client import QdrantClient
 from src.core.config import CFG
@@ -36,7 +31,7 @@ def fetch_all_documents() -> list[dict]:
     if not client.collection_exists(CFG.qdrant_collection):
         print(f"❌ Collection '{CFG.qdrant_collection}' does not exist!")
         print("\nPlease run the embedding pipeline first:")
-        print("  python scripts/embed.py")
+        print("  python scripts/data_processing/embed.py")
         sys.exit(1)
     
     # Get collection info
@@ -148,8 +143,8 @@ def main():
     print("🎉 Hybrid search is now ready to use!")
     print()
     print("Next steps:")
-    print("  1. Set use_hybrid=True in core/config.py (already default)")
-    print("  2. Restart Streamlit: streamlit run ui/app_streamlit.py")
+    print("  1. Hybrid search is on by default (use_hybrid in src/core/config.py)")
+    print("  2. Restart the UI: streamlit run ui/streamlit/app.py")
     print("  3. Test with exact keyword queries like 'IT-Projekte' or 'CPV 45000000'")
     print()
 

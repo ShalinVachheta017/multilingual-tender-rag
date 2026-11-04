@@ -1,140 +1,78 @@
-#!/usr/bin/env python3
-# scripts/embed.py
+"""Step 2 of 3: build the Qdrant index from the PDFs in data/extract.
 
+    python scripts/data_processing/embed.py --mode append     # keeps the collection (default, safe)
+    python scripts/data_processing/embed.py --mode fresh      # DELETES the collection first
+    python scripts/data_processing/embed.py --mode ocr-only   # only PDFs that had no text before
+
+Point IDs are deterministic, so running append twice does not create duplicates.
 """
-Index builder CLI for your German tender RAG corpus.
-
-Modes
-- fresh     : drop & recreate the collection, then index everything
-- append    : keep the existing collection; idempotent upserts by deterministic IDs
-- ocr-only  : only process PDFs that previously yielded no text and try OCR
-
-Extras
-- Qdrant health check (/readyz)
-- Config overrides from CLI (batch size, flush size, chunking, collection)
-- Safe GPU/CPU prints
-"""
-
 from __future__ import annotations
+
 import argparse
+import logging
 import sys
 import time
-import logging
 from pathlib import Path
 
-# Optional: used for readyz check; degrade gracefully if missing
-try:
-    import requests
-    _HAS_REQUESTS = True
-except Exception:
-    _HAS_REQUESTS = False
-
-# Ensure repo root and core/* are importable when running from anywhere
-ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+import requests
 
 from src.core.config import CFG
-from src.core.index import Indexer  # updated indexer supports fresh/append/ocr-only
+from src.core.index import Indexer
 
 
-def _qdrant_ready(url: str, timeout_s: float = 3.0) -> bool:
-    if not _HAS_REQUESTS:
-        # If requests isn't available, skip the check rather than failing.
-        return True
+def qdrant_is_ready(url: str, timeout_s: float = 3.0) -> bool:
     try:
-        r = requests.get(url.rstrip("/") + "/readyz", timeout=timeout_s)
-        # The /readyz endpoint returns 200 OK when ready. The text content can vary.
-        return r.ok
-    except Exception:
+        return requests.get(url.rstrip("/") + "/readyz", timeout=timeout_s).ok
+    except requests.RequestException:
         return False
 
 
-def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(
-        description="Build or update the Qdrant index for the tender RAG system."
-    )
-    p.add_argument(
-        "--mode",
-        choices=["fresh", "append", "ocr-only"],
-        default="fresh",
-        help="fresh: recreate collection; append: keep collection; ocr-only: only reprocess OCR-needy PDFs",
-    )
-    p.add_argument("--collection", type=str, default=CFG.qdrant_collection,
-                   help="Target Qdrant collection name")
-    p.add_argument("--batch", type=int, default=CFG.embed_batch_size,
-                   help="Embedding batch size")
-    p.add_argument("--flush", type=int, default=CFG.embed_flush_chunks,
-                   help="#points to buffer before upsert")
-    p.add_argument("--chunk-size", type=int, default=CFG.chunk_size,
-                   help="Chunk size (chars)")
-    p.add_argument("--chunk-overlap", type=int, default=CFG.chunk_overlap,
-                   help="Chunk overlap (chars)")
-    p.add_argument("--extract-dir", type=str, default=str(CFG.extract_dir),
-                   help="Where PDF files are located")
-    p.add_argument("--no-health-check", action="store_true",
-                   help="Skip Qdrant /readyz check")
-    p.add_argument("--verbose", "-v", action="store_true",
-                   help="Verbose logging")
-    return p.parse_args()
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    p = argparse.ArgumentParser(description="Build or update the Qdrant index for the tender RAG system.")
+    p.add_argument("--mode", choices=["append", "fresh", "ocr-only"], default="append",
+                   help="append: keep the collection; fresh: delete and recreate it; ocr-only: only PDFs without text")
+    p.add_argument("--collection", default=CFG.qdrant_collection, help="target Qdrant collection")
+    p.add_argument("--batch", type=int, default=CFG.embed_batch_size, help="embedding batch size")
+    p.add_argument("--flush", type=int, default=CFG.embed_flush_chunks, help="points to buffer before each upsert")
+    p.add_argument("--chunk-size", type=int, default=CFG.chunk_size, help="chunk size in characters")
+    p.add_argument("--chunk-overlap", type=int, default=CFG.chunk_overlap, help="chunk overlap in characters")
+    p.add_argument("--extract-dir", default=str(CFG.extract_dir), help="folder that holds the PDFs")
+    p.add_argument("--no-health-check", action="store_true", help="skip the Qdrant readiness check")
+    p.add_argument("-v", "--verbose", action="store_true")
+    return p.parse_args(argv)
 
 
-def main():
-    args = parse_args()
+def main(argv: list[str] | None = None) -> None:
+    args = parse_args(argv)
+    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
+                        format="%(asctime)s | %(levelname)s | %(message)s")
 
-    # Logging
-    logging.basicConfig(
-        level=logging.DEBUG if args.verbose else logging.INFO,
-        format="%(asctime)s | %(levelname)s | %(message)s",
-    )
-
-    # Apply CLI overrides onto CFG (in-memory)
+    # Command-line options override the settings for this run only.
     CFG.qdrant_collection = args.collection
-    CFG.embed_batch_size = int(args.batch)
-    CFG.embed_flush_chunks = int(args.flush)
-    CFG.chunk_size = int(args.chunk_size)
-    CFG.chunk_overlap = int(args.chunk_overlap)
+    CFG.embed_batch_size = args.batch
+    CFG.embed_flush_chunks = args.flush
+    CFG.chunk_size = args.chunk_size
+    CFG.chunk_overlap = args.chunk_overlap
     extract_dir = Path(args.extract_dir)
 
-    print("🧩 Config:")
-    print(f"   • collection        : {CFG.qdrant_collection}")
-    print(f"   • embed_model       : {CFG.embed_model}")
-    print(f"   • embed_dim         : {CFG.embed_dim}")
-    print(f"   • batch/flush       : {CFG.embed_batch_size}/{CFG.embed_flush_chunks}")
-    print(f"   • chunk size/overlap: {CFG.chunk_size}/{CFG.chunk_overlap}")
-    print(f"   • extract dir       : {extract_dir}")
+    print(f"collection: {CFG.qdrant_collection} | model: {CFG.embed_model} ({CFG.embed_dim}-D) | "
+          f"chunks: {CFG.chunk_size}/{CFG.chunk_overlap} | folder: {extract_dir}")
 
-    # Qdrant health
-    if not args.no_health_check:
-        ok = _qdrant_ready(CFG.qdrant_url)
-        if not ok:
-            print(f"❌ Qdrant not ready at {CFG.qdrant_url}/readyz")
-            print("   Tip: ensure the Qdrant server is running.")
-            sys.exit(2)
-        print("✅ Qdrant /readyz OK")
+    if not args.no_health_check and not qdrant_is_ready(CFG.qdrant_url):
+        sys.exit(f"Qdrant is not ready at {CFG.qdrant_url}/readyz. Start it with: docker compose up -d")
 
-    t0 = time.time()
-
+    started = time.time()
     try:
         if args.mode == "ocr-only":
-            print("🔁 Mode: OCR-only (no collection recreation)")
-            indexer = Indexer(CFG, fresh=False)
-            indexer.build_ocr_only(extract_dir=extract_dir)
+            Indexer(CFG, fresh=False).build_ocr_only(extract_dir=extract_dir)
         else:
-            fresh = (args.mode == "fresh")
-            print(f"🏗️ Mode: {'fresh (recreate collection)' if fresh else 'append (keep collection)'}")
-            indexer = Indexer(CFG, fresh=fresh)
-            indexer.build(extract_dir=extract_dir)
-
+            if args.mode == "fresh":
+                print("mode fresh: the existing collection will be deleted and recreated")
+            Indexer(CFG, fresh=(args.mode == "fresh")).build(extract_dir=extract_dir)
     except KeyboardInterrupt:
-        print("\n🛑 Interrupted by user.")
-        sys.exit(130)
-    except Exception as e:
-        print(f"❌ Index build failed: {e}")
-        sys.exit(1)
+        sys.exit("Interrupted.")
+    print(f"Done in {time.time() - started:.1f}s. Next: python scripts/deployment/build_bm25_index.py")
 
-    dt = time.time() - t0
-    print(f"🎉 Done in {dt:.1f}s")
 
 if __name__ == "__main__":
     main()
