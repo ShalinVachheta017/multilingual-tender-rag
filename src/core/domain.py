@@ -11,16 +11,6 @@ class DocumentPage:
     source_path: Path
     meta: Dict[str, Any] = field(default_factory=dict)
 
-    def to_langchain_like(self) -> Dict[str, Any]:
-        return {
-            "page_content": self.text,
-            "metadata": {
-                "source": str(self.source_path),
-                "page": self.page_number,
-                **self.meta,
-            },
-        }
-
 @dataclass
 class DocumentChunk:
     chunk_index: int

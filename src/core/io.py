@@ -20,24 +20,14 @@ import io
 
 from .config import CFG
 
-# Optional cleaner (keeps punctuation, fixes hyphens, etc.)
-try:
-    from .text_cleaning import clean_text
-except Exception:
-    def clean_text(x: str) -> str:  # safe no-op fallback
-        return (x or "").strip()
+def clean_text(x: str) -> str:
+    return (x or "").strip()
 
-# ---- ensure dirs exist BEFORE logging config ----
+# ---- make sure the data folders exist ----
 CFG.logs_dir.mkdir(parents=True, exist_ok=True)
 CFG.extract_dir.mkdir(parents=True, exist_ok=True)
 CFG.state_dir.mkdir(parents=True, exist_ok=True)
 CFG.metadata_dir.mkdir(parents=True, exist_ok=True)
-
-logging.basicConfig(
-    filename=str(CFG.logs_dir / "data_preparation.log"),
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s",
-)
 
 # use config if present; else default
 _OCR_LANGS = getattr(CFG, "ocr_langs", "deu+eng")
