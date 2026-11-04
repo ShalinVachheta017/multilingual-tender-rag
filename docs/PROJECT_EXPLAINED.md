@@ -1,6 +1,6 @@
 # Tender RAG — The Whole Project Explained
 
-**Written:** 5 Nov 2026 · **Describes:** the code as it is today, on branch `chore/repo-cleanup` (commit `b858ecb`), before any Tender RAG 2.0 changes.
+**Written:** 4 Nov 2026 · **Describes:** the code as it is today, on branch `chore/repo-cleanup` (commit `b858ecb`), before any Tender RAG 2.0 changes.
 **Read with:** [PROJECT_DEFINITION.md](PROJECT_DEFINITION.md) (what we will build and measure) and [PORTFOLIO_MASTER_PLAN.md](PORTFOLIO_MASTER_PLAN.md) (career context).
 
 Every statement about the code below comes from reading the source files; file and function names are given so you can check. Nothing here has been run yet: the services (Docker/Qdrant, Ollama) are not running on this machine, so **runtime behaviour is still unmeasured**.
@@ -101,7 +101,7 @@ All settings live in one place: `src/core/config.py` (`AppConfig`, overridable w
 **Why:** you can't search zips. Hashing makes re-runs cheap. The log gives an audit trail of what came from where.
 
 **Problems found**
-- 🔴 **Tender identity is lost.** Files are written to `data/extract/<name>`, **not** `data/extract/<tender_id>/<name>`. Measured: **101 file paths appear in more than one tender** (e.g. `VHB_212_Teilnahmebedingungen.pdf` exists in 4 tenders, `124.pdf` in 2). The later tender **overwrites** the earlier one, so those documents silently disappear from the index, and no document knows which tender it belongs to. The only link left is the `root_zip` column in the CSV log.
+- 🔴 **Tender identity is lost.** Files are written to `data/extract/<name>`, **not** `data/extract/<tender_id>/<name>`. Measured from the zips (CRC comparison, 4 Nov 2026; nested zips not counted): **101 file paths appear in more than one tender**. For **66 of them the content differs between tenders** (159 file versions get overwritten, e.g. `VHB_214_Besondere_Vertragsbedingungen.pdf` exists in 9 different versions); **35 are byte-identical**, so there only the tender link is lost. The later tender **overwrites** the earlier one, so tender-specific documents silently disappear from the index, and no document knows which tender it belongs to. The only link left is the `root_zip` column in the CSV log.
 - 🔴 **Path traversal** (`io.py:135`): a zip member named `../../something` would be written outside `data/extract`. There is also no limit on zip bombs or nesting depth.
 - 🟡 The allowed-extension list says `.d83` but not `.x83/.p83/.xlsx`, so most GAEB files are labelled "invalid_format" in the log even though they were extracted.
 
@@ -269,7 +269,7 @@ This example is exactly the kind of failure that the gold questions (`G-DE`, cat
 The 12 issues from the first audit, plus 10 new ones (★) found while writing this document. **Defect 22 (added later):** ★ the candidate pool equals the final count (`qa.py:116`), so `topk_candidate = 100` is never used online and the reranker only sees 5 to 16 results.
 
 **P0: data loss and security (fix first)**
-1. ★ **Tender identity lost and 101 files overwritten** during extraction (Step 1)
+1. ★ **Tender identity lost; 101 shared file paths, 66 with differing content (159 versions overwritten)** during extraction (Step 1)
 2. Zip path traversal, no zip-bomb or depth limits (`io.py:135`)
 3. `fresh` mode (the default) deletes the Qdrant collection
 4. Hard-coded fallback API key `dev-key-12345`
@@ -340,7 +340,7 @@ The 12 issues from the first audit, plus 10 new ones (★) found while writing t
 
 ## 10. Reference projects found online
 
-Stars and activity checked on GitHub on 5 Nov 2026.
+Stars and activity checked on GitHub on 4 Nov 2026.
 
 **Complete RAG platforms (study the architecture, don't copy it)**
 
@@ -383,7 +383,7 @@ Stars and activity checked on GitHub on 5 Nov 2026.
 - [crs/ollama-rag-de](https://github.com/crs/ollama-rag-de): German PDF RAG with source references (1★)
 - GermanRAG dataset and Avemio German RAG models on Hugging Face
 
-**The gap:** I found **no open-source RAG project for German public-tender documents**. The niche is open, and that makes Tender RAG 2.0 easy to explain in an interview: *"nobody has published this; here is how I built it and measured it."*
+**The gap:** a limited repository search found **no open-source RAG project for German public-tender documents**. That is not proof that none exists. Present Tender RAG 2.0 as a specific technical and domain-focused contribution ("here is how I built it and measured it"), not as a first-of-its-kind claim.
 
 ---
 

@@ -9,7 +9,7 @@ This file is the starting point for Project 2. It refines §4 of [PORTFOLIO_MAST
 
 ---
 
-## 0. Two projects, one shared core (decision proposed 5 Nov 2026)
+## 0. Two projects, one shared core (decision proposed 4 Nov 2026)
 
 You already have two MLOps projects, so the portfolio becomes **2 MLOps + 2 RAG**. The work in this file splits into two repos that show **different** skills:
 
@@ -31,11 +31,11 @@ P1 exposes its retrieval as a versioned **search service + MCP server** (`search
 - Add realism with a real public contract set such as **CUAD** (Atticus, ~500 annotated commercial contracts; check its licence before use) as a second test corpus.
 - Target: **~50 well-annotated documents + 20 review tasks** beats thousands of unlabelled documents.
 
-### 0.3 Facts behind this decision (checked 5 Nov)
+### 0.3 Facts behind this decision (checked 4 Nov)
 - The old evaluation report (`evaluation/EVALUATION_REPORT.md`) scores **retrieval quality at 30.6 %** with heuristic manual scoring. It is a useful "before" number, but **not a Recall@k**. The M0 baseline replaces it with real metrics.
 - `production-agentic-rag-course` on your GitHub is a **fork of a course**. Use it as a learning reference; never present it as your design.
-- ~~The local repo is 2 commits behind GitHub~~: synced 5 Nov.
-- **Corpus inventory (5 Nov cleanup, verified by SHA-256):** `data/raw` has **112 tender folders, one zip each, plus the metadata Excel. 105 zips are valid.** 7 are **truncated downloads** (28–176 KB, zip header but no central directory): 20044887, 20046902, 20046916, 20046935, 20046979, 20046996, 20047346. They were restored from the legacy folder so nothing is lost, and they serve as **real corrupt-input fixtures** for the safe-ingestion tests (F1/D2). Metadata Excel `VUDb_Data_2025-07-13_11-12-07.xlsx` is in `data/raw/`. Legacy prototype code archived outside the repo at `D:/Projects/_archive/legacy_rag_prototypes_2025.zip`.
+- ~~The local repo is 2 commits behind GitHub~~: synced 4 Nov.
+- **Corpus inventory (4 Nov cleanup, verified by SHA-256):** `data/raw` has **112 tender folders, one zip each, plus the metadata Excel. 105 zips are valid.** 7 are **truncated downloads** (28–176 KB, zip header but no central directory): 20044887, 20046902, 20046916, 20046935, 20046979, 20046996, 20047346. They were restored from the legacy folder so nothing is lost, and they serve as **real corrupt-input fixtures** for the safe-ingestion tests (F1/D2). Metadata Excel `VUDb_Data_2025-07-13_11-12-07.xlsx` is in `data/raw/`. Legacy prototype code archived outside the repo at `D:/Projects/_archive/legacy_rag_prototypes_2025.zip`.
 
 ---
 
@@ -231,7 +231,7 @@ Scaling goal: **meet the SLOs within a tested operating envelope** (corpus size 
 ## 12. Open decisions (owner: Shalin)
 
 - [ ] Final project name
-- [x] P1 is built in this repo; P2 gets a new repo, planned in parallel (decided 5 Nov 2026; build starts 6 Nov)
+- [x] P1 is built in this repo; P2 gets a new repo, planned in parallel (decided 4 Nov 2026; build starts 5 Nov)
 - [ ] Confirm DTAD data terms allow keeping the documents locally and publishing a sample
 - [ ] GPU available for local LLM + embeddings (model sizes depend on it)
 

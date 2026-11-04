@@ -12,7 +12,7 @@ This file merges five things into one plan:
 
 > **Update 4 Nov 2026:** Project 2's scope, datasets, metrics, experiments and timeline are now defined in [PROJECT_DEFINITION.md](PROJECT_DEFINITION.md). Where the two files differ, that file wins.
 >
-> **Update 5 Nov 2026: portfolio changed to "2 MLOps + 2 RAG".** Your GitHub already has two MLOps projects (`wearable-har-mlops-pipeline`, `vehicle-insurance-mlops-pipeline`) plus a Kubernetes mini project. **FraudOps (Project 1 below) is dropped.** Its useful ideas (cost-based thresholds, drift → retraining, canary) go into those existing repos as upgrades, only if time allows. The two RAG projects are now **Tender RAG 2.0** (upgrade of this repo) and **MultiDoc Evidence Agent** (new repo). See PROJECT_DEFINITION.md §0. The AWS advice in §8 still holds: MLA-C01 maps to your existing MLOps projects.
+> **Update 4 Nov 2026: portfolio changed to "2 MLOps + 2 RAG".** Your GitHub already has two MLOps projects (`wearable-har-mlops-pipeline`, `vehicle-insurance-mlops-pipeline`) plus a Kubernetes mini project. **FraudOps (Project 1 below) is dropped.** Its useful ideas (cost-based thresholds, drift → retraining, canary) go into those existing repos as upgrades, only if time allows. The two RAG projects are now **Tender RAG 2.0** (upgrade of this repo) and **MultiDoc Evidence Agent** (new repo). See PROJECT_DEFINITION.md §0. The AWS advice in §8 still holds: MLA-C01 maps to your existing MLOps projects.
 
 **The one rule (from your roadmap, keep it):** every stage answers six questions —
 *Business problem → Options compared → Why chosen → Evidence (metric) → Trade-off → Reference (code, report, ADR).*
