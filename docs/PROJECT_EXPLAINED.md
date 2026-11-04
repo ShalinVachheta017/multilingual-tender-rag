@@ -191,8 +191,8 @@ flowchart TD
 
 Each "search" is `search_hybrid_cached` → `search_hybrid` (`src/core/search.py`):
 
-1. **Dense:** embed the question (cached in an LRU cache of 1 000), search Qdrant for the top 100 (`topk_candidate`). If the question contains a tender ID ("DTAD-ID 20046891", "Tender …", or just 8 digits), it first tries a **payload filter on the field `id`**.
-2. **BM25:** score all chunks with the keyword index, take the top 100, then fetch those points from Qdrant by ID.
+1. **Dense:** embed the question (cached in an LRU cache of 1 000), search Qdrant for the top `limit` results. **`limit` is the final count (16 in the UI, the request's `top_k` in `/chat`), not the configured pool `topk_candidate = 100`**, because `qa.py:116` passes its final limit down (defect 22). If the question contains a tender ID ("DTAD-ID 20046891", "Tender …", or just 8 digits), it first tries a **payload filter on the field `id`**.
+2. **BM25:** score all chunks with the keyword index, take the top `limit` (same small number, see above), then fetch those points from Qdrant by ID.
 3. **RRF (Reciprocal Rank Fusion):** each result gets `1/(60 + rank)` from each list it appears in, and the scores are summed. Results found by both methods rise to the top. RRF is popular because it needs no score calibration: it uses ranks, not raw scores.
 4. The whole hybrid result is cached by `md5(question + limit)`.
 
@@ -266,7 +266,7 @@ This example is exactly the kind of failure that the gold questions (`G-DE`, cat
 
 ## 7. Everything that is wrong today, ranked
 
-The 12 issues from the first audit, plus 9 new ones (★) found while writing this document.
+The 12 issues from the first audit, plus 10 new ones (★) found while writing this document. **Defect 22 (added later):** ★ the candidate pool equals the final count (`qa.py:116`), so `topk_candidate = 100` is never used online and the reranker only sees 5 to 16 results.
 
 **P0: data loss and security (fix first)**
 1. ★ **Tender identity lost and 101 files overwritten** during extraction (Step 1)

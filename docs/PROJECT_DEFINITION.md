@@ -3,6 +3,8 @@
 **Working name:** VeriDoc AI (placeholder; check name availability before using it publicly) · **Version:** 0.1 · **Date:** 4 Nov 2026
 **Status:** definition only. **No result in this file has been measured yet.** Every target marked *TBD-after-baseline* is set from the baseline run, never guessed.
 
+> **Superseded on scope and hours (Nov 2026):** the plan that fits about 6 hours per week (64 questions, 1/5/20-user load tests, Langfuse in P1 and LangSmith in P2, single agent then supervisor experiment, 22 defects) is in [TENDER_RAG_PORTFOLIO_PLAN.pdf](TENDER_RAG_PORTFOLIO_PLAN.pdf). Where this file and the PDF differ, the PDF wins. This file keeps the longer, ~20 h/week version for reference.
+
 This file is the starting point for Project 2. It refines §4 of [PORTFOLIO_MASTER_PLAN.md](PORTFOLIO_MASTER_PLAN.md) using the external research of 4 Nov 2026, after checking that research's sources.
 
 ---
