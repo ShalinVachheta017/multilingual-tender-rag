@@ -232,34 +232,38 @@ tender_docs_jina-v3_d1024_fresh
 ## 📂 Project Structure
 
 ```text
-multilingual-ragbot/
-├── core/
-│   ├── config.py                    # Main configuration
-│   ├── domain.py                    # DocumentPage and DocumentChunk data classes
-│   ├── index.py                     # Qdrant indexing pipeline
-│   ├── io.py                        # ZIP, PDF, OCR, Excel processing
-│   ├── logger.py                    # Structured logging
-│   ├── qa.py                        # Retrieval and answer generation
-│   ├── search.py                    # Dense vector search and RRF fusion
-│   └── parse_excel.py               # Excel metadata cleaning
+multilingual-tender-rag/
+├── src/
+│   ├── core/
+│   │   ├── config.py                # Settings (pydantic-settings, RAGBOT_* env vars)
+│   │   ├── domain.py                # DocumentPage / DocumentChunk data classes
+│   │   ├── io.py                    # ZIP extraction, PDF + OCR loading, Excel metadata
+│   │   ├── index.py                 # Chunking, embedding, Qdrant indexing
+│   │   ├── search.py                # Dense search, hybrid fusion (RRF), caching
+│   │   ├── hybrid_search.py         # BM25 index (German tokenizer)
+│   │   ├── qa.py                    # Retrieval, reranking, answer generation (Ollama)
+│   │   └── logger.py                # Pipeline logging
+│   └── api/                         # FastAPI app: /search, /chat, auth, rate limit
 │
 ├── scripts/
-│   ├── ingest.py                    # Ingest ZIPs, PDFs, and metadata
-│   └── embed.py                     # Build / update Qdrant index
+│   ├── data_processing/             # ingest.py, embed.py, unified_document_processor.py
+│   ├── deployment/                  # build_bm25_index.py, deploy_production.py
+│   └── evaluation/                  # hybrid-search validation scripts
 │
-├── ui/
-│   ├── multilingual_tender_bot.py   # Streamlit chatbot UI
-│   └── app_streamlit.py             # Alternative Streamlit app
+├── ui/streamlit/app.py              # Streamlit chat UI
+├── tests/                           # pytest suite
+├── evaluation/                      # Manual / RAGAS evaluation scripts, datasets, results
+├── docs/                            # Project definition, plans, architecture diagram
 │
-├── data/
-│   ├── raw/                         # Original input files
+├── data/                            # Not in git
+│   ├── raw/                         # Original tender ZIPs + metadata Excel
 │   ├── extract/                     # Extracted files
 │   ├── metadata/                    # Cleaned metadata
 │   ├── logs/                        # Logs
-│   └── state/                       # State files / indexes
+│   └── state/                       # BM25 index, ZIP manifest
 │
 ├── docker-compose.yml               # Qdrant service
-├── requirements.txt                 # Python dependencies
+├── pyproject.toml / requirements.txt
 └── README.md
 ```
 
