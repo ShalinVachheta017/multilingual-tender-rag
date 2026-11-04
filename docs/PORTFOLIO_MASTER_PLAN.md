@@ -80,7 +80,7 @@ Summarised from real postings and 2026 hiring guides (sources at the end). Bold 
 | **pdichone production course** (freeCodeCamp) | Reference patterns only: `error_handling.py`, `security_patterns.py`, `testing_patterns.py`, `cost_optimization.py`, `checkpointing.py`, `human_in_loop.py`, `supervisor_agent.py` | It's lesson files, not a project |
 | **CampusX** (LangChain + LangGraph playlists) | Learning order: workflows (sequential → parallel → conditional → iterative loops) → chatbot with persistence/checkpointer → streaming → LangSmith observability → tools → MCP client → RAG inside a graph → HITL → subgraphs → memory | Notebook style: we write modules + tests |
 | **8hr Marathon class notes (Google Doc)** | Same stack as the repo: Qdrant, LangGraph, Logfire, guardrails, gateways, RAGAS evals, AWS deploy | — |
-| **This repo (`multilingual-ragbot`)** | 113 real DTAD tenders (≈1.4 GB), Excel metadata, OCR loader, Jina v3 config, German BM25 tokenizer, DTAD-ID detection, test queries, FastAPI skeleton | The bugs listed in §9, the duplicate folders, the 80 KB of overlapping docs |
+| **This repo (`multilingual-ragbot`)** | 112 real DTAD tenders (105 valid) (≈1.4 GB), Excel metadata, OCR loader, Jina v3 config, German BM25 tokenizer, DTAD-ID detection, test queries, FastAPI skeleton | The bugs listed in §9, the duplicate folders, the 80 KB of overlapping docs |
 
 **Your unfair advantage:** none of the reference repos has *real, messy, scanned, German, multi-format* documents. They use 6 markdown files or a few PDFs. Yours has GAEB `.X83/.D83` files, zips inside zips, scanned plans, DOCX forms. Keep the tender domain. It is the most interesting thing in your portfolio.
 
@@ -355,7 +355,7 @@ Known bugs (fix here only if you keep using this repo as the baseline; otherwise
 
 ## 10. Interview story (what you will say)
 
-> "Bid managers spend hours screening German public tenders. I built a privacy-first document-intelligence system on 113 real tenders: scanned PDFs, plans, GAEB files. I measured four retrieval variants on a 100-question German/English gold set: hybrid + rerank lifted Recall@10 from X to Y. Exact tender IDs bypass the LLM entirely. Answers are cited or refused. Refusal on trap questions is Z %. Then I added a LangGraph agent with tools exposed over MCP and human approval for reports, compared single vs. multi-agent, and exposed it to other agents over A2A. CI blocks any change that lowers the eval scores. It all runs locally; here is the trace of a failed request and how I debugged it."
+> "Bid managers spend hours screening German public tenders. I built a privacy-first document-intelligence system on 112 real tenders: scanned PDFs, plans, GAEB files. I measured four retrieval variants on a 100-question German/English gold set: hybrid + rerank lifted Recall@10 from X to Y. Exact tender IDs bypass the LLM entirely. Answers are cited or refused. Refusal on trap questions is Z %. Then I added a LangGraph agent with tools exposed over MCP and human approval for reports, compared single vs. multi-agent, and exposed it to other agents over A2A. CI blocks any change that lowers the eval scores. It all runs locally; here is the trace of a failed request and how I debugged it."
 
 Every number in that paragraph must come from `reports/`.
 

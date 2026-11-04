@@ -15,7 +15,7 @@ You already have two MLOps projects, so the portfolio becomes **2 MLOps + 2 RAG*
 |---|---|---|
 | Repo | Upgrade `multilingual-tender-rag` (this local folder; its remote still says the old name `ragbot-core`, which GitHub redirects) | New: `multidoc-evidence-agent` |
 | Question it answers | "Can you make a real, messy RAG system **correct, measured and production-ready**?" | "Can you design a **controlled agentic workflow** for a general enterprise problem?" |
-| Data | 113 real German tenders | Contracts / policies / amendments with **planted, known conflicts** (see §0.2) |
+| Data | 112 real German tenders (105 valid) | Contracts / policies / amendments with **planted, known conflicts** (see §0.2) |
 | Focus | OCR/parsing, hybrid retrieval, citations, abstention, eval harness, latency, scale, security | LangGraph, tool calling, structured extraction, conflict detection, claim verification, HITL, agent evals, MCP |
 | Sections of this file | §3–§6 failures F1–F10, F12–F14 · G-DE, OCR-DE, ERB · E1–E7, E9–E10 | F5–F13 · agent tasks · E8 · §7 review agent |
 | Timeline | **Nov** (M0–M2) | **Dec** (M3), polish both in Jan (M4) |
@@ -32,7 +32,8 @@ P1 exposes its retrieval as a versioned **search service + MCP server** (`search
 ### 0.3 Facts behind this decision (checked 5 Nov)
 - The old evaluation report (`evaluation/EVALUATION_REPORT.md`) scores **retrieval quality at 30.6 %** with heuristic manual scoring. It is a useful "before" number, but **not a Recall@k**. The M0 baseline replaces it with real metrics.
 - `production-agentic-rag-course` on your GitHub is a **fork of a course**. Use it as a learning reference; never present it as your design.
-- The local repo is **2 commits behind** GitHub (README formatting). Run `git pull` before starting work.
+- ~~The local repo is 2 commits behind GitHub~~: synced 5 Nov.
+- **Corpus inventory (5 Nov cleanup, verified by SHA-256):** `data/raw` has **112 tender folders, one zip each, plus the metadata Excel. 105 zips are valid.** 7 are **truncated downloads** (28–176 KB, zip header but no central directory): 20044887, 20046902, 20046916, 20046935, 20046979, 20046996, 20047346. They were restored from the legacy folder so nothing is lost, and they serve as **real corrupt-input fixtures** for the safe-ingestion tests (F1/D2). Metadata Excel `VUDb_Data_2025-07-13_11-12-07.xlsx` is in `data/raw/`. Legacy prototype code archived outside the repo at `D:/Projects/_archive/legacy_rag_prototypes_2025.zip`.
 
 ---
 
@@ -53,7 +54,7 @@ This is a documented, unsolved problem, not a tutorial topic:
 
 ## 2. Users, domain, scope
 
-**First domain (real data):** German public tenders (113 DTAD tenders, ≈1.4 GB: scanned PDFs, plans, GAEB `.X83/.D83`, DOCX forms, nested zips, amendments).
+**First domain (real data):** German public tenders (112 DTAD tenders, 105 valid zips, ≈1.4 GB: scanned PDFs, plans, GAEB `.X83/.D83`, DOCX forms, nested zips, amendments).
 **Second domain (generality proof):** EnterpriseRAG-Bench subset (English, synthetic, enterprise text).
 Same pipeline, same metrics, two corpora. That is what makes it a general solution and not a single-dataset chatbot.
 
