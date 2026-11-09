@@ -2,20 +2,9 @@
 
 ## Project Summary
 
-### What is this project?
-This is a local AI assistant for finding information in long tender documents in English or German.
+Imagine having thousands of long documents and needing just one detail. I built a local AI assistant that helps search tender documents and answer questions in English or German. The hard part is finding useful information even when documents are long and questions use different words.
 
-### Why is it interesting?
-Reading many long PDFs takes time, especially when you need just one detail.
-
-### How does it work?
-The system reads documents, finds useful passages, and uses an AI model to help answer a question.
-
-### Real-life example
-Someone asks what documents are needed for a construction tender and receives an answer based on relevant passages.
-
-### What did I learn?
-I learned document processing, searchable indexes, multilingual search, and local AI integration.
+The system reads the files, finds relevant passages, and uses an AI model to prepare an answer. For example, a company can ask what documents are needed for a construction tender instead of reading every PDF. I learned how document processing, search, and AI work together, and why answers should be checked against source documents. This is a prototype, not a finished production service.
 
 ---
 
