@@ -2,7 +2,7 @@
 
 ## Project Summary
 
-Imagine having thousands of long documents and needing just one detail. I built a local AI assistant that helps search tender documents and answer questions in English or German. The hard part is finding useful information even when documents are long and questions use different words.
+Imagine having thousands of long documents and needing just one detail. I built a privacy-first AI assistant that helps search tender documents and answer questions in English or German without requiring external language-model APIs. The hard part is finding useful information even when documents are long and questions use different words.
 
 The system reads the files, finds relevant passages, and uses an AI model to prepare an answer. For example, a company can ask what documents are needed for a construction tender instead of reading every PDF. I learned how document processing, search, and AI work together, and why answers should be checked against source documents. This is a prototype, not a finished production service.
 
@@ -11,7 +11,7 @@ The system reads the files, finds relevant passages, and uses an AI model to pre
 ## Technical Documentation
 
 
-A local Retrieval-Augmented Generation prototype for searching and answering questions over German tender and procurement documents.
+A privacy-first Retrieval-Augmented Generation prototype for searching and answering questions over German tender and procurement documents. The current implementation runs Qdrant and Ollama locally to keep document retrieval and generation under the operator's control.
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
 [![Streamlit](https://img.shields.io/badge/UI-Streamlit-red.svg)](https://streamlit.io/)
@@ -23,7 +23,7 @@ A local Retrieval-Augmented Generation prototype for searching and answering que
 
 ## 📌 Project Overview
 
-This project is a **local multilingual RAG prototype** built for German tender documents.
+This project is a **privacy-first multilingual RAG prototype** for German tender documents. Local execution is the current implementation strategy, not a permanent limitation on future infrastructure.
 
 The goal is to make procurement documents easier to search, explore, and understand by combining:
 
@@ -690,7 +690,7 @@ This project demonstrates:
 - Adding metadata-aware lookup for DTAD-ID, year, and region
 - Integrating Ollama for local LLM-based answer generation
 - Building an interactive Streamlit chatbot interface
-- Designing a privacy-friendly local RAG workflow
+- Designing a privacy-first document-search workflow with self-hosted components
 
 ---
 
