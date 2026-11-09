@@ -1,5 +1,13 @@
 # Multilingual Tender RAG System 🚀
 
+## In Simple Words
+
+Public tenders often have long documents that are hard to search. This project is a local AI document assistant that finds useful passages and helps answer questions in English or German.
+
+**Real-life example:** Imagine you need the requirements for a construction tender. You ask a question instead of reading every PDF, and the assistant searches the documents for relevant information. This is a prototype.
+
+---
+
 A local Retrieval-Augmented Generation prototype for searching and answering questions over German tender and procurement documents.
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
