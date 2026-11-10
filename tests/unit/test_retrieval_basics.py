@@ -23,3 +23,10 @@ def test_rrf_prefers_items_found_by_both_lists():
     assert [x.id for x in fused][0] == "b"      # b is in both lists
     assert {x.id for x in fused} == {"a", "b", "c"}  # nothing lost, no duplicates
     assert len(fused) == 3
+
+
+def test_bm25_file_is_per_collection():
+    from src.core.config import AppConfig
+    a = AppConfig(qdrant_collection="mini_a").bm25_path
+    b = AppConfig(qdrant_collection="mini_b").bm25_path
+    assert a != b and a.name == "bm25_mini_a.pkl"

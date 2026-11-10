@@ -85,6 +85,11 @@ class AppConfig(BaseSettings):
         return self.metadata_dir / self.metadata_filename
 
     @property
+    def bm25_path(self) -> Path:
+        """Keyword index file. One per collection, so indexes of different experiments never mix."""
+        return self.state_dir / f"bm25_{self.qdrant_collection}.pkl"
+
+    @property
     def top_k(self) -> int:
         """Unified Top-K accessor (maps to your final_k)."""
         return self.final_k

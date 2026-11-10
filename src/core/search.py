@@ -154,6 +154,9 @@ def search_hybrid(query_text: str, limit: Optional[int] = None):
     except Exception as e:
         logger.warning("BM25 failed, using dense only: %s", e)
         return dense[:limit]
+    tender_id = detect_tender_id(query_text)
+    if tender_id:  # a question about one tender must not be answered from another one
+        bm25 = [h for h in bm25 if h.payload.get("dtad_id") == tender_id]
     if not bm25:
         return dense[:limit]
     return rrf([dense, bm25])[:limit]

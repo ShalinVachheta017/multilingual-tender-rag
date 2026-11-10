@@ -74,7 +74,7 @@ class BM25Index:
         if not documents:
             raise ValueError("Cannot build BM25 index with empty document list")
         
-        print(f"🔨 Building BM25 index from {len(documents)} documents...")
+        print(f"Building BM25 index from {len(documents)} documents...")
         
         # Tokenize all documents
         tokenized_docs = []
@@ -86,12 +86,12 @@ class BM25Index:
             text = doc.get('text', '')
             
             if not text:
-                print(f"⚠️  Warning: Document {doc_id} has no text, skipping")
+                print(f" Warning: Document {doc_id} has no text, skipping")
                 continue
             
             tokens = tokenize_german(text)
             if not tokens:
-                print(f"⚠️  Warning: Document {doc_id} tokenized to empty, skipping")
+                print(f" Warning: Document {doc_id} tokenized to empty, skipping")
                 continue
             
             tokenized_docs.append(tokens)
@@ -105,7 +105,7 @@ class BM25Index:
         self.bm25 = BM25Okapi(tokenized_docs)
         self._is_built = True
         
-        print(f"✅ BM25 index built with {len(self.doc_ids)} documents")
+        print(f"BM25 index built with {len(self.doc_ids)} documents")
     
     def search(self, query: str, top_k: int = 100) -> List[Tuple[str, float]]:
         """
@@ -153,7 +153,7 @@ class BM25Index:
         with open(filepath, 'wb') as f:
             pickle.dump(data, f)
         
-        print(f"💾 BM25 index saved to {filepath}")
+        print(f"BM25 index saved to {filepath}")
     
     @classmethod
     def load(cls, filepath: Path) -> 'BM25Index':
@@ -170,7 +170,7 @@ class BM25Index:
         index.doc_metadata = data['doc_metadata']
         index._is_built = True
         
-        print(f"📂 BM25 index loaded from {filepath} ({len(index.doc_ids)} docs)")
+        print(f"BM25 index loaded from {filepath} ({len(index.doc_ids)} docs)")
         return index
 
 

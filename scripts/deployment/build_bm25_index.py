@@ -24,12 +24,12 @@ def fetch_all_documents() -> list[dict]:
     Returns:
         List of dicts with 'id', 'text', and 'metadata' keys
     """
-    print(f"📡 Connecting to Qdrant at {CFG.qdrant_url}...")
+    print(f"Connecting to Qdrant at {CFG.qdrant_url}...")
     client = QdrantClient(url=CFG.qdrant_url, prefer_grpc=False, timeout=60)
     
     # Check if collection exists
     if not client.collection_exists(CFG.qdrant_collection):
-        print(f"❌ Collection '{CFG.qdrant_collection}' does not exist!")
+        print(f"Collection '{CFG.qdrant_collection}' does not exist!")
         print("\nPlease run the embedding pipeline first:")
         print("  python scripts/data_processing/embed.py")
         sys.exit(1)
@@ -37,10 +37,10 @@ def fetch_all_documents() -> list[dict]:
     # Get collection info
     collection_info = client.get_collection(CFG.qdrant_collection)
     total_docs = collection_info.points_count
-    print(f"📊 Found {total_docs} documents in collection '{CFG.qdrant_collection}'")
+    print(f"Found {total_docs} documents in collection '{CFG.qdrant_collection}'")
     
     # Scroll through all documents
-    print("📥 Fetching documents...")
+    print("Fetching documents...")
     documents = []
     offset = None
     batch_size = 100
@@ -73,7 +73,7 @@ def fetch_all_documents() -> list[dict]:
             )
             
             if not text:
-                print(f"⚠️  Warning: Point {point.id} has no text content, skipping")
+                print(f" Warning: Point {point.id} has no text content, skipping")
                 continue
             
             # Extract metadata
@@ -101,14 +101,14 @@ def fetch_all_documents() -> list[dict]:
         
         offset = next_offset
     
-    print(f"\n✅ Fetched {len(documents)} documents with text content")
+    print(f"\nFetched {len(documents)} documents with text content")
     return documents
 
 
 def main():
     """Build and save BM25 index."""
     print("=" * 70)
-    print("🔨 Building BM25 Index for Hybrid Search")
+    print("Building BM25 Index for Hybrid Search")
     print("=" * 70)
     print()
     
@@ -116,31 +116,31 @@ def main():
     documents = fetch_all_documents()
     
     if not documents:
-        print("❌ No documents found! Cannot build index.")
+        print("No documents found! Cannot build index.")
         sys.exit(1)
     
     # Build BM25 index
     print()
-    print("🔨 Building BM25 index...")
+    print("Building BM25 index...")
     index = BM25Index()
     index.build_index(documents)
     
     # Save index
     output_path = CFG.bm25_path
     print()
-    print(f"💾 Saving index to {output_path}...")
+    print(f"Saving index to {output_path}...")
     index.save(output_path)
     
     # Summary
     print()
     print("=" * 70)
-    print("✅ BM25 Index Built Successfully!")
+    print("BM25 Index Built Successfully!")
     print("=" * 70)
-    print(f"📁 Location: {output_path}")
-    print(f"📊 Documents indexed: {len(documents)}")
-    print(f"💾 File size: {output_path.stat().st_size / 1024:.1f} KB")
+    print(f"Location: {output_path}")
+    print(f"Documents indexed: {len(documents)}")
+    print(f"File size: {output_path.stat().st_size / 1024:.1f} KB")
     print()
-    print("🎉 Hybrid search is now ready to use!")
+    print("Hybrid search is now ready to use!")
     print()
     print("Next steps:")
     print("  1. Hybrid search is on by default (use_hybrid in src/core/config.py)")

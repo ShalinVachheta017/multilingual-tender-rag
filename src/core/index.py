@@ -86,12 +86,12 @@ class Indexer:
             try:
                 name = torch.cuda.get_device_name(0)
                 mem = torch.cuda.get_device_properties(0).total_memory // (1024**3)
-                tqdm.write(f"✅ Using GPU: {name}  ({mem} GB)")
+                tqdm.write(f"Using GPU: {name}  ({mem} GB)")
                 torch.set_float32_matmul_precision("high")
             except Exception:
-                tqdm.write("✅ Using GPU")
+                tqdm.write("Using GPU")
         else:
-            tqdm.write("⚠️  Using CPU - GPU not available")
+            tqdm.write(" Using CPU - GPU not available")
 
         # ---- embedder (model, revision and remote-code switch come from CFG) ----
         self.embedder = SentenceTransformer(
@@ -148,7 +148,7 @@ class Indexer:
             optimizers_config=qmodels.OptimizersConfigDiff(indexing_threshold=20_000),
             on_disk_payload=False,
         )
-        tqdm.write(f"✅ Created collection: {self.cfg.qdrant_collection} (dim={dim})")
+        tqdm.write(f"Created collection: {self.cfg.qdrant_collection} (dim={dim})")
 
     def _ensure_collection(self, dim: int) -> None:
         existing_dim = self._existing_collection_dim()
@@ -166,9 +166,9 @@ class Indexer:
         if self.fresh:
             try:
                 self.client.delete_collection(self.cfg.qdrant_collection)
-                tqdm.write(f"🗑️  Deleted old collection: {self.cfg.qdrant_collection}")
+                tqdm.write(f" Deleted old collection: {self.cfg.qdrant_collection}")
             except Exception as e:
-                tqdm.write(f"ℹ️  Could not delete existing collection (continuing): {e}")
+                tqdm.write(f" Could not delete existing collection (continuing): {e}")
             self._create_collection(dim)
             return
 
@@ -216,7 +216,7 @@ class Indexer:
         if out.shape[1] > self.effective_dim:
             orig = out.shape[1]
             out = out[:, : self.effective_dim]
-            tqdm.write(f"📐 Cropped embeddings {orig} → {self.effective_dim} dims")
+            tqdm.write(f"Cropped embeddings {orig} {self.effective_dim} dims")
 
         if self.device == "cuda":
             torch.cuda.empty_cache()
@@ -254,9 +254,9 @@ class Indexer:
         """
         base = Path(extract_dir or self.cfg.extract_dir)
         pdfs = self._list_pdfs(base, tenders)
-        tqdm.write(f"📄 Found {len(pdfs)} PDFs to process in {base}")
+        tqdm.write(f"Found {len(pdfs)} PDFs to process in {base}")
         if not pdfs:
-            tqdm.write("⚠️  No PDF files found in extract directory")
+            tqdm.write(" No PDF files found in extract directory")
             return
 
         BUFFER_SIZE = int(self.cfg.embed_flush_chunks)
@@ -271,7 +271,7 @@ class Indexer:
                 chunks: List[DocumentChunk] = self.chunker.split(pages)
 
                 if not chunks:
-                    tqdm.write(f"⏭️  Skipped (no text): {pdf.name}")
+                    tqdm.write(f" Skipped (no text): {pdf.name}")
                     continue
 
                 h = self._hash_file(pdf)
@@ -320,17 +320,17 @@ class Indexer:
                             points=points_buffer,
                             wait=False,
                         )
-                        tqdm.write(f"📤 Uploaded batch: {len(points_buffer)} points")
+                        tqdm.write(f"Uploaded batch: {len(points_buffer)} points")
                         total_chunks += len(points_buffer)
                         points_buffer.clear()
                         if self.device == "cuda":
                             torch.cuda.empty_cache()
 
                 processed_files += 1
-                tqdm.write(f"✅ Processed {len(chunks)} chunks from {pdf.name}")
+                tqdm.write(f"Processed {len(chunks)} chunks from {pdf.name}")
 
             except Exception as e:
-                tqdm.write(f"❌ Error processing {pdf.name}: {e}")
+                tqdm.write(f"Error processing {pdf.name}: {e}")
                 continue
 
         # Final flush
@@ -340,16 +340,16 @@ class Indexer:
                 points=points_buffer,
                 wait=False,
             )
-            tqdm.write(f"📤 Final upload: {len(points_buffer)} points")
+            tqdm.write(f"Final upload: {len(points_buffer)} points")
             total_chunks += len(points_buffer)
 
         if self.device == "cuda":
             torch.cuda.empty_cache()
 
-        tqdm.write("🎉 Indexing complete!")
-        tqdm.write(f"📊 Processed: {processed_files}/{len(pdfs)} files")
-        tqdm.write(f"📊 Total chunks upserted: {total_chunks}")
-        tqdm.write("🚀 Your German document RAG system is ready!")
+        tqdm.write("Indexing complete!")
+        tqdm.write(f"Processed: {processed_files}/{len(pdfs)} files")
+        tqdm.write(f"Total chunks upserted: {total_chunks}")
+        tqdm.write("Your German document RAG system is ready!")
 
     def build_ocr_only(self, extract_dir: Path | None = None, tenders: Optional[List[str]] = None):
         """
@@ -368,9 +368,9 @@ class Indexer:
             except Exception:
                 skipped_files.append(pdf)
 
-        tqdm.write(f"🔍 Found {len(skipped_files)} previously skipped files for OCR processing")
+        tqdm.write(f"Found {len(skipped_files)} previously skipped files for OCR processing")
         if not skipped_files:
-            tqdm.write("✅ No skipped files found! All documents already processed.")
+            tqdm.write("No skipped files found! All documents already processed.")
             return
 
         # Enable OCR for this processing
@@ -386,12 +386,12 @@ class Indexer:
 
                 pages = self.loader.load_pages(pdf_path)
                 if not pages or sum(len(p.text or "") for p in pages) == 0:
-                    tqdm.write(f"⏭️  Still no text after OCR: {pdf_path.name}")
+                    tqdm.write(f" Still no text after OCR: {pdf_path.name}")
                     continue
 
                 chunks = self.chunker.split(pages)
                 if not chunks:
-                    tqdm.write(f"⏭️  No chunks created: {pdf_path.name}")
+                    tqdm.write(f" No chunks created: {pdf_path.name}")
                     continue
 
                 h = self._hash_file(pdf_path)
@@ -433,7 +433,7 @@ class Indexer:
                         points=points_buffer,
                         wait=False,
                     )
-                    tqdm.write(f"📤 Uploaded OCR batch: {len(points_buffer)} points")
+                    tqdm.write(f"Uploaded OCR batch: {len(points_buffer)} points")
                     new_chunks_count += len(points_buffer)
                     points_buffer.clear()
 
@@ -441,10 +441,10 @@ class Indexer:
                 if self.device == "cuda":
                     torch.cuda.empty_cache()
 
-                tqdm.write(f"✅ Added {len(chunks)} OCR chunks from {pdf_path.name}")
+                tqdm.write(f"Added {len(chunks)} OCR chunks from {pdf_path.name}")
 
             except Exception as e:
-                tqdm.write(f"❌ Error processing {pdf_path.name}: {e}")
+                tqdm.write(f"Error processing {pdf_path.name}: {e}")
                 continue
 
         # Final batch upload
@@ -454,18 +454,18 @@ class Indexer:
                 points=points_buffer,
                 wait=False,
             )
-            tqdm.write(f"📤 Final OCR upload: {len(points_buffer)} points")
+            tqdm.write(f"Final OCR upload: {len(points_buffer)} points")
             new_chunks_count += len(points_buffer)
 
         # Basic OCR stats if PDFLoader tracks any
         if hasattr(self.loader, "get_ocr_stats"):
             ocr_stats = self.loader.get_ocr_stats()
-            tqdm.write("\n🎉 OCR Processing Complete!")
-            tqdm.write(f"📊 Files processed: {processed_files}")
-            tqdm.write(f"📊 New chunks added: {new_chunks_count}")
-            tqdm.write(f"📊 OCR attempts: {ocr_stats.get('attempted', 'n/a')}")
-            tqdm.write(f"📊 OCR successful: {ocr_stats.get('successful', 'n/a')}")
-            tqdm.write(f"📊 OCR failed: {ocr_stats.get('failed', 'n/a')}")
+            tqdm.write("\nOCR Processing Complete!")
+            tqdm.write(f"Files processed: {processed_files}")
+            tqdm.write(f"New chunks added: {new_chunks_count}")
+            tqdm.write(f"OCR attempts: {ocr_stats.get('attempted', 'n/a')}")
+            tqdm.write(f"OCR successful: {ocr_stats.get('successful', 'n/a')}")
+            tqdm.write(f"OCR failed: {ocr_stats.get('failed', 'n/a')}")
 
         if new_chunks_count > 0:
-            tqdm.write("🚀 Your German document RAG system now has enhanced coverage!")
+            tqdm.write("Your German document RAG system now has enhanced coverage!")
