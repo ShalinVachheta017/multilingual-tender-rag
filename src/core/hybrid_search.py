@@ -191,7 +191,7 @@ def get_bm25_index() -> BM25Index:
     global _bm25_index
     
     if _bm25_index is None:
-        index_path = CFG.state_dir / "bm25_index.pkl"
+        index_path = CFG.bm25_path
         
         if not index_path.exists():
             raise RuntimeError(

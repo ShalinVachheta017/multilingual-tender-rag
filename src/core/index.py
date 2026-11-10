@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import List, Dict, Optional
 import hashlib
 import numpy as np
+from tqdm import tqdm
 import torch
 from uuid import uuid5, NAMESPACE_URL
 
@@ -15,8 +16,6 @@ from .domain import DocumentPage, DocumentChunk
 from .io import PDFLoader, ExcelMetadataJoiner
 from .config import CFG
 
-# Pin to an exact revision so remote code doesn't change between runs
-PINNED_SHA = "f1944de8402dcd5f2b03f822a4bc22a7f2de2eb9"  # jinaai/jina-embeddings-v3
 
 
 class PageAwareChunker:
@@ -87,18 +86,18 @@ class Indexer:
             try:
                 name = torch.cuda.get_device_name(0)
                 mem = torch.cuda.get_device_properties(0).total_memory // (1024**3)
-                print(f"✅ Using GPU: {name}  ({mem} GB)")
+                tqdm.write(f"✅ Using GPU: {name}  ({mem} GB)")
                 torch.set_float32_matmul_precision("high")
             except Exception:
-                print("✅ Using GPU")
+                tqdm.write("✅ Using GPU")
         else:
-            print("⚠️  Using CPU - GPU not available")
+            tqdm.write("⚠️  Using CPU - GPU not available")
 
-        # ---- embedder (pinned revision) ----
+        # ---- embedder (model, revision and remote-code switch come from CFG) ----
         self.embedder = SentenceTransformer(
             model_name_or_path=cfg.embed_model,
-            revision=PINNED_SHA,
-            trust_remote_code=True,
+            revision=cfg.embed_revision,
+            trust_remote_code=cfg.embed_trust_remote_code,
             device=self.device,
         )
         self.raw_dim = self._get_embed_dim(self.embedder)
@@ -116,8 +115,8 @@ class Indexer:
         self.chunker = PageAwareChunker(cfg.chunk_size, cfg.chunk_overlap)
         self.joiner = ExcelMetadataJoiner()
 
-        # ---- Jina prompt prefix ----
-        self.doc_prefix = getattr(cfg, "embed_doc_prefix", "search_document: ")
+        # ---- text put in front of every chunk (empty for BGE-M3, "search_document: " for Jina) ----
+        self.doc_prefix = cfg.embed_doc_prefix
 
     # ---------------- helpers ----------------
 
@@ -149,7 +148,7 @@ class Indexer:
             optimizers_config=qmodels.OptimizersConfigDiff(indexing_threshold=20_000),
             on_disk_payload=False,
         )
-        print(f"✅ Created collection: {self.cfg.qdrant_collection} (dim={dim})")
+        tqdm.write(f"✅ Created collection: {self.cfg.qdrant_collection} (dim={dim})")
 
     def _ensure_collection(self, dim: int) -> None:
         existing_dim = self._existing_collection_dim()
@@ -167,9 +166,9 @@ class Indexer:
         if self.fresh:
             try:
                 self.client.delete_collection(self.cfg.qdrant_collection)
-                print(f"🗑️  Deleted old collection: {self.cfg.qdrant_collection}")
+                tqdm.write(f"🗑️  Deleted old collection: {self.cfg.qdrant_collection}")
             except Exception as e:
-                print(f"ℹ️  Could not delete existing collection (continuing): {e}")
+                tqdm.write(f"ℹ️  Could not delete existing collection (continuing): {e}")
             self._create_collection(dim)
             return
 
@@ -201,7 +200,7 @@ class Indexer:
                     batch_size=self.cfg.embed_batch_size,
                     normalize_embeddings=True,
                     convert_to_numpy=True,
-                    show_progress_bar=True,
+                    show_progress_bar=False,
                 )
         else:
             with torch.inference_mode():
@@ -210,14 +209,14 @@ class Indexer:
                     batch_size=self.cfg.embed_batch_size,
                     normalize_embeddings=True,
                     convert_to_numpy=True,
-                    show_progress_bar=True,
+                    show_progress_bar=False,
                 )
 
         out = np.asarray(out, dtype="float32")
         if out.shape[1] > self.effective_dim:
             orig = out.shape[1]
             out = out[:, : self.effective_dim]
-            print(f"📐 Cropped embeddings {orig} → {self.effective_dim} dims")
+            tqdm.write(f"📐 Cropped embeddings {orig} → {self.effective_dim} dims")
 
         if self.device == "cuda":
             torch.cuda.empty_cache()
@@ -226,6 +225,17 @@ class Indexer:
     def _point_id(self, doc_hash: str, chunk_idx: int) -> str:
         """Deterministic UUID for points (idempotent upserts)."""
         return str(uuid5(NAMESPACE_URL, f"{doc_hash}|{chunk_idx}"))
+
+    @staticmethod
+    def _tender_id(pdf: Path, base: Path) -> str:
+        """The first folder under the extract dir is the tender id (see ZipIngestor)."""
+        parts = pdf.relative_to(base).parts
+        return parts[0] if len(parts) > 1 else ""
+
+    @staticmethod
+    def _list_pdfs(base: Path, tenders: Optional[List[str]]) -> List[Path]:
+        roots = [base / t for t in tenders] if tenders else [base]
+        return sorted(p for r in roots for p in r.rglob("*.pdf"))
 
     def _hash_file(self, pdf_path: Path) -> str:
         """Robust file hash (fallback to path string if read fails)."""
@@ -236,17 +246,17 @@ class Indexer:
 
     # --------------- main flows ----------------
 
-    def build(self, extract_dir: Path | None = None):
+    def build(self, extract_dir: Path | None = None, tenders: Optional[List[str]] = None):
         """
         Build (fresh or append) the index with batch upserts.
         - In fresh mode, the collection was recreated in __init__
         - In append mode, point IDs are stable and will overwrite duplicates
         """
         base = Path(extract_dir or self.cfg.extract_dir)
-        pdfs = sorted(base.rglob("*.pdf"))
-        print(f"📄 Found {len(pdfs)} PDFs to process in {base}")
+        pdfs = self._list_pdfs(base, tenders)
+        tqdm.write(f"📄 Found {len(pdfs)} PDFs to process in {base}")
         if not pdfs:
-            print("⚠️  No PDF files found in extract directory")
+            tqdm.write("⚠️  No PDF files found in extract directory")
             return
 
         BUFFER_SIZE = int(self.cfg.embed_flush_chunks)
@@ -254,24 +264,24 @@ class Indexer:
         total_chunks = 0
         processed_files = 0
 
-        for pdf_idx, pdf in enumerate(pdfs, start=1):
+        for pdf_idx, pdf in enumerate(tqdm(pdfs, desc="PDFs", unit="file"), start=1):
             try:
-                print(f"🔄 Processing PDF {pdf_idx}/{len(pdfs)}: {pdf.name}")
 
                 pages: List[DocumentPage] = self.loader.load_pages(pdf)
                 chunks: List[DocumentChunk] = self.chunker.split(pages)
 
                 if not chunks:
-                    print(f"⏭️  Skipped (no text): {pdf.name}")
+                    tqdm.write(f"⏭️  Skipped (no text): {pdf.name}")
                     continue
 
                 h = self._hash_file(pdf)
+                tender_id = self._tender_id(pdf, base)
 
                 # Prepare payloads and texts
                 payloads: List[Dict] = []
                 texts: List[str] = []
                 for c in chunks:
-                    meta = self.joiner.enrich(c.source_path, {**c.meta})
+                    meta = self.joiner.enrich(c.source_path, {**c.meta, "dtad_id": tender_id})
                     base_payload = c.payload()  # expected to include chunk_idx/page/source
                     # Normalize/augment payload to be JSON-safe & informative
                     pl = {
@@ -279,6 +289,8 @@ class Indexer:
                         **meta,
                         "source_path": str(base_payload.get("source_path") or c.source_path or ""),
                         "doc_hash": h,
+                        "dtad_id": tender_id,
+                        "rel_path": pdf.relative_to(base).as_posix(),
                         "text": (c.text or "")[:1500],  # snippet for reranker/UI
                     }
                     payloads.append(pl)
@@ -308,17 +320,17 @@ class Indexer:
                             points=points_buffer,
                             wait=False,
                         )
-                        print(f"📤 Uploaded batch: {len(points_buffer)} points")
+                        tqdm.write(f"📤 Uploaded batch: {len(points_buffer)} points")
                         total_chunks += len(points_buffer)
                         points_buffer.clear()
                         if self.device == "cuda":
                             torch.cuda.empty_cache()
 
                 processed_files += 1
-                print(f"✅ Processed {len(chunks)} chunks from {pdf.name}")
+                tqdm.write(f"✅ Processed {len(chunks)} chunks from {pdf.name}")
 
             except Exception as e:
-                print(f"❌ Error processing {pdf.name}: {e}")
+                tqdm.write(f"❌ Error processing {pdf.name}: {e}")
                 continue
 
         # Final flush
@@ -328,18 +340,18 @@ class Indexer:
                 points=points_buffer,
                 wait=False,
             )
-            print(f"📤 Final upload: {len(points_buffer)} points")
+            tqdm.write(f"📤 Final upload: {len(points_buffer)} points")
             total_chunks += len(points_buffer)
 
         if self.device == "cuda":
             torch.cuda.empty_cache()
 
-        print("🎉 Indexing complete!")
-        print(f"📊 Processed: {processed_files}/{len(pdfs)} files")
-        print(f"📊 Total chunks upserted: {total_chunks}")
-        print("🚀 Your German document RAG system is ready!")
+        tqdm.write("🎉 Indexing complete!")
+        tqdm.write(f"📊 Processed: {processed_files}/{len(pdfs)} files")
+        tqdm.write(f"📊 Total chunks upserted: {total_chunks}")
+        tqdm.write("🚀 Your German document RAG system is ready!")
 
-    def build_ocr_only(self, extract_dir: Path | None = None):
+    def build_ocr_only(self, extract_dir: Path | None = None, tenders: Optional[List[str]] = None):
         """
         Process only OCR-needing PDFs (does NOT recreate collection).
         Heuristic: files with no extractable text via PDFLoader(use_ocr=False)
@@ -348,7 +360,7 @@ class Indexer:
         skipped_files: List[Path] = []
         loader_no_ocr = PDFLoader(use_ocr=False)
 
-        for pdf in sorted(base.rglob("*.pdf")):
+        for pdf in self._list_pdfs(base, tenders):
             try:
                 pages = loader_no_ocr.load_pages(pdf)
                 if not pages or sum(len(p.text or "") for p in pages) == 0:
@@ -356,9 +368,9 @@ class Indexer:
             except Exception:
                 skipped_files.append(pdf)
 
-        print(f"🔍 Found {len(skipped_files)} previously skipped files for OCR processing")
+        tqdm.write(f"🔍 Found {len(skipped_files)} previously skipped files for OCR processing")
         if not skipped_files:
-            print("✅ No skipped files found! All documents already processed.")
+            tqdm.write("✅ No skipped files found! All documents already processed.")
             return
 
         # Enable OCR for this processing
@@ -369,32 +381,34 @@ class Indexer:
         new_chunks_count = 0
         processed_files = 0
 
-        for i, pdf_path in enumerate(skipped_files, start=1):
+        for i, pdf_path in enumerate(tqdm(skipped_files, desc="OCR PDFs", unit="file"), start=1):
             try:
-                print(f"🔄 OCR Processing {i}/{len(skipped_files)}: {pdf_path.name}")
 
                 pages = self.loader.load_pages(pdf_path)
                 if not pages or sum(len(p.text or "") for p in pages) == 0:
-                    print(f"⏭️  Still no text after OCR: {pdf_path.name}")
+                    tqdm.write(f"⏭️  Still no text after OCR: {pdf_path.name}")
                     continue
 
                 chunks = self.chunker.split(pages)
                 if not chunks:
-                    print(f"⏭️  No chunks created: {pdf_path.name}")
+                    tqdm.write(f"⏭️  No chunks created: {pdf_path.name}")
                     continue
 
                 h = self._hash_file(pdf_path)
+                tender_id = self._tender_id(pdf_path, base)
 
                 payloads: List[Dict] = []
                 texts: List[str] = []
                 for c in chunks:
-                    meta = self.joiner.enrich(c.source_path, {**c.meta})
+                    meta = self.joiner.enrich(c.source_path, {**c.meta, "dtad_id": tender_id})
                     base_payload = c.payload()
                     pl = {
                         **base_payload,
                         **meta,
                         "source_path": str(base_payload.get("source_path") or c.source_path or ""),
                         "doc_hash": h,
+                        "dtad_id": tender_id,
+                        "rel_path": pdf_path.relative_to(base).as_posix(),
                         "text": (c.text or "")[:1500],
                         "processed_with_ocr": True,
                     }
@@ -419,7 +433,7 @@ class Indexer:
                         points=points_buffer,
                         wait=False,
                     )
-                    print(f"📤 Uploaded OCR batch: {len(points_buffer)} points")
+                    tqdm.write(f"📤 Uploaded OCR batch: {len(points_buffer)} points")
                     new_chunks_count += len(points_buffer)
                     points_buffer.clear()
 
@@ -427,10 +441,10 @@ class Indexer:
                 if self.device == "cuda":
                     torch.cuda.empty_cache()
 
-                print(f"✅ Added {len(chunks)} OCR chunks from {pdf_path.name}")
+                tqdm.write(f"✅ Added {len(chunks)} OCR chunks from {pdf_path.name}")
 
             except Exception as e:
-                print(f"❌ Error processing {pdf_path.name}: {e}")
+                tqdm.write(f"❌ Error processing {pdf_path.name}: {e}")
                 continue
 
         # Final batch upload
@@ -440,18 +454,18 @@ class Indexer:
                 points=points_buffer,
                 wait=False,
             )
-            print(f"📤 Final OCR upload: {len(points_buffer)} points")
+            tqdm.write(f"📤 Final OCR upload: {len(points_buffer)} points")
             new_chunks_count += len(points_buffer)
 
         # Basic OCR stats if PDFLoader tracks any
         if hasattr(self.loader, "get_ocr_stats"):
             ocr_stats = self.loader.get_ocr_stats()
-            print("\n🎉 OCR Processing Complete!")
-            print(f"📊 Files processed: {processed_files}")
-            print(f"📊 New chunks added: {new_chunks_count}")
-            print(f"📊 OCR attempts: {ocr_stats.get('attempted', 'n/a')}")
-            print(f"📊 OCR successful: {ocr_stats.get('successful', 'n/a')}")
-            print(f"📊 OCR failed: {ocr_stats.get('failed', 'n/a')}")
+            tqdm.write("\n🎉 OCR Processing Complete!")
+            tqdm.write(f"📊 Files processed: {processed_files}")
+            tqdm.write(f"📊 New chunks added: {new_chunks_count}")
+            tqdm.write(f"📊 OCR attempts: {ocr_stats.get('attempted', 'n/a')}")
+            tqdm.write(f"📊 OCR successful: {ocr_stats.get('successful', 'n/a')}")
+            tqdm.write(f"📊 OCR failed: {ocr_stats.get('failed', 'n/a')}")
 
         if new_chunks_count > 0:
-            print("🚀 Your German document RAG system now has enhanced coverage!")
+            tqdm.write("🚀 Your German document RAG system now has enhanced coverage!")

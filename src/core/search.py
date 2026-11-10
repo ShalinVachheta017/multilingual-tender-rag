@@ -18,10 +18,6 @@ from .config import CFG
 
 logger = logging.getLogger(__name__)
 
-# Pin the Hugging Face revision so the embedder cannot change under us.
-PINNED_SHA = "f1944de8402dcd5f2b03f822a4bc22a7f2de2eb9"
-
-
 @dataclass
 class ScoredHit:
     """A search result that did not come straight from a Qdrant vector search (e.g. a BM25 hit)."""
@@ -43,8 +39,8 @@ def _client() -> QdrantClient:
 def _embedder() -> SentenceTransformer:
     import torch
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    # Jina v3 needs trust_remote_code
-    return SentenceTransformer(CFG.embed_model, trust_remote_code=True, revision=PINNED_SHA, device=device)
+    return SentenceTransformer(CFG.embed_model, revision=CFG.embed_revision,
+                               trust_remote_code=CFG.embed_trust_remote_code, device=device)
 
 
 @lru_cache(maxsize=1)
@@ -104,7 +100,7 @@ def search_dense(query_text: str, limit: Optional[int] = None, min_score: Option
                 collection_name=CFG.qdrant_collection,
                 query=qv,
                 query_filter=qmodels.Filter(
-                    must=[qmodels.FieldCondition(key="id", match=qmodels.MatchValue(value=tender_id))]
+                    must=[qmodels.FieldCondition(key="dtad_id", match=qmodels.MatchValue(value=tender_id))]
                 ),
                 limit=limit,
                 with_payload=True,

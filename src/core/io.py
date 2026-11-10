@@ -1,16 +1,13 @@
 # core/io.py
 from __future__ import annotations
 from pathlib import Path
-from dataclasses import dataclass
-import hashlib, json, csv, logging, zipfile
+import csv, logging, shutil, zipfile
 from datetime import datetime
-from typing import List, Dict, Optional
+from typing import List, Dict
 
 from .domain import DocumentPage
 
-import langdetect
 import fitz  # PyMuPDF
-import docx  # python-docx
 import pandas as pd
 
 # OCR
@@ -33,123 +30,82 @@ CFG.metadata_dir.mkdir(parents=True, exist_ok=True)
 _OCR_LANGS = getattr(CFG, "ocr_langs", "deu+eng")
 
 
-@dataclass(frozen=True)
-class FileInfo:
-    path: Path
-    size_mb: float
-    status: str
-    lang: str = ""
-
-
-class ManifestRepo:
-    """Minimal JSON set of processed ZIP hashes (or files) under data/state."""
-    def __init__(self, path: Optional[Path] = None):
-        self.path = path or (CFG.state_dir / "zip_manifest.json")
-        if self.path.exists():
-            try:
-                self._seen = set(json.loads(self.path.read_text("utf-8")))
-            except Exception:
-                self._seen = set()
-        else:
-            self._seen = set()
-
-    def seen(self, key: str) -> bool:
-        return key in self._seen
-
-    def add(self, key: str) -> None:
-        self._seen.add(key)
-        self.path.write_text(json.dumps(sorted(self._seen)), encoding="utf-8")
-
-
 class ZipIngestor:
-    ALLOWED_EXT = {".pdf", ".docx", ".d83", ".dwg", ".jpg", ".png", ".tiff", ".zip", ".txt"}
-    MAX_MB = 100
+    """Unpack every tender in data/raw into data/extract_v1/<tender_id>/.
 
-    def __init__(self, manifest: ManifestRepo | None = None):
-        CFG.extract_dir.mkdir(parents=True, exist_ok=True)
-        CFG.logs_dir.mkdir(parents=True, exist_ok=True)
-        CFG.state_dir.mkdir(parents=True, exist_ok=True)
-        self.manifest = manifest or ManifestRepo()
+    data/raw/<tender_id>/*.zip  ->  <extract_dir>/<tender_id>/<zip name>/...
+    Nested zips are unpacked next to themselves. The tender id is the folder name, so two tenders can
+    contain a file with the same name without overwriting each other, and every file keeps its lineage.
+    """
+    MAX_DEPTH = 3        # zip inside zip inside zip ...
+    MAX_FILE_MB = 200    # skip single files larger than this
 
-    def _sha256(self, p: Path) -> str:
-        h = hashlib.sha256()
-        with p.open("rb") as f:
-            for chunk in iter(lambda: f.read(1 << 20), b""):
-                h.update(chunk)
-        return h.hexdigest()
-
-    def _sample_text(self, p: Path) -> str:
-        try:
-            if p.suffix.lower() == ".pdf":
-                with fitz.open(p) as doc:
-                    return (doc[0].get_text() if len(doc) else "")[:3000]
-            if p.suffix.lower() == ".docx":
-                d = docx.Document(p)
-                return " ".join(par.text for par in d.paragraphs)[:3000]
-            if p.suffix.lower() == ".txt":
-                return p.read_text(errors="ignore")[:3000]
-        except Exception:
-            return ""
-        return ""
-
-    def _analyse_file(self, p: Path) -> FileInfo:
-        size_mb = p.stat().st_size / (1024**2)
-        if p.suffix.lower() not in self.ALLOWED_EXT:
-            return FileInfo(p, size_mb, "invalid_format")
-        if size_mb > self.MAX_MB:
-            return FileInfo(p, size_mb, "oversized")
-        lang = ""
-        if p.suffix.lower() in {".pdf", ".docx", ".txt"}:
-            text = self._sample_text(p)
-            if text:
-                try:
-                    lang = langdetect.detect(text)
-                except Exception:
-                    lang = ""
-        return FileInfo(p, size_mb, "valid", lang)
+    def __init__(self, raw_dir: Path | None = None, extract_dir: Path | None = None, log_dir: Path | None = None):
+        self.raw_dir = Path(raw_dir or CFG.raw_dir)
+        self.extract_dir = Path(extract_dir or CFG.extract_dir)
+        self.log_dir = Path(log_dir or CFG.logs_dir)
+        self.extract_dir.mkdir(parents=True, exist_ok=True)
+        self.log_dir.mkdir(parents=True, exist_ok=True)
 
     def _log_row(self, row: list[str]) -> None:
-        csv_path = CFG.logs_dir / f"ingest_{datetime.utcnow():%Y-%m}.csv"
+        csv_path = self.log_dir / f"ingest_{datetime.now():%Y-%m}.csv"
         new = not csv_path.exists()
         with csv_path.open("a", newline="", encoding="utf-8") as f:
             w = csv.writer(f)
             if new:
-                w.writerow(["root_zip", "nested_zip", "file", "size_mb", "status", "lang"])
+                w.writerow(["tender_id", "zip", "file", "size_mb", "status"])
             w.writerow(row)
 
-    def _extract_zip(self, zip_path: Path, root_zip: Path) -> int:
+    def _unzip(self, zip_path: Path, dest: Path, tender_id: str, depth: int = 0) -> int:
+        """Extract one zip into dest. Returns the number of files written."""
         count = 0
+        dest_root = dest.resolve()
         try:
             with zipfile.ZipFile(zip_path) as z:
                 for member in z.infolist():
-                    out = CFG.extract_dir / member.filename
                     if member.is_dir():
-                        out.mkdir(parents=True, exist_ok=True)
+                        continue
+                    out = (dest / member.filename).resolve()
+                    if not out.is_relative_to(dest_root):      # "../x" or an absolute path: refuse
+                        self._log_row([tender_id, zip_path.name, member.filename, "", "unsafe_path"])
+                        continue
+                    size_mb = member.file_size / (1024 ** 2)
+                    if size_mb > self.MAX_FILE_MB:
+                        self._log_row([tender_id, zip_path.name, member.filename, f"{size_mb:.1f}", "too_large"])
                         continue
                     out.parent.mkdir(parents=True, exist_ok=True)
                     with z.open(member) as src, out.open("wb") as dst:
-                        dst.write(src.read())
+                        shutil.copyfileobj(src, dst)
                     if out.suffix.lower() == ".zip":
-                        count += self._extract_zip(out, root_zip)
+                        if depth + 1 >= self.MAX_DEPTH:
+                            self._log_row([tender_id, zip_path.name, member.filename, f"{size_mb:.1f}", "too_deep"])
+                            continue
+                        count += self._unzip(out, out.with_suffix(""), tender_id, depth + 1)
                     else:
-                        info = self._analyse_file(out)
-                        self._log_row([str(root_zip.name), str(zip_path.name), str(out), f"{info.size_mb:.2f}", info.status, info.lang])
+                        self._log_row([tender_id, zip_path.name, member.filename, f"{size_mb:.2f}", "ok"])
                         count += 1
-        except Exception as e:
-            logging.exception(f"Corrupt zip: {zip_path} :: {e}")
+        except (zipfile.BadZipFile, OSError) as e:
+            logging.exception("Cannot read zip %s: %s", zip_path, e)
+            self._log_row([tender_id, zip_path.name, "", "", f"bad_zip: {e}"])
         return count
 
-    def run(self) -> int:
-        """Extract all zips from raw_dir into extract_dir. Returns number of files analyzed."""
+    def run(self, only: list[str] | None = None, force: bool = False) -> int:
+        """Unpack each tender folder in raw_dir. `only` limits it to those tender ids.
+
+        A tender that already has an output folder is skipped unless force=True.
+        Returns the number of files written.
+        """
         total = 0
-        for zip_path in CFG.raw_dir.rglob("*.zip"):
-            h = self._sha256(zip_path)
-            if self.manifest.seen(h):
-                logging.info(f"Skip already processed: {zip_path}")
+        for tender_dir in sorted(p for p in self.raw_dir.iterdir() if p.is_dir()):
+            tender_id = tender_dir.name
+            if only and tender_id not in only:
                 continue
-            logging.info(f"Extracting {zip_path}")
-            total += self._extract_zip(zip_path, root_zip=zip_path)
-            self.manifest.add(h)
+            out = self.extract_dir / tender_id
+            if out.exists() and any(out.iterdir()) and not force:
+                logging.info("Skip %s (already extracted)", tender_id)
+                continue
+            for zip_path in sorted(tender_dir.glob("*.zip")):
+                total += self._unzip(zip_path, out / zip_path.stem, tender_id)
         return total
 
 
@@ -247,6 +203,18 @@ class PDFLoader:
         return self.ocr_stats.copy()
 
 
+def _json_safe(row: dict) -> dict:
+    """Drop empty cells (NaN) and turn numpy numbers and dates into plain Python values."""
+    out = {}
+    for k, v in row.items():
+        if pd.isna(v):
+            continue
+        if hasattr(v, "item"):
+            v = v.item()
+        out[k] = v if isinstance(v, (str, int, float, bool)) else str(v)
+    return out
+
+
 class ExcelMetadataJoiner:
     """Join cleaned Excel metadata onto payloads by dtad_id or filename stem."""
     def __init__(self, cleaned_path: Path | None = None):
@@ -270,7 +238,7 @@ class ExcelMetadataJoiner:
             if "dtad_id" in df.columns:
                 df["dtad_id"] = df["dtad_id"].astype(str).str.strip()
                 self._map = {
-                    str(row["dtad_id"]).strip(): row.to_dict()
+                    str(row["dtad_id"]).strip(): _json_safe(row.to_dict())
                     for _, row in df.iterrows()
                     if pd.notna(row.get("dtad_id", None))
                 }

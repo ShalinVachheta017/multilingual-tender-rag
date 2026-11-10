@@ -4,13 +4,15 @@
 qdrant-client>=1.20,<1.21   # server image in docker-compose.yml must be the same minor version
 
 # ---- Embeddings and reranker (Jina v3 needs remote code) ----
-sentence-transformers>=3.0.1
+sentence-transformers>=3.0.1,<5   # 5.x passes cache_dir twice to the pinned Jina v3 code (TypeError)
 transformers>=4.44,<5
 huggingface_hub>=0.24
 accelerate>=0.33
 safetensors>=0.4.3
+einops   # needed by Jina v3's remote code (without it the model fails with a confusing FileNotFoundError)
 FlagEmbedding>=1.2.10
 rank-bm25>=0.2.2
+tqdm   # progress bar in the indexing script
 
 # ---- Data, PDF, OCR ----
 numpy>=1.24,<3

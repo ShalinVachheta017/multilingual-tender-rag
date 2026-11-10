@@ -126,7 +126,7 @@ def main():
     index.build_index(documents)
     
     # Save index
-    output_path = CFG.state_dir / "bm25_index.pkl"
+    output_path = CFG.bm25_path
     print()
     print(f"💾 Saving index to {output_path}...")
     index.save(output_path)

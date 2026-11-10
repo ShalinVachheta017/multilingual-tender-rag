@@ -68,3 +68,12 @@ how_what_why.ipynb
 INTERVIEW_PREP_GUIDE.md
 # === Third-party reference material (copyrighted; kept locally, never published) ===
 docs/references/
+
+# === Rebuildable local project tracking ===
+/.progress-dashboard/
+/.hallmark/
+
+.project-dashboard/
+
+# Virtual environments
+.venv*/

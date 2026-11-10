@@ -3,6 +3,7 @@
     python scripts/data_processing/embed.py --mode append     # keeps the collection (default, safe)
     python scripts/data_processing/embed.py --mode fresh      # DELETES the collection first
     python scripts/data_processing/embed.py --mode ocr-only   # only PDFs that had no text before
+    python scripts/data_processing/embed.py --tenders 20046891 20046893   # only these tenders (small test corpus)
 
 Point IDs are deterministic, so running append twice does not create duplicates.
 """
@@ -37,6 +38,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument("--chunk-size", type=int, default=CFG.chunk_size, help="chunk size in characters")
     p.add_argument("--chunk-overlap", type=int, default=CFG.chunk_overlap, help="chunk overlap in characters")
     p.add_argument("--extract-dir", default=str(CFG.extract_dir), help="folder that holds the PDFs")
+    p.add_argument("--tenders", nargs="+", metavar="ID", help="only index these tender ids (a small test corpus)")
     p.add_argument("--no-health-check", action="store_true", help="skip the Qdrant readiness check")
     p.add_argument("-v", "--verbose", action="store_true")
     return p.parse_args(argv)
@@ -64,11 +66,11 @@ def main(argv: list[str] | None = None) -> None:
     started = time.time()
     try:
         if args.mode == "ocr-only":
-            Indexer(CFG, fresh=False).build_ocr_only(extract_dir=extract_dir)
+            Indexer(CFG, fresh=False).build_ocr_only(extract_dir=extract_dir, tenders=args.tenders)
         else:
             if args.mode == "fresh":
                 print("mode fresh: the existing collection will be deleted and recreated")
-            Indexer(CFG, fresh=(args.mode == "fresh")).build(extract_dir=extract_dir)
+            Indexer(CFG, fresh=(args.mode == "fresh")).build(extract_dir=extract_dir, tenders=args.tenders)
     except KeyboardInterrupt:
         sys.exit("Interrupted.")
     print(f"Done in {time.time() - started:.1f}s. Next: python scripts/deployment/build_bm25_index.py")

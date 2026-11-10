@@ -1,6 +1,6 @@
 """Step 1 of 3: prepare the files.
 
-Unzips every tender archive in data/raw into data/extract, copies loose files, and cleans the
+Unzips every tender in data/raw into data/extract_v1/<tender_id>/ (one folder per tender), copies loose files, and cleans the
 metadata Excel. It does NOT build the index; the next steps are:
 
     python scripts/data_processing/embed.py --mode append
@@ -20,13 +20,16 @@ from src.core.io import ExcelCleaner, ZipIngestor
 LOOSE_EXTENSIONS = {".pdf", ".docx", ".d83", ".dwg", ".jpg", ".png", ".tiff"}
 
 
-def copy_loose_files() -> int:
-    """Copy non-zip files from data/raw to data/extract (same folders), only if new or newer."""
+def copy_loose_files(only: list[str] | None = None) -> int:
+    """Copy non-zip files from data/raw/<tender_id>/ to the same tender folder in the extract dir."""
     copied = 0
     for src in CFG.raw_dir.rglob("*"):
         if not src.is_file() or src.suffix.lower() not in LOOSE_EXTENSIONS:
             continue
-        dst = CFG.extract_dir / src.relative_to(CFG.raw_dir)
+        rel = src.relative_to(CFG.raw_dir)
+        if len(rel.parts) < 2 or (only and rel.parts[0] not in only):   # files must sit inside a tender folder
+            continue
+        dst = CFG.extract_dir / rel
         dst.parent.mkdir(parents=True, exist_ok=True)
         try:
             if not dst.exists() or src.stat().st_mtime > dst.stat().st_mtime:
@@ -39,6 +42,8 @@ def copy_loose_files() -> int:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Unzip tenders, copy loose files, clean the metadata Excel.")
+    parser.add_argument("--only", nargs="+", metavar="ID", help="only these tender ids")
+    parser.add_argument("--force", action="store_true", help="unpack tenders again even if their folder exists")
     parser.add_argument("--skip-clean", action="store_true", help="do not clean the metadata Excel")
     parser.add_argument("-v", "--verbose", action="store_true", help="also log to the console")
     args = parser.parse_args()
@@ -50,11 +55,11 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s", handlers=handlers)
 
     print("1/3 Unzipping tender archives (nested zips included) ...")
-    extracted = ZipIngestor().run()
+    extracted = ZipIngestor().run(only=args.only, force=args.force)
     print(f"    {extracted} files extracted")
 
-    print("2/3 Copying loose files from data/raw to data/extract ...")
-    print(f"    {copy_loose_files()} files copied")
+    print("2/3 Copying loose files from data/raw to the extract folder ...")
+    print(f"    {copy_loose_files(args.only)} files copied")
 
     if not args.skip_clean:
         print("3/3 Cleaning the metadata Excel ...")

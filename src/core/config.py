@@ -15,7 +15,7 @@ class AppConfig(BaseSettings):
 
     # ─── Paths ─────────────────────────────────────────────────────────────
     raw_dir:      Path = ROOT / "data" / "raw"
-    extract_dir:  Path = ROOT / "data" / "extract"
+    extract_dir:  Path = ROOT / "data" / "extract_v1"   # one folder per tender (data/extract is the old flat one)
     metadata_dir: Path = ROOT / "data" / "metadata"
     logs_dir:     Path = ROOT / "data" / "logs"
     state_dir:    Path = ROOT / "data" / "state"
@@ -24,19 +24,32 @@ class AppConfig(BaseSettings):
     metadata_filename: str = "cleaned_metadata.xlsx"
 
     # ─── Models / Vector DB ────────────────────────────────────────────────
+    # Answer model (runs in Ollama). Compare these three later, one at a time:
+    #   ollama pull qwen2.5:1.5b   ->  1.0 GB, Apache 2.0  (baseline, the one active now)
+    #   ollama pull granite4.1:3b  ->  2.1 GB
+    #   ollama pull gemma3:4b      ->  3.4 GB
+    # To switch without editing code:  set RAGBOT_LLM_MODEL=gemma3:4b
     llm_model:         str  = "qwen2.5:1.5b"
+    # llm_model:       str  = "granite4.1:3b"
+    # llm_model:       str  = "gemma3:4b"
     qdrant_url: str = "http://localhost:6333" # health check URL
 
 
-    # Embeddings (Jina v3 = 1024-D)
-    embed_model:       str  = "jinaai/jina-embeddings-v3"
+    # Embedding model. Default: BGE-M3 (1024-D, loads without remote code, no prefixes).
+    # Compare other models by setting environment variables, e.g. Jina v3:
+    #   RAGBOT_EMBED_MODEL=jinaai/jina-embeddings-v3
+    #   RAGBOT_EMBED_REVISION=f1944de8402dcd5f2b03f822a4bc22a7f2de2eb9
+    #   RAGBOT_EMBED_TRUST_REMOTE_CODE=true
+    #   RAGBOT_EMBED_DOC_PREFIX="search_document: "   RAGBOT_EMBED_QUERY_PREFIX="search_query: "
+    # Always use a new RAGBOT_QDRANT_COLLECTION per embedding model: vectors from different models do not mix.
+    embed_model:       str  = "BAAI/bge-m3"
     embed_dim:         int  = 1024
+    embed_revision:    str | None = None
+    embed_trust_remote_code: bool = False
+    embed_doc_prefix:  str  = ""
+    embed_query_prefix:str  = ""
 
-    # ✅ Jina v3 requires different prefixes for docs vs. queries
-    embed_doc_prefix:  str  = "search_document: "
-    embed_query_prefix:str  = "search_query: "
-
-    qdrant_collection: str  = "tender_docs_jina-v3_d1024_fresh"
+    qdrant_collection: str  = "tender_bge-m3_v1"
 
     # ─── Embedding-time knobs ──────────────────────────────────────────────
     embed_batch_size:   int = 32
