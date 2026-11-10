@@ -1,7 +1,7 @@
 # core/io.py
 from __future__ import annotations
 from pathlib import Path
-import csv, logging, shutil, zipfile
+import csv, logging, re, shutil, zipfile
 from datetime import datetime
 from typing import List, Dict
 
@@ -109,6 +109,19 @@ class ZipIngestor:
         return total
 
 
+def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Lower-case column names with every run of non-alphanumeric characters turned into "_".
+
+    "DTAD-ID" -> "dtad_id", "E-Mail" -> "e_mail". (Hyphens used to survive, so the id column was
+    never found and no tender metadata was ever attached to a chunk.)
+    """
+    df = df.copy()
+    df.columns = [re.sub(r"[^0-9a-z]+", "_", str(c).strip().lower()).strip("_") for c in df.columns]
+    if "dtad_id" in df.columns:
+        df["dtad_id"] = df["dtad_id"].astype(str).str.replace(r"\.0$", "", regex=True).str.strip()
+    return df
+
+
 class ExcelCleaner:
     """Find latest Excel (recursively) in raw_dir, clean, and write cleaned_metadata to metadata_dir."""
     def run(self) -> Path:
@@ -117,10 +130,7 @@ class ExcelCleaner:
             raise FileNotFoundError("No .xlsx in data/raw (recursively)")
         src = exc[0]
         df = pd.read_excel(src)
-        df = df.dropna(how="all")
-        df.columns = [str(c).strip().lower().replace(" ", "_") for c in df.columns]
-        if "dtad_id" in df.columns:
-            df["dtad_id"] = df["dtad_id"].astype(str).str.strip()
+        df = normalize_columns(df.dropna(how="all"))
         out_csv = CFG.metadata_dir / "cleaned_metadata.csv"
         out_xlsx = CFG.metadata_dir / "cleaned_metadata.xlsx"
         df.to_csv(out_csv, index=False, encoding="utf-8-sig")
@@ -234,9 +244,8 @@ class ExcelMetadataJoiner:
             if df.empty:
                 logging.warning(f"ExcelMetadataJoiner: {self.cleaned_path} is empty, continuing without metadata.")
                 return
-            df.columns = [str(c).strip().lower().replace(" ", "_") for c in df.columns]
+            df = normalize_columns(df)
             if "dtad_id" in df.columns:
-                df["dtad_id"] = df["dtad_id"].astype(str).str.strip()
                 self._map = {
                     str(row["dtad_id"]).strip(): _json_safe(row.to_dict())
                     for _, row in df.iterrows()

@@ -68,3 +68,11 @@ def test_json_safe_drops_nan_and_converts_types():
     out = _json_safe(row)
     assert "a" not in out and out["b"] == 3 and type(out["b"]) is int
     assert isinstance(out["c"], str) and out["d"] == "text"
+
+
+def test_normalize_columns_makes_the_id_column_findable():
+    from src.core.io import normalize_columns
+    df = pandas.DataFrame({"DTAD-ID": [20046891.0, 20046893.0], "Vergabestelle (komplett)": ["a", "b"], "E-Mail": ["x", "y"]})
+    out = normalize_columns(df)
+    assert list(out.columns) == ["dtad_id", "vergabestelle_komplett", "e_mail"]
+    assert list(out["dtad_id"]) == ["20046891", "20046893"]
