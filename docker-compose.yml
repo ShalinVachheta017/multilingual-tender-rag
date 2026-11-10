@@ -1,6 +1,6 @@
 services:
   qdrant:
-    image: qdrant/qdrant:v1.9.2
+    image: qdrant/qdrant:v1.20.0  # keep in step with qdrant-client in requirements.txt
     ports: ["6333:6333"]
     volumes:
       - qdrant_storage:/qdrant/storage

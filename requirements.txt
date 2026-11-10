@@ -1,7 +1,7 @@
 # Install torch first (CUDA build if you have an NVIDIA GPU), then: pip install -r requirements.txt && pip install -e .
 
 # ---- Vector DB ----
-qdrant-client>=1.8,<2.0
+qdrant-client>=1.20,<1.21   # server image in docker-compose.yml must be the same minor version
 
 # ---- Embeddings and reranker (Jina v3 needs remote code) ----
 sentence-transformers>=3.0.1

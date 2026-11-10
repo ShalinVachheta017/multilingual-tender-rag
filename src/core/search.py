@@ -100,21 +100,23 @@ def search_dense(query_text: str, limit: Optional[int] = None, min_score: Option
     tender_id = detect_tender_id(query_text)
     if tender_id:
         try:
-            res = _client().search(
+            res = _client().query_points(
                 collection_name=CFG.qdrant_collection,
-                query_vector=qv,
+                query=qv,
                 query_filter=qmodels.Filter(
                     must=[qmodels.FieldCondition(key="id", match=qmodels.MatchValue(value=tender_id))]
                 ),
                 limit=limit,
                 with_payload=True,
-            )
+            ).points
             if res:
                 return res
         except Exception as e:
             logger.warning("Tender-id filter failed, using normal search: %s", e)
 
-    res = _client().search(collection_name=CFG.qdrant_collection, query_vector=qv, limit=limit, with_payload=True)
+    res = _client().query_points(
+        collection_name=CFG.qdrant_collection, query=qv, limit=limit, with_payload=True
+    ).points
     threshold = CFG.min_score if min_score is None else float(min_score)
     if threshold > 0:
         res = [r for r in res if r.score is not None and r.score >= threshold]
