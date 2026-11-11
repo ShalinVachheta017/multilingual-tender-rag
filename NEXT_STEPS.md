@@ -1,11 +1,11 @@
 # Tender RAG 2.0 - What We Do Next
 
 Last verified: 7 November 2026  
-Current branch: `refactor/simplify`
+Current branch: `main` (the only branch; the old line is kept as tags `v1-before-refactor` and `archive/cleanup-qdrant-only`)
 
 ## Update 2026-11-11 (read this first; the sections below were written on 7 November)
 
-Done since then, all committed on `refactor/simplify`:
+Done since then, all committed on `main`:
 
 - Environment: Python 3.12 in `.venv312` (Smart App Control blocked unsigned binaries in the 3.14 environment).
 - Qdrant server and client are both 1.20; search uses `query_points`.

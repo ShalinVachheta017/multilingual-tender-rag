@@ -11,7 +11,7 @@
 |:-:|:-:|:-:|:-:|:-:|:-:|
 | tenders | valid zips | extracted files | known defects | test questions | mandatory hours |
 
-**Version 1.3** · 10 Nov 2026 · branch `refactor/simplify` · **Status:** *plan. Part 1 describes the code as read, not as run. Nothing is built or measured yet.*
+**Version 1.3** · 10 Nov 2026 · branch `main` · **Status:** *plan. Part 1 describes the code as read, not as run. Nothing is built or measured yet.* (State on 11 Nov: see NEXT_STEPS.md; the data pipeline and three embedding collections are built.)
 
 ## 🚦 Status board
 

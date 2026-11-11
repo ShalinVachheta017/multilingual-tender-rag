@@ -6,28 +6,27 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 
 ## Current checkpoint
 
-- Branch: `refactor/simplify`
-- HEAD: `f2430bde`
+- Branch: `main`
+- HEAD: `6005ed91`
 - Origin: `https://github.com/ShalinVachheta017/ragbot-core.git`
-- Unique commits: **72**
+- Unique commits: **74**
 - Active commit dates: **20**
 - Latest commit date in the graph: `2026-11-11`
 - Product checkpoint: **Gate 0, restore a safe reproducible baseline**. See `NEXT_STEPS.md`.
 
 ### Refs included
 
-- `chore/repo-cleanup -> 0c1b9999`
-- `cleanup-qdrant-only -> f076187a`
-- `main -> 26fa967a`
-- `refactor/simplify -> f2430bde`
-- `origin -> df2a0be4`
-- `origin/cleanup-qdrant-only -> f076187a`
-- `origin/main -> df2a0be4`
+- `main -> 6005ed91`
+- `origin -> 6005ed91`
+- `origin/main -> 6005ed91`
+- `archive/cleanup-qdrant-only -> f076187a`
 - `v1-before-refactor -> 0c1b9999`
 
 ### Working tree when regenerated
 
+- ` M NEXT_STEPS.md`
 - ` M WORK_LOG.md`
+- ` M docs/TENDER_RAG_REFERENCE.md`
 - `?? .dashboard/`
 - `?? .smapleproject.md`
 
@@ -39,7 +38,7 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 | RAG 1.0: Vector retrieval | 2025-08-12 to 2025-09-26 | 16 | Qdrant, API, Streamlit, OCR, multilingual embeddings, and retrieval debugging. |
 | RAG 1.x: Hybrid and evaluation | 2025-10-04 to 2025-11-02 | 11 | Diagrams, hybrid/BM25, FastAPI, evaluation, caching, and production-style layout. |
 | Maintenance: Documentation bridge | 2026-05-11 to 2026-05-11 | 2 | README structure and readability updates. |
-| Current: Tender RAG 2.0 | 2026-11-04 to current | 37 | Project definition, corpus evidence, staged plan, simplification refactor, and the from-zero rebuild (per-tender corpus, BGE-M3, mini evaluation). |
+| Current: Tender RAG 2.0 | 2026-11-04 to current | 39 | Project definition, corpus evidence, staged plan, simplification refactor, and the from-zero rebuild (per-tender corpus, BGE-M3, mini evaluation). |
 
 ## Daily history
 
@@ -155,7 +154,7 @@ Every unique commit appears once below. File operations come directly from Git n
 #### `f076187a` feat(rag): Qdrant-only core + robust reranker + structured answers
 
 - Full hash: `f076187a0bffefa7ecf850ee082841749cb3a1dd`
-- Refs: `origin/cleanup-qdrant-only, cleanup-qdrant-only`
+- Refs: `tag: archive/cleanup-qdrant-only`
 - Added (1):
   - `scripts/tools/ensure_qdrant.py`
 - Modified (6):
@@ -663,7 +662,6 @@ Every unique commit appears once below. File operations come directly from Git n
 #### `26fa967a` reformat readme
 
 - Full hash: `26fa967a364865378c8621e8feb95ae9a5bee868`
-- Refs: `main`
 - Modified (1):
   - `README.md`
 
@@ -783,7 +781,7 @@ Every unique commit appears once below. File operations come directly from Git n
 #### `0c1b9999` docs: add code tour and answer-model options to the reference
 
 - Full hash: `0c1b99990effc7167c37eb90d3f916264cb8f2af`
-- Refs: `tag: v1-before-refactor, chore/repo-cleanup`
+- Refs: `tag: v1-before-refactor`
 - Modified (3):
   - `docs/PROJECT_1_TENDER_RAG_2_0.pdf`
   - `docs/PROJECT_2_MULTIDOC_AGENT.pdf`
@@ -876,7 +874,6 @@ Every unique commit appears once below. File operations come directly from Git n
 #### `df2a0be4` docs: position multilingual tender RAG as privacy-first with accurate runtime scope
 
 - Full hash: `df2a0be499332c2b33d7e284328c6273b189f9db`
-- Refs: `origin/main, origin/HEAD`
 - Modified (1):
   - `README.md`
 
@@ -906,8 +903,8 @@ Every unique commit appears once below. File operations come directly from Git n
 
 **Current: Tender RAG 2.0.** Started the corpus from zero (one folder per tender, safe unzip, tender metadata finally attached), made BGE-M3 the default embedder, added parallel read/OCR workers, a saved-chunk file so OCR runs once, three full collections (BGE-M3, Qwen3-0.6B, Jina v3, 32,370 points each after fixing a bug that overwrote 4.7% of chunks), resumable GPU indexing, and a 48-question German/English evaluation set with a retrieval check.
 
-- Commits: **18**
-- File events: added 28, modified 50, deleted 1
+- Commits: **20**
+- File events: added 28, modified 51, deleted 1
 - Areas touched: `.gitignore`, `docs`, `evaluation`, `NEXT_STEPS.md`, `README.md`, `requirements.txt`, `scripts`, `src`, `tests`, `WORK_LOG.md`
 
 #### `12279ffb` feat: start the corpus from zero with one folder per tender and a swappable embedder
@@ -1079,13 +1076,24 @@ Every unique commit appears once below. File operations come directly from Git n
 #### `f2430bde` docs: README resume section, reference v1.3, and the Advanced RAG 2.0 backlog
 
 - Full hash: `f2430bdefc072a5d258c07aaf6b403ed371901c6`
-- Refs: `HEAD -> refactor/simplify`
 - Added (1):
   - `docs/img/one_page.svg`
 - Modified (3):
   - `NEXT_STEPS.md`
   - `README.md`
   - `docs/TENDER_RAG_REFERENCE.md`
+
+#### `f368020f` docs: refresh WORK_LOG
+
+- Full hash: `f368020f76afc3cc16e1056154d36b2a90eebeb0`
+- Modified (1):
+  - `WORK_LOG.md`
+
+#### `6005ed91` Merge origin/main (README project summary) into refactor/simplify
+
+- Full hash: `6005ed91d06c36f03652ab1043dcf9892691168c`
+- Refs: `HEAD -> main, origin/main, origin/HEAD`
+- Merge commit; Git reports no direct file list for this merge in the default history view.
 
 ## Rebuild
 
