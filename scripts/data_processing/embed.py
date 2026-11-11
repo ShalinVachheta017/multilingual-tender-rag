@@ -4,6 +4,7 @@
     python scripts/data_processing/embed.py --mode fresh      # DELETES the collection first
     python scripts/data_processing/embed.py --mode ocr-only   # only PDFs that had no text before
     python scripts/data_processing/embed.py --tenders 20046891 20046893   # only these tenders (small test corpus)
+    python scripts/data_processing/embed.py --from-chunks                 # embed saved chunks (see prepare_chunks.py)
 
 Point IDs are deterministic, so running append twice does not create duplicates.
 """
@@ -38,6 +39,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument("--chunk-size", type=int, default=CFG.chunk_size, help="chunk size in characters")
     p.add_argument("--chunk-overlap", type=int, default=CFG.chunk_overlap, help="chunk overlap in characters")
     p.add_argument("--extract-dir", default=str(CFG.extract_dir), help="folder that holds the PDFs")
+    p.add_argument("--from-chunks", action="store_true",
+                   help="embed the chunks saved by prepare_chunks.py (no PDF reading, no OCR: GPU only)")
+    p.add_argument("--chunks-file", default=None, help="chunk file for --from-chunks (default: the standard one)")
     p.add_argument("--tenders", nargs="+", metavar="ID", help="only index these tender ids (a small test corpus)")
     p.add_argument("--workers", type=int, default=1,
                    help="processes that read, OCR and chunk the next PDFs while the GPU embeds (1 = one after the other)")
@@ -65,6 +69,8 @@ def main(argv: list[str] | None = None) -> None:
     if not args.no_health_check and not qdrant_is_ready(CFG.qdrant_url):
         sys.exit(f"Qdrant is not ready at {CFG.qdrant_url}/readyz. Start it with: docker compose up -d")
 
+    if args.from_chunks and args.mode == "ocr-only":
+        sys.exit("--from-chunks cannot be combined with --mode ocr-only (the chunks are already OCR'd).")
     started = time.time()
     try:
         if args.mode == "ocr-only":
@@ -72,7 +78,11 @@ def main(argv: list[str] | None = None) -> None:
         else:
             if args.mode == "fresh":
                 print("mode fresh: the existing collection will be deleted and recreated")
-            Indexer(CFG, fresh=(args.mode == "fresh")).build(extract_dir=extract_dir, tenders=args.tenders, workers=args.workers)
+            indexer = Indexer(CFG, fresh=(args.mode == "fresh"))
+            if args.from_chunks:
+                indexer.build_from_chunks(Path(args.chunks_file or CFG.chunks_path), extract_dir, tenders=args.tenders)
+            else:
+                indexer.build(extract_dir=extract_dir, tenders=args.tenders, workers=args.workers)
     except KeyboardInterrupt:
         sys.exit("Interrupted.")
     print(f"Done in {time.time() - started:.1f}s. Next: python scripts/deployment/build_bm25_index.py")

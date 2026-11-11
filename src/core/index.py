@@ -15,7 +15,7 @@ from qdrant_client.http import models as qmodels
 from sentence_transformers import SentenceTransformer
 
 from .chunking import PageAwareChunker
-from .prepare import init_worker, prepare_pdf
+from .prepare import init_worker, prepare_record, read_records
 from .io import PDFLoader, ExcelMetadataJoiner
 from .config import CFG
 
@@ -175,9 +175,13 @@ class Indexer:
             torch.cuda.empty_cache()
         return out
 
-    def _point_id(self, doc_hash: str, chunk_idx: int) -> str:
-        """Deterministic UUID for points (idempotent upserts)."""
-        return str(uuid5(NAMESPACE_URL, f"{doc_hash}|{chunk_idx}"))
+    def _point_id(self, rel_path: str, doc_hash: str, chunk_idx: int) -> str:
+        """Deterministic UUID for a point (idempotent upserts).
+
+        The path is part of the id: the same file in two tenders must stay two points (identical forms and
+        conditions are attached to many tenders; with the hash alone the last tender overwrote the others).
+        """
+        return str(uuid5(NAMESPACE_URL, f"{rel_path}|{doc_hash}|{chunk_idx}"))
 
     @staticmethod
     def _tender_id(pdf: Path, base: Path) -> str:
@@ -188,7 +192,7 @@ class Indexer:
     @staticmethod
     def _list_pdfs(base: Path, tenders: Optional[List[str]]) -> List[Path]:
         roots = [base / t for t in tenders] if tenders else [base]
-        return sorted(p for r in roots for p in r.rglob("*.pdf"))
+        return sorted(p for r in roots for p in r.rglob("*.pdf") if p.is_file())   # a folder can be named "x.pdf"
 
     def _hash_file(self, pdf_path: Path) -> str:
         """Robust file hash (fallback to path string if read fails)."""
@@ -197,8 +201,8 @@ class Indexer:
         except Exception:
             return hashlib.sha1(str(pdf_path).encode("utf-8")).hexdigest()
 
-    def _prepared(self, pdfs: List[Path], workers: int):
-        """Yield (pdf, chunks, error) in order. Reading, OCR and chunking are the CPU part of the work.
+    def _records_live(self, pdfs: List[Path], base: Path, workers: int):
+        """Yield one record per PDF. Reading, OCR and chunking are the CPU part of the work.
 
         With workers > 1 they run in other processes, so the next PDFs are being read and OCR'd
         while the GPU embeds the current one.
@@ -206,18 +210,18 @@ class Indexer:
         size, overlap = self.cfg.chunk_size, self.cfg.chunk_overlap
         if workers <= 1:
             for pdf in pdfs:
-                yield prepare_pdf(pdf, size, overlap)
+                yield prepare_record(pdf, base, size, overlap)
             return
         with ProcessPoolExecutor(max_workers=workers, initializer=init_worker) as pool:
-            yield from pool.map(prepare_pdf, pdfs, repeat(size), repeat(overlap))
+            yield from pool.map(prepare_record, pdfs, repeat(base), repeat(size), repeat(overlap))
 
     # --------------- main flows ----------------
 
     def build(self, extract_dir: Path | None = None, tenders: Optional[List[str]] = None, workers: int = 1):
-        """
-        Build (fresh or append) the index with batch upserts.
-        - In fresh mode, the collection was recreated in __init__
-        - In append mode, point IDs are stable and will overwrite duplicates
+        """Read the PDFs (OCR where needed), chunk them, embed the chunks and upsert them into Qdrant.
+
+        In fresh mode the collection was recreated in __init__. In append mode point ids are stable,
+        so running twice does not create duplicates.
         """
         base = Path(extract_dir or self.cfg.extract_dir)
         pdfs = self._list_pdfs(base, tenders)
@@ -225,68 +229,65 @@ class Indexer:
         if not pdfs:
             tqdm.write(" No PDF files found in extract directory")
             return
+        self._index_records(self._records_live(pdfs, base, workers), len(pdfs), base)
 
+    def build_from_chunks(self, chunks_file: Path, extract_dir: Path | None = None,
+                          tenders: Optional[List[str]] = None):
+        """Embed chunks that prepare_chunks.py saved earlier. No PDF is read and no OCR runs: GPU work only."""
+        base = Path(extract_dir or self.cfg.extract_dir)
+        total = sum(1 for _ in read_records(chunks_file, tenders))
+        tqdm.write(f"Found {total} files in {chunks_file}")
+        self._index_records(read_records(chunks_file, tenders), total, base)
+
+    def _index_records(self, records, total: int, base: Path):
+        """Embed every chunk of every record and upsert it, with the same payload whichever way it was prepared."""
         BUFFER_SIZE = int(self.cfg.embed_flush_chunks)
         points_buffer: List[qmodels.PointStruct] = []
         total_chunks = 0
         processed_files = 0
 
-        for pdf_idx, (pdf, chunks, error) in enumerate(
-                tqdm(self._prepared(pdfs, workers), total=len(pdfs), desc="PDFs", unit="file"), start=1):
+        for rec in tqdm(records, total=total, desc="PDFs", unit="file"):
+            name = Path(rec["rel_path"]).name
             try:
-                if error:
-                    raise RuntimeError(error)
-
+                if rec["error"]:
+                    raise RuntimeError(rec["error"])
+                chunks = rec["chunks"]
                 if not chunks:
-                    tqdm.write(f" Skipped (no text): {pdf.name}")
+                    tqdm.write(f" Skipped (no text): {name}")
                     continue
 
-                h = self._hash_file(pdf)
-                tender_id = self._tender_id(pdf, base)
-
-                # Prepare payloads and texts
-                payloads: List[Dict] = []
-                texts: List[str] = []
-                for c in chunks:
-                    meta = self.joiner.enrich(c.source_path, {**c.meta, "dtad_id": tender_id})
-                    base_payload = c.payload()  # expected to include chunk_idx/page/source
-                    # Normalize/augment payload to be JSON-safe & informative
-                    pl = {
-                        **base_payload,
+                source_path = base / rec["rel_path"]
+                meta = self.joiner.enrich(source_path, {"dtad_id": rec["tender_id"]})   # tender row from the Excel
+                payloads = [
+                    {
                         **meta,
-                        "source_path": str(base_payload.get("source_path") or c.source_path or ""),
-                        "doc_hash": h,
-                        "dtad_id": tender_id,
-                        "rel_path": pdf.relative_to(base).as_posix(),
-                        "text": (c.text or "")[:1500],  # snippet for reranker/UI
+                        "source_path": str(source_path),
+                        "chunk_idx": c["chunk_idx"],
+                        "page_start": c["page_start"],
+                        "page_end": c["page_end"],
+                        "doc_hash": rec["doc_hash"],
+                        "dtad_id": rec["tender_id"],
+                        "rel_path": rec["rel_path"],
+                        "text": (c["text"] or "")[:1500],  # snippet for reranker/UI
                     }
-                    payloads.append(pl)
-                    texts.append(c.text or "")
+                    for c in chunks
+                ]
+                texts = [c["text"] or "" for c in chunks]
 
-                # Batch over encode output for throughput (4× embed_batch_size is a good start)
+                # Batch over encode output for throughput (4x embed_batch_size is a good start)
                 batch_size = min(len(texts), max(1, int(self.cfg.embed_batch_size) * 4))
                 for i in range(0, len(texts), batch_size):
-                    batch_texts = texts[i : i + batch_size]
-                    batch_payloads = payloads[i : i + batch_size]
-
-                    vecs = self._embed(batch_texts)
-
-                    for v, pl in zip(vecs, batch_payloads):
-                        cid = int(pl.get("chunk_idx", -1))
+                    vecs = self._embed(texts[i : i + batch_size])
+                    for v, pl in zip(vecs, payloads[i : i + batch_size]):
                         points_buffer.append(
                             qmodels.PointStruct(
-                                id=self._point_id(pl["doc_hash"], cid),
+                                id=self._point_id(pl["rel_path"], pl["doc_hash"], int(pl["chunk_idx"])),
                                 vector=v.tolist(),
                                 payload=pl,
                             )
                         )
-
                     if len(points_buffer) >= BUFFER_SIZE:
-                        self.client.upsert(
-                            collection_name=self.cfg.qdrant_collection,
-                            points=points_buffer,
-                            wait=False,
-                        )
+                        self.client.upsert(collection_name=self.cfg.qdrant_collection, points=points_buffer, wait=False)
                         tqdm.write(f"Uploaded batch: {len(points_buffer)} points")
                         total_chunks += len(points_buffer)
                         points_buffer.clear()
@@ -294,29 +295,20 @@ class Indexer:
                             torch.cuda.empty_cache()
 
                 processed_files += 1
-                tqdm.write(f"Processed {len(chunks)} chunks from {pdf.name}")
-
             except Exception as e:
-                tqdm.write(f"Error processing {pdf.name}: {e}")
+                tqdm.write(f"Error processing {name}: {e}")
                 continue
 
-        # Final flush
-        if points_buffer:
-            self.client.upsert(
-                collection_name=self.cfg.qdrant_collection,
-                points=points_buffer,
-                wait=False,
-            )
+        if points_buffer:  # final flush
+            self.client.upsert(collection_name=self.cfg.qdrant_collection, points=points_buffer, wait=True)
             tqdm.write(f"Final upload: {len(points_buffer)} points")
             total_chunks += len(points_buffer)
 
         if self.device == "cuda":
             torch.cuda.empty_cache()
-
         tqdm.write("Indexing complete!")
-        tqdm.write(f"Processed: {processed_files}/{len(pdfs)} files")
+        tqdm.write(f"Processed: {processed_files}/{total} files")
         tqdm.write(f"Total chunks upserted: {total_chunks}")
-        tqdm.write("Your German document RAG system is ready!")
 
     def build_ocr_only(self, extract_dir: Path | None = None, tenders: Optional[List[str]] = None):
         """
@@ -388,7 +380,7 @@ class Indexer:
                     cid = int(pl.get("chunk_idx", -1))
                     points_buffer.append(
                         qmodels.PointStruct(
-                            id=self._point_id(pl["doc_hash"], cid),
+                            id=self._point_id(pl["rel_path"], pl["doc_hash"], cid),
                             vector=v.tolist(),
                             payload=pl,
                         )

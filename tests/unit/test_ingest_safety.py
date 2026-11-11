@@ -80,16 +80,25 @@ def test_normalize_columns_makes_the_id_column_findable():
 
 def test_prepare_pdf_returns_chunks_and_never_raises(tmp_path):
     import fitz
-    from src.core.prepare import prepare_pdf
-    pdf = tmp_path / "t.pdf"
+    from src.core.prepare import prepare_record, read_records
+    (tmp_path / "20000001").mkdir()
+    pdf = tmp_path / "20000001" / "t.pdf"
     doc = fitz.open()
     for i in range(2):
         lines = [f"Seite {i + 1} Zeile {j}: Die Bindefrist endet am 15.06.2023." for j in range(30)]
         doc.new_page().insert_text((40, 40), chr(10).join(lines))
     doc.save(pdf)
     doc.close()
-    path, chunks, error = prepare_pdf(pdf, 300, 50)
-    assert error is None and path == pdf and len(chunks) >= 2
-    assert chunks[0].page_start == 1 and chunks[-1].page_end == 2
-    path, chunks, error = prepare_pdf(tmp_path / "missing.pdf", 300, 50)
-    assert chunks == []                                  # a bad file yields an empty result, not an exception
+    rec = prepare_record(pdf, tmp_path, 300, 50)
+    assert rec["error"] is None and rec["tender_id"] == "20000001" and rec["rel_path"] == "20000001/t.pdf"
+    assert len(rec["chunks"]) >= 2 and len(rec["doc_hash"]) == 40
+    assert rec["chunks"][0]["page_start"] == 1 and rec["chunks"][-1]["page_end"] == 2
+
+    missing = prepare_record(tmp_path / "20000001" / "missing.pdf", tmp_path, 300, 50)
+    assert missing["chunks"] == [] and missing["error"]   # a bad file gives an error record, not an exception
+
+    saved = tmp_path / "chunks.jsonl"                     # saving and reading back changes nothing
+    import json
+    saved.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in (rec, missing)), encoding="utf-8")
+    assert list(read_records(saved)) == [rec, missing]
+    assert [r["rel_path"] for r in read_records(saved, tenders=["99999999"])] == []

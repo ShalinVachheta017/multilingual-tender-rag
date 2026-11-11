@@ -18,6 +18,7 @@ class AppConfig(BaseSettings):
     extract_dir:  Path = ROOT / "data" / "extract_v1"   # one folder per tender (data/extract is the old flat one)
     metadata_dir: Path = ROOT / "data" / "metadata"
     logs_dir:     Path = ROOT / "data" / "logs"
+    chunks_dir:   Path = ROOT / "data" / "chunks"
     state_dir:    Path = ROOT / "data" / "state"
 
     # If you ever change the filename, the UI/parse step will stay in sync via this:
@@ -83,6 +84,11 @@ class AppConfig(BaseSettings):
     def metadata_path(self) -> Path:
         """Full path to the cleaned metadata Excel used by the UI."""
         return self.metadata_dir / self.metadata_filename
+
+    @property
+    def chunks_path(self) -> Path:
+        """The saved, ready-to-embed chunks. One file per chunk size, shared by every embedding model."""
+        return self.chunks_dir / f"chunks_s{self.chunk_size}_o{self.chunk_overlap}.jsonl"
 
     @property
     def bm25_path(self) -> Path:

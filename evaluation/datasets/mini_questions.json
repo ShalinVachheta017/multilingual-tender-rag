@@ -8,14 +8,20 @@
       "language": "de",
       "category": "single_fact",
       "expected_answer": "Die Bindefrist endet am 15.06.2023.",
-      "required_tender_ids": ["20046645"],
-      "required_files": ["VHB_211_Aufforderung_zur_Abgabe_eines_Angebots.pdf"],
-      "required_pages": [1],
+      "required_tender_ids": [
+        "20046645"
+      ],
+      "required_files": [
+        "VHB_211_Aufforderung_zur_Abgabe_eines_Angebots.pdf"
+      ],
+      "required_pages": [
+        1
+      ],
       "answerable": true,
       "expected_refusal": false,
       "corpus_level": "mini_L1",
       "evidence": "VHB_211_Aufforderung_zur_Abgabe_eines_Angebots.pdf S.1: 'Bindefrist endet am 15.06.2023'",
-      "verified_by_user": false
+      "verified_by_user": true
     },
     {
       "id": "m02",
@@ -23,14 +29,20 @@
       "language": "en",
       "category": "english_over_german",
       "expected_answer": "The binding period (Bindefrist) ends on 26.05.2023.",
-      "required_tender_ids": ["20046904"],
-      "required_files": ["000 Aufforderung und Bedingungen.pdf"],
-      "required_pages": [1],
+      "required_tender_ids": [
+        "20046904"
+      ],
+      "required_files": [
+        "000 Aufforderung und Bedingungen.pdf"
+      ],
+      "required_pages": [
+        1
+      ],
       "answerable": true,
       "expected_refusal": false,
       "corpus_level": "mini_L1",
       "evidence": "000 Aufforderung und Bedingungen.pdf S.1: 'Bindefrist endet am 26.05.2023'",
-      "verified_by_user": false
+      "verified_by_user": true
     },
     {
       "id": "m03",
@@ -38,9 +50,15 @@
       "language": "de",
       "category": "scanned_page",
       "expected_answer": "3 Prozent der Auftragssumme (inkl. Umsatzsteuer, ohne Nachträge), wenn die Auftragssumme mindestens 250.000 Euro ohne Umsatzsteuer beträgt.",
-      "required_tender_ids": ["20046989"],
-      "required_files": ["Vergabeunterlagen-Los-1--Beraeumung.pdf"],
-      "required_pages": [9],
+      "required_tender_ids": [
+        "20046989"
+      ],
+      "required_files": [
+        "Vergabeunterlagen-Los-1--Beraeumung.pdf"
+      ],
+      "required_pages": [
+        9
+      ],
       "answerable": true,
       "expected_refusal": false,
       "corpus_level": "mini_L1",
@@ -53,9 +71,15 @@
       "language": "de",
       "category": "single_fact",
       "expected_answer": "Zuschlagskriterium ist der Preis (ermittelt aus der Wertungssumme des Angebots).",
-      "required_tender_ids": ["20046904"],
-      "required_files": ["000 Aufforderung und Bedingungen.pdf"],
-      "required_pages": [3],
+      "required_tender_ids": [
+        "20046904"
+      ],
+      "required_files": [
+        "000 Aufforderung und Bedingungen.pdf"
+      ],
+      "required_pages": [
+        3
+      ],
       "answerable": true,
       "expected_refusal": false,
       "corpus_level": "mini_L1",
@@ -68,7 +92,9 @@
       "language": "de",
       "category": "metadata",
       "expected_answer": "Landratsamt Heilbronn - Straßen und Verkehr, Lerchenstr. 40, 74072 Heilbronn.",
-      "required_tender_ids": ["20046891"],
+      "required_tender_ids": [
+        "20046891"
+      ],
       "required_files": [],
       "required_pages": [],
       "answerable": true,
@@ -83,7 +109,9 @@
       "language": "en",
       "category": "metadata",
       "expected_answer": "Stadt Bützow, Am Markt 1, 18246 Bützow.",
-      "required_tender_ids": ["20046908"],
+      "required_tender_ids": [
+        "20046908"
+      ],
       "required_files": [],
       "required_pages": [],
       "answerable": true,
@@ -98,7 +126,9 @@
       "language": "de",
       "category": "metadata",
       "expected_answer": "Region 39517 Burgstall; Verfahrensart: Öffentliche Ausschreibung.",
-      "required_tender_ids": ["20046645"],
+      "required_tender_ids": [
+        "20046645"
+      ],
       "required_files": [],
       "required_pages": [],
       "answerable": true,
@@ -113,9 +143,18 @@
       "language": "de",
       "category": "multi_document",
       "expected_answer": "20046645 (Bindefrist 15.06.2023) endet später als 20046904 (Bindefrist 26.05.2023).",
-      "required_tender_ids": ["20046645", "20046904"],
-      "required_files": ["VHB_211_Aufforderung_zur_Abgabe_eines_Angebots.pdf", "000 Aufforderung und Bedingungen.pdf"],
-      "required_pages": [1, 1],
+      "required_tender_ids": [
+        "20046645",
+        "20046904"
+      ],
+      "required_files": [
+        "VHB_211_Aufforderung_zur_Abgabe_eines_Angebots.pdf",
+        "000 Aufforderung und Bedingungen.pdf"
+      ],
+      "required_pages": [
+        1,
+        1
+      ],
       "answerable": true,
       "expected_refusal": false,
       "corpus_level": "mini_L1",
@@ -128,7 +167,9 @@
       "language": "de",
       "category": "unanswerable",
       "expected_answer": "Nicht in den Vergabeunterlagen enthalten (die Unterlagen enthalten keine Zuschlagsentscheidung).",
-      "required_tender_ids": ["20046645"],
+      "required_tender_ids": [
+        "20046645"
+      ],
       "required_files": [],
       "required_pages": [],
       "answerable": false,
@@ -143,7 +184,9 @@
       "language": "en",
       "category": "exact_id",
       "expected_answer": "Sanierung Umkleidegebäude - Abbruch- und Rohbauarbeiten (Neuss, Augustinusviertel).",
-      "required_tender_ids": ["20046904"],
+      "required_tender_ids": [
+        "20046904"
+      ],
       "required_files": [],
       "required_pages": [],
       "answerable": true,

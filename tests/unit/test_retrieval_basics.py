@@ -30,3 +30,12 @@ def test_bm25_file_is_per_collection():
     a = AppConfig(qdrant_collection="mini_a").bm25_path
     b = AppConfig(qdrant_collection="mini_b").bm25_path
     assert a != b and a.name == "bm25_mini_a.pkl"
+
+
+def test_same_file_in_two_tenders_gets_different_point_ids():
+    from src.core.index import Indexer
+    point_id = Indexer._point_id        # uses no instance data, so it can be called without loading a model
+    a = point_id(None, "20046980/x/form.pdf", "samehash", 0)
+    b = point_id(None, "20046981/x/form.pdf", "samehash", 0)
+    assert a != b                                              # one point per tender, not one per content hash
+    assert a == point_id(None, "20046980/x/form.pdf", "samehash", 0)   # still stable, so re-running adds nothing

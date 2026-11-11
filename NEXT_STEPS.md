@@ -12,7 +12,7 @@ Done since then, all committed on `refactor/simplify`:
 - Embedder is configurable. Default is `BAAI/bge-m3`; Jina v3 works through `RAGBOT_EMBED_*` variables (needs `sentence-transformers<5` and `einops`).
 - Corpus from zero: `data/extract_v1/<tender_id>/...` (105 tenders, 1,692 PDFs, 12,824 pages, 7.7% need OCR). Unzip refuses `../` paths and no longer lets tenders overwrite each other.
 - Tender metadata is now attached to every chunk (the `DTAD-ID` column was never matched before).
-- Mini corpus (5 tenders, 946 chunks) in collection `mini_bge-m3`; 10 draft questions in `evaluation/datasets/mini_questions.json`; `python evaluation/run_mini_eval.py` gives the first retrieval numbers (BGE-M3 hybrid, no reranker: tender recall@5 1.00, page-level recall@5 0.80, page-level recall@1 0.00).
+- Mini corpus (5 tenders, 946 chunks) in collection `mini_bge-m3`; 10 draft questions in `evaluation/datasets/mini_questions.json`; `python evaluation/run_eval.py` (it replaced run_mini_eval.py) gives the first retrieval numbers (BGE-M3 hybrid, no reranker: tender recall@5 1.00, page-level recall@5 0.80, page-level recall@1 0.00).
 
 Still open from the lists below: API key default, candidate pool equals final count, UI and API still have separate prompts, `data/extract` (old flat corpus) can be deleted, chunk size (chunks are about 1,400 characters, not 1,000: the overlap is added on top), noisy OCR of site plans.
 
