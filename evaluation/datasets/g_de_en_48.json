@@ -1,0 +1,1109 @@
+{
+  "name": "g_de_en_48",
+  "seed": 7,
+  "note": "Generated; verify with evaluation/verify_questions.py",
+  "questions": [
+    {
+      "id": "q01_de",
+      "pair_id": "q01",
+      "split": "dev",
+      "question": "Welche Vergabestelle schreibt die Ausschreibung „Zimmer- und Holzbauarbeiten für eine Denkmalpflege“ (20047432) aus?",
+      "language": "de",
+      "category": "metadata",
+      "expected_answer": "Staatliches Baumanagement Weser-Leine",
+      "required_tender_ids": [
+        "20047432"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "cleaned_metadata.xlsx, DTAD-ID 20047432",
+      "verified_by_user": false
+    },
+    {
+      "id": "q01_en",
+      "pair_id": "q01",
+      "split": "dev",
+      "question": "Which contracting authority issued the tender “Zimmer- und Holzbauarbeiten für eine Denkmalpflege” (20047432)?",
+      "language": "en",
+      "category": "metadata",
+      "expected_answer": "Staatliches Baumanagement Weser-Leine",
+      "required_tender_ids": [
+        "20047432"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "cleaned_metadata.xlsx, DTAD-ID 20047432",
+      "verified_by_user": false
+    },
+    {
+      "id": "q02_de",
+      "pair_id": "q02",
+      "split": "dev",
+      "question": "In welcher Region liegt die Ausschreibung „Tischlerarbeiten zur Sanierung von Treppen-Handläufen“ (20046981) und welche Verfahrensart wird verwendet?",
+      "language": "de",
+      "category": "metadata",
+      "expected_answer": "04277 Leipzig (Connewitz); Öffentliche Ausschreibung",
+      "required_tender_ids": [
+        "20046981"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "cleaned_metadata.xlsx, DTAD-ID 20046981",
+      "verified_by_user": false
+    },
+    {
+      "id": "q02_en",
+      "pair_id": "q02",
+      "split": "dev",
+      "question": "In which region is the tender “Tischlerarbeiten zur Sanierung von Treppen-Handläufen” (20046981) located, and which procedure type is used?",
+      "language": "en",
+      "category": "metadata",
+      "expected_answer": "04277 Leipzig (Connewitz); Öffentliche Ausschreibung",
+      "required_tender_ids": [
+        "20046981"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "cleaned_metadata.xlsx, DTAD-ID 20046981",
+      "verified_by_user": false
+    },
+    {
+      "id": "q03_de",
+      "pair_id": "q03",
+      "split": "dev",
+      "question": "Welche Vergabestelle schreibt die Ausschreibung „Ausführung von Mauerarbeiten“ (20046940) aus?",
+      "language": "de",
+      "category": "metadata",
+      "expected_answer": "Stadt Karlsruhe Amt für Hochbau und Gebäudewirtschaft",
+      "required_tender_ids": [
+        "20046940"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "cleaned_metadata.xlsx, DTAD-ID 20046940",
+      "verified_by_user": false
+    },
+    {
+      "id": "q03_en",
+      "pair_id": "q03",
+      "split": "dev",
+      "question": "Which contracting authority issued the tender “Ausführung von Mauerarbeiten” (20046940)?",
+      "language": "en",
+      "category": "metadata",
+      "expected_answer": "Stadt Karlsruhe Amt für Hochbau und Gebäudewirtschaft",
+      "required_tender_ids": [
+        "20046940"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "cleaned_metadata.xlsx, DTAD-ID 20046940",
+      "verified_by_user": false
+    },
+    {
+      "id": "q04_de",
+      "pair_id": "q04",
+      "split": "dev",
+      "question": "Worum geht es in der Ausschreibung DTAD-ID 20047479?",
+      "language": "de",
+      "category": "exact_id",
+      "expected_answer": "Neubau Salzlager - Rohbauarbeiten",
+      "required_tender_ids": [
+        "20047479"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "cleaned_metadata.xlsx, DTAD-ID 20047479",
+      "verified_by_user": false
+    },
+    {
+      "id": "q04_en",
+      "pair_id": "q04",
+      "split": "dev",
+      "question": "What is the tender with DTAD-ID 20047479 about?",
+      "language": "en",
+      "category": "exact_id",
+      "expected_answer": "Neubau Salzlager - Rohbauarbeiten",
+      "required_tender_ids": [
+        "20047479"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "cleaned_metadata.xlsx, DTAD-ID 20047479",
+      "verified_by_user": false
+    },
+    {
+      "id": "q05_de",
+      "pair_id": "q05",
+      "split": "dev",
+      "question": "Bis wann ist der Bieter bei der Ausschreibung „Dachdecker- und Klempnerarbeiten“ (20047433) an sein Angebot gebunden?",
+      "language": "de",
+      "category": "single_fact",
+      "expected_answer": "Die Bindefrist endet am 03.06.2023.",
+      "required_tender_ids": [
+        "20047433"
+      ],
+      "required_files": [
+        "211_101901032.pdf"
+      ],
+      "required_pages": [
+        1
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "211_101901032.pdf S.1: 'Bindefrist endet am 03.06.2023'",
+      "verified_by_user": false
+    },
+    {
+      "id": "q05_en",
+      "pair_id": "q05",
+      "split": "dev",
+      "question": "Until which date is a bidder bound to their offer for the tender “Dachdecker- und Klempnerarbeiten” (20047433)?",
+      "language": "en",
+      "category": "single_fact",
+      "expected_answer": "The binding period (Bindefrist) ends on 03.06.2023.",
+      "required_tender_ids": [
+        "20047433"
+      ],
+      "required_files": [
+        "211_101901032.pdf"
+      ],
+      "required_pages": [
+        1
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "211_101901032.pdf S.1: 'Bindefrist endet am 03.06.2023'",
+      "verified_by_user": false
+    },
+    {
+      "id": "q06_de",
+      "pair_id": "q06",
+      "split": "dev",
+      "question": "Bis wann ist der Bieter bei der Ausschreibung „Quantitative Umfrage und Analyse zu kinderrechtebasierter Demokratiebildung im Primarbereich (Hort) 2023“ (20047482) an sein Angebot gebunden?",
+      "language": "de",
+      "category": "single_fact",
+      "expected_answer": "Die Bindefrist endet am 30.05.2023.",
+      "required_tender_ids": [
+        "20047482"
+      ],
+      "required_files": [
+        "Bekanntmachung_Umfrage_Hort.pdf"
+      ],
+      "required_pages": [
+        5
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Bekanntmachung_Umfrage_Hort.pdf S.5: 'Bindefrist endet am 30.05.2023'",
+      "verified_by_user": false
+    },
+    {
+      "id": "q06_en",
+      "pair_id": "q06",
+      "split": "dev",
+      "question": "Until which date is a bidder bound to their offer for the tender “Quantitative Umfrage und Analyse zu kinderrechtebasierter Demokratiebildung im Primarbereich (Hort) 2023” (20047482)?",
+      "language": "en",
+      "category": "single_fact",
+      "expected_answer": "The binding period (Bindefrist) ends on 30.05.2023.",
+      "required_tender_ids": [
+        "20047482"
+      ],
+      "required_files": [
+        "Bekanntmachung_Umfrage_Hort.pdf"
+      ],
+      "required_pages": [
+        5
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Bekanntmachung_Umfrage_Hort.pdf S.5: 'Bindefrist endet am 30.05.2023'",
+      "verified_by_user": false
+    },
+    {
+      "id": "q07_de",
+      "pair_id": "q07",
+      "split": "dev",
+      "question": "Bis wann ist der Bieter bei der Ausschreibung „Ersatzneubau für Trinkwasserleitungen“ (20047052) an sein Angebot gebunden?",
+      "language": "de",
+      "category": "single_fact",
+      "expected_answer": "Die Bindefrist endet am 26.05.2023.",
+      "required_tender_ids": [
+        "20047052"
+      ],
+      "required_files": [
+        "211--Aufforderung-zur-Abgabe-eines-Angebots.pdf"
+      ],
+      "required_pages": [
+        1
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "211--Aufforderung-zur-Abgabe-eines-Angebots.pdf S.1: 'Bindefrist endet am 26.05.2023'",
+      "verified_by_user": false
+    },
+    {
+      "id": "q07_en",
+      "pair_id": "q07",
+      "split": "dev",
+      "question": "Until which date is a bidder bound to their offer for the tender “Ersatzneubau für Trinkwasserleitungen” (20047052)?",
+      "language": "en",
+      "category": "single_fact",
+      "expected_answer": "The binding period (Bindefrist) ends on 26.05.2023.",
+      "required_tender_ids": [
+        "20047052"
+      ],
+      "required_files": [
+        "211--Aufforderung-zur-Abgabe-eines-Angebots.pdf"
+      ],
+      "required_pages": [
+        1
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "211--Aufforderung-zur-Abgabe-eines-Angebots.pdf S.1: 'Bindefrist endet am 26.05.2023'",
+      "verified_by_user": false
+    },
+    {
+      "id": "q08_de",
+      "pair_id": "q08",
+      "split": "dev",
+      "question": "Welche Bindefrist endet später: bei der Ausschreibung 20046977 („Maler- und WDVS-Arbeiten für eine Sanierung“) oder bei 20046645 („Gerüstbauarbeiten für eine Sanierung“)?",
+      "language": "de",
+      "category": "multi_document",
+      "expected_answer": "20046645 (Bindefrist 15.06.2023); die andere endet am 24.05.2023.",
+      "required_tender_ids": [
+        "20046977",
+        "20046645"
+      ],
+      "required_files": [
+        "VHB_211_Aufforderung_zur_Abgabe_eines_Angebots.pdf",
+        "VHB_211_Aufforderung_zur_Abgabe_eines_Angebots.pdf"
+      ],
+      "required_pages": [
+        1,
+        1
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "beide Dokumente nötig (Bindefrist je Ausschreibung)",
+      "verified_by_user": false
+    },
+    {
+      "id": "q08_en",
+      "pair_id": "q08",
+      "split": "dev",
+      "question": "Which binding period ends later: for tender 20046977 (“Maler- und WDVS-Arbeiten für eine Sanierung”) or for 20046645 (“Gerüstbauarbeiten für eine Sanierung”)?",
+      "language": "en",
+      "category": "multi_document",
+      "expected_answer": "20046645 (binding period until 15.06.2023); the other ends on 24.05.2023.",
+      "required_tender_ids": [
+        "20046977",
+        "20046645"
+      ],
+      "required_files": [
+        "VHB_211_Aufforderung_zur_Abgabe_eines_Angebots.pdf",
+        "VHB_211_Aufforderung_zur_Abgabe_eines_Angebots.pdf"
+      ],
+      "required_pages": [
+        1,
+        1
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "beide Dokumente nötig (Bindefrist je Ausschreibung)",
+      "verified_by_user": false
+    },
+    {
+      "id": "q09_de",
+      "pair_id": "q09",
+      "split": "dev",
+      "question": "Wer hat den Zuschlag für die Ausschreibung „Neubau einer Lagerhalle für Klärschlamm - PV-Anlage“ (20047436) erhalten und mit welchem Angebotspreis?",
+      "language": "de",
+      "category": "unanswerable",
+      "expected_answer": "Nicht in den Vergabeunterlagen enthalten.",
+      "required_tender_ids": [
+        "20047436"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": false,
+      "expected_refusal": true,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Die Vergabeunterlagen enthalten die Ausschreibung, nicht das Ergebnis. Bitte prüfen.",
+      "verified_by_user": false
+    },
+    {
+      "id": "q09_en",
+      "pair_id": "q09",
+      "split": "dev",
+      "question": "Who was awarded the contract for the tender “Neubau einer Lagerhalle für Klärschlamm - PV-Anlage” (20047436) and at what bid price?",
+      "language": "en",
+      "category": "unanswerable",
+      "expected_answer": "Not contained in the tender documents.",
+      "required_tender_ids": [
+        "20047436"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": false,
+      "expected_refusal": true,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Die Vergabeunterlagen enthalten die Ausschreibung, nicht das Ergebnis. Bitte prüfen.",
+      "verified_by_user": false
+    },
+    {
+      "id": "q10_de",
+      "pair_id": "q10",
+      "split": "dev",
+      "question": "Wie viele Unternehmen haben ein Angebot für die Ausschreibung „Technische Anlagen in Außenanlagen - Einbau eines Regenwasserrückhaltebecken mit Filter- und Pumpenschacht, Errichtung eines Grundleitungsnetzes inklusive der Schächte“ (20047454) abgegeben?",
+      "language": "de",
+      "category": "unanswerable",
+      "expected_answer": "Nicht in den Vergabeunterlagen enthalten.",
+      "required_tender_ids": [
+        "20047454"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": false,
+      "expected_refusal": true,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Die Vergabeunterlagen enthalten keine Angaben zu eingegangenen Angeboten. Bitte prüfen.",
+      "verified_by_user": false
+    },
+    {
+      "id": "q10_en",
+      "pair_id": "q10",
+      "split": "dev",
+      "question": "How many companies submitted a bid for the tender “Technische Anlagen in Außenanlagen - Einbau eines Regenwasserrückhaltebecken mit Filter- und Pumpenschacht, Errichtung eines Grundleitungsnetzes inklusive der Schächte” (20047454)?",
+      "language": "en",
+      "category": "unanswerable",
+      "expected_answer": "Not contained in the tender documents.",
+      "required_tender_ids": [
+        "20047454"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": false,
+      "expected_refusal": true,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Die Vergabeunterlagen enthalten keine Angaben zu eingegangenen Angeboten. Bitte prüfen.",
+      "verified_by_user": false
+    },
+    {
+      "id": "q11_de",
+      "pair_id": "q11",
+      "split": "dev",
+      "question": "Wie hoch ist die Menge an Steinsatz aus Wasserbausteinen CP 90/250 in Beton für die Errichtung von 3 RRB im GWG Görlitz-Markersdorf (Ausschussungsnummer 20047003)?",
+      "language": "de",
+      "category": "single_fact",
+      "expected_answer": "60,000 m",
+      "required_tender_ids": [
+        "20047003"
+      ],
+      "required_files": [
+        "Angebotsaufforderung.pdf"
+      ],
+      "required_pages": [
+        79
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Angebotsaufforderung.pdf S.79: erforderlich ist!) Die abgeleiteten Wassermengen sowie die Betriebsstunden sind zu erfassen und zu dokumentieren! 60,000 m ......................... ...........",
+      "verified_by_user": false,
+      "review_hint": "Auto-review: wording or answer of this model-written question looks doubtful. Check it closely or drop it."
+    },
+    {
+      "id": "q11_en",
+      "pair_id": "q11",
+      "split": "dev",
+      "question": "What is the quantity of stone insert made of water blocks CP 90/250 in concrete for the construction of 3 RRB in GWG Görlitz-Markersdorf (Procurement number 20047003)?",
+      "language": "en",
+      "category": "single_fact",
+      "expected_answer": "60,000 m",
+      "required_tender_ids": [
+        "20047003"
+      ],
+      "required_files": [
+        "Angebotsaufforderung.pdf"
+      ],
+      "required_pages": [
+        79
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Angebotsaufforderung.pdf S.79: erforderlich ist!) Die abgeleiteten Wassermengen sowie die Betriebsstunden sind zu erfassen und zu dokumentieren! 60,000 m ......................... ...........",
+      "verified_by_user": false,
+      "review_hint": "Auto-review: wording or answer of this model-written question looks doubtful. Check it closely or drop it."
+    },
+    {
+      "id": "q12_de",
+      "pair_id": "q12",
+      "split": "dev",
+      "question": "Welcher Anschluss wird für die Saugseite der Druckerhöhungsanlage mit der Ausschreibungsnummer 20046997 angegeben?",
+      "language": "de",
+      "category": "single_fact",
+      "expected_answer": "65 / 10 DN/PN",
+      "required_tender_ids": [
+        "20046997"
+      ],
+      "required_files": [
+        "LV.pdf"
+      ],
+      "required_pages": [
+        21
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "LV.pdf S.21: le: Edelstahl 1.4305 Mantel: Edelstahl 1.4057 Wellenabdichtung: einfachwirkende, hochwertige Gleitringdichtung 1 Stück elektronischer Drucktransmitter zur Abgan",
+      "verified_by_user": false,
+      "review_hint": "Auto-review: wording or answer of this model-written question looks doubtful. Check it closely or drop it."
+    },
+    {
+      "id": "q12_en",
+      "pair_id": "q12",
+      "split": "dev",
+      "question": "What connection is specified for the suction side of the booster station with reference number 20046997?",
+      "language": "en",
+      "category": "single_fact",
+      "expected_answer": "65 / 10 DN/PN",
+      "required_tender_ids": [
+        "20046997"
+      ],
+      "required_files": [
+        "LV.pdf"
+      ],
+      "required_pages": [
+        21
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "LV.pdf S.21: le: Edelstahl 1.4305 Mantel: Edelstahl 1.4057 Wellenabdichtung: einfachwirkende, hochwertige Gleitringdichtung 1 Stück elektronischer Drucktransmitter zur Abgan",
+      "verified_by_user": false,
+      "review_hint": "Auto-review: wording or answer of this model-written question looks doubtful. Check it closely or drop it."
+    },
+    {
+      "id": "q13_de",
+      "pair_id": "q13",
+      "split": "dev",
+      "question": "Welche geforderten Mindestdeckungssummen sind für Personenschäden, Sachschäden und echte Vermögensschäden in Ausschreibung 20047468 angegeben?",
+      "language": "de",
+      "category": "single_fact",
+      "expected_answer": "3.000.000,00 € für Personenschäden 300.000,00 € für Sachschäden 300.000,00 € für echte Vermögensschäden",
+      "required_tender_ids": [
+        "20047468"
+      ],
+      "required_files": [
+        "Fragebogen zur Eignungspruefung.pdf"
+      ],
+      "required_pages": [
+        1
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Fragebogen zur Eignungspruefung.pdf S.1: Fragebogen zur Eignungsprüfung Bezeichnung Antwort Kriteriengewi chtung 1 Zulassung Angebote 1.1 Eignungs- und Angebotsprüfung A 1.1.1 Vorlage einer Berufs- ode",
+      "verified_by_user": false
+    },
+    {
+      "id": "q13_en",
+      "pair_id": "q13",
+      "split": "dev",
+      "question": "What are the required minimum coverage amounts for personal injury, property damage, and consequential damages in bid 20047468?",
+      "language": "en",
+      "category": "single_fact",
+      "expected_answer": "3.000.000,00 € for personal injury 300.000,00 € for property damage 300.000,00 € for consequential damages",
+      "required_tender_ids": [
+        "20047468"
+      ],
+      "required_files": [
+        "Fragebogen zur Eignungspruefung.pdf"
+      ],
+      "required_pages": [
+        1
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Fragebogen zur Eignungspruefung.pdf S.1: Fragebogen zur Eignungsprüfung Bezeichnung Antwort Kriteriengewi chtung 1 Zulassung Angebote 1.1 Eignungs- und Angebotsprüfung A 1.1.1 Vorlage einer Berufs- ode",
+      "verified_by_user": false
+    },
+    {
+      "id": "q14_de",
+      "pair_id": "q14",
+      "split": "dev",
+      "question": "Wie groß ist die Fugenspalttiefe in der Asphaltdeckschicht gemäß Ausschreibung 20046985?",
+      "language": "de",
+      "category": "single_fact",
+      "expected_answer": "40 mm",
+      "required_tender_ids": [
+        "20046985"
+      ],
+      "required_files": [
+        "LV-Gehweg-Neunickritz-Langtext-geae..pdf"
+      ],
+      "required_pages": [
+        40
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "LV-Gehweg-Neunickritz-Langtext-geae..pdf S.40: altdeckschicht. Einzellängen bis 20,00 m. Fugenspalttiefe = 40 mm. Fugenspaltbreite = 20 mm. Mit heiß verarbeitbarer elastischer Fugenmasse Typ N1, einschließli",
+      "verified_by_user": false
+    },
+    {
+      "id": "q14_en",
+      "pair_id": "q14",
+      "split": "dev",
+      "question": "What is the joint gap depth in the asphalt deck layer according to tender 20046985?",
+      "language": "en",
+      "category": "single_fact",
+      "expected_answer": "40 mm",
+      "required_tender_ids": [
+        "20046985"
+      ],
+      "required_files": [
+        "LV-Gehweg-Neunickritz-Langtext-geae..pdf"
+      ],
+      "required_pages": [
+        40
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "LV-Gehweg-Neunickritz-Langtext-geae..pdf S.40: altdeckschicht. Einzellängen bis 20,00 m. Fugenspalttiefe = 40 mm. Fugenspaltbreite = 20 mm. Mit heiß verarbeitbarer elastischer Fugenmasse Typ N1, einschließli",
+      "verified_by_user": false
+    },
+    {
+      "id": "q15_de",
+      "pair_id": "q15",
+      "split": "dev",
+      "question": "Welche Formblätter müssen bei der Angabe von Unterauftragnehmern in Anlage 5, F8 und F9 für die Ausschreibung 20047437 angegeben werden?",
+      "language": "de",
+      "category": "scanned_page",
+      "expected_answer": "die Daten zur Unterauftragnehmerschaft",
+      "required_tender_ids": [
+        "20047437"
+      ],
+      "required_files": [
+        "Verfahrens-, Angebots- und Vertragsbedingungen.pdf"
+      ],
+      "required_pages": [
+        19
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": true,
+      "corpus_level": "full_L1",
+      "evidence": "Verfahrens-, Angebots- und Vertragsbedingungen.pdf S.19 (gescannt, OCR): rforderlichen Mittel des / der Eignungsverleiher*in uneingeschränkt zur Verfügung stehen werden > und dass im Fall der wirtschaftlichen oder finanziellen Eignun",
+      "verified_by_user": false,
+      "review_hint": "Auto-review: wording or answer of this model-written question looks doubtful. Check it closely or drop it."
+    },
+    {
+      "id": "q15_en",
+      "pair_id": "q15",
+      "split": "dev",
+      "question": "Which forms must be specified in forms 5, F8 and F9 for subcontractors in bid 20047437?",
+      "language": "en",
+      "category": "scanned_page",
+      "expected_answer": "the data for subcontracting",
+      "required_tender_ids": [
+        "20047437"
+      ],
+      "required_files": [
+        "Verfahrens-, Angebots- und Vertragsbedingungen.pdf"
+      ],
+      "required_pages": [
+        19
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": true,
+      "corpus_level": "full_L1",
+      "evidence": "Verfahrens-, Angebots- und Vertragsbedingungen.pdf S.19 (gescannt, OCR): rforderlichen Mittel des / der Eignungsverleiher*in uneingeschränkt zur Verfügung stehen werden > und dass im Fall der wirtschaftlichen oder finanziellen Eignun",
+      "verified_by_user": false,
+      "review_hint": "Auto-review: wording or answer of this model-written question looks doubtful. Check it closely or drop it."
+    },
+    {
+      "id": "q16_de",
+      "pair_id": "q16",
+      "split": "dev",
+      "question": "Wie hoch ist die maßgebende Betonbeton-Schnittfläche (As) für eine Seite der Lagerhalle laut Ausschreibung 20047431?",
+      "language": "de",
+      "category": "scanned_page",
+      "expected_answer": "14.46 cm2",
+      "required_tender_ids": [
+        "20047431"
+      ],
+      "required_files": [
+        "5429-18-Statik Betonkörper.pdf"
+      ],
+      "required_pages": [
+        12
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": true,
+      "corpus_level": "full_L1",
+      "evidence": "5429-18-Statik Betonkörper.pdf S.12 (gescannt, OCR): maß Acdey = 15 mm Biigel Cminob = 40 mm Betondeckung Cnomb = 55 mm -Langsbewehrung Cmin,| = 40 mm Betondeckung | Chom = 69 mm *1 Verlegemals Bügel Cub = 55 mm z",
+      "verified_by_user": false
+    },
+    {
+      "id": "q16_en",
+      "pair_id": "q16",
+      "split": "dev",
+      "question": "What is the specified concrete cross-sectional area (As) for one side of the warehouse according to bid 20047431?",
+      "language": "en",
+      "category": "scanned_page",
+      "expected_answer": "14.46 cm2",
+      "required_tender_ids": [
+        "20047431"
+      ],
+      "required_files": [
+        "5429-18-Statik Betonkörper.pdf"
+      ],
+      "required_pages": [
+        12
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": true,
+      "corpus_level": "full_L1",
+      "evidence": "5429-18-Statik Betonkörper.pdf S.12 (gescannt, OCR): maß Acdey = 15 mm Biigel Cminob = 40 mm Betondeckung Cnomb = 55 mm -Langsbewehrung Cmin,| = 40 mm Betondeckung | Chom = 69 mm *1 Verlegemals Bügel Cub = 55 mm z",
+      "verified_by_user": false
+    },
+    {
+      "id": "q17_de",
+      "pair_id": "q17",
+      "split": "test",
+      "question": "Welche Vergabestelle schreibt die Ausschreibung „Beschaffung von Lade-/ Aufbewahrungs- und Transportmöglichkeiten für mobile Endgeräte“ (20047339) aus?",
+      "language": "de",
+      "category": "metadata",
+      "expected_answer": "Stadt Flensburg - Zentrale Vergabestelle Kontaktstelle Annika Naumann Postanschrift",
+      "required_tender_ids": [
+        "20047339"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "cleaned_metadata.xlsx, DTAD-ID 20047339",
+      "verified_by_user": false
+    },
+    {
+      "id": "q17_en",
+      "pair_id": "q17",
+      "split": "test",
+      "question": "Which contracting authority issued the tender “Beschaffung von Lade-/ Aufbewahrungs- und Transportmöglichkeiten für mobile Endgeräte” (20047339)?",
+      "language": "en",
+      "category": "metadata",
+      "expected_answer": "Stadt Flensburg - Zentrale Vergabestelle Kontaktstelle Annika Naumann Postanschrift",
+      "required_tender_ids": [
+        "20047339"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "cleaned_metadata.xlsx, DTAD-ID 20047339",
+      "verified_by_user": false
+    },
+    {
+      "id": "q18_de",
+      "pair_id": "q18",
+      "split": "test",
+      "question": "Worum geht es in der Ausschreibung DTAD-ID 20046895?",
+      "language": "de",
+      "category": "exact_id",
+      "expected_answer": "Sanierung Rasenplatz - Garten-, Landschafts- und SPORTPLATZBAU - Arbeiten",
+      "required_tender_ids": [
+        "20046895"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "cleaned_metadata.xlsx, DTAD-ID 20046895",
+      "verified_by_user": false
+    },
+    {
+      "id": "q18_en",
+      "pair_id": "q18",
+      "split": "test",
+      "question": "What is the tender with DTAD-ID 20046895 about?",
+      "language": "en",
+      "category": "exact_id",
+      "expected_answer": "Sanierung Rasenplatz - Garten-, Landschafts- und SPORTPLATZBAU - Arbeiten",
+      "required_tender_ids": [
+        "20046895"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "cleaned_metadata.xlsx, DTAD-ID 20046895",
+      "verified_by_user": false
+    },
+    {
+      "id": "q19_de",
+      "pair_id": "q19",
+      "split": "test",
+      "question": "Bis wann ist der Bieter bei der Ausschreibung „Ausführung von Heizung- KSL“ (20046932) an sein Angebot gebunden?",
+      "language": "de",
+      "category": "single_fact",
+      "expected_answer": "Die Bindefrist endet am 02.06.2023.",
+      "required_tender_ids": [
+        "20046932"
+      ],
+      "required_files": [
+        "211 Aufforderung zur Abgabe eines Angebots_Hochbau.pdf"
+      ],
+      "required_pages": [
+        1
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "211 Aufforderung zur Abgabe eines Angebots_Hochbau.pdf S.1: 'Bindefrist endet am 02.06.2023'",
+      "verified_by_user": false
+    },
+    {
+      "id": "q19_en",
+      "pair_id": "q19",
+      "split": "test",
+      "question": "Until which date is a bidder bound to their offer for the tender “Ausführung von Heizung- KSL” (20046932)?",
+      "language": "en",
+      "category": "single_fact",
+      "expected_answer": "The binding period (Bindefrist) ends on 02.06.2023.",
+      "required_tender_ids": [
+        "20046932"
+      ],
+      "required_files": [
+        "211 Aufforderung zur Abgabe eines Angebots_Hochbau.pdf"
+      ],
+      "required_pages": [
+        1
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "211 Aufforderung zur Abgabe eines Angebots_Hochbau.pdf S.1: 'Bindefrist endet am 02.06.2023'",
+      "verified_by_user": false
+    },
+    {
+      "id": "q20_de",
+      "pair_id": "q20",
+      "split": "test",
+      "question": "Welche Bindefrist endet später: bei der Ausschreibung 20047341 („Beweissicherung für einen Ausbau“) oder bei 20047430 („Tiefbauarbeiten im Zuge einer Erschließung“)?",
+      "language": "de",
+      "category": "multi_document",
+      "expected_answer": "20047341 (Bindefrist 19.06.2023); die andere endet am 28.05.2023.",
+      "required_tender_ids": [
+        "20047341",
+        "20047430"
+      ],
+      "required_files": [
+        "Aufforderung zur Abgabe eines Angebots_ 631.pdf",
+        "Microsoft Word - 211_101901370.pdf"
+      ],
+      "required_pages": [
+        1,
+        1
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "beide Dokumente nötig (Bindefrist je Ausschreibung)",
+      "verified_by_user": false
+    },
+    {
+      "id": "q20_en",
+      "pair_id": "q20",
+      "split": "test",
+      "question": "Which binding period ends later: for tender 20047341 (“Beweissicherung für einen Ausbau”) or for 20047430 (“Tiefbauarbeiten im Zuge einer Erschließung”)?",
+      "language": "en",
+      "category": "multi_document",
+      "expected_answer": "20047341 (binding period until 19.06.2023); the other ends on 28.05.2023.",
+      "required_tender_ids": [
+        "20047341",
+        "20047430"
+      ],
+      "required_files": [
+        "Aufforderung zur Abgabe eines Angebots_ 631.pdf",
+        "Microsoft Word - 211_101901370.pdf"
+      ],
+      "required_pages": [
+        1,
+        1
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "beide Dokumente nötig (Bindefrist je Ausschreibung)",
+      "verified_by_user": false
+    },
+    {
+      "id": "q21_de",
+      "pair_id": "q21",
+      "split": "test",
+      "question": "Wer hat den Zuschlag für die Ausschreibung „instandsetzung von Bundesstraßen“ (20047001) erhalten und mit welchem Angebotspreis?",
+      "language": "de",
+      "category": "unanswerable",
+      "expected_answer": "Nicht in den Vergabeunterlagen enthalten.",
+      "required_tender_ids": [
+        "20047001"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": false,
+      "expected_refusal": true,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Die Vergabeunterlagen enthalten die Ausschreibung, nicht das Ergebnis. Bitte prüfen.",
+      "verified_by_user": false
+    },
+    {
+      "id": "q21_en",
+      "pair_id": "q21",
+      "split": "test",
+      "question": "Who was awarded the contract for the tender “instandsetzung von Bundesstraßen” (20047001) and at what bid price?",
+      "language": "en",
+      "category": "unanswerable",
+      "expected_answer": "Not contained in the tender documents.",
+      "required_tender_ids": [
+        "20047001"
+      ],
+      "required_files": [],
+      "required_pages": [],
+      "answerable": false,
+      "expected_refusal": true,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Die Vergabeunterlagen enthalten die Ausschreibung, nicht das Ergebnis. Bitte prüfen.",
+      "verified_by_user": false
+    },
+    {
+      "id": "q22_de",
+      "pair_id": "q22",
+      "split": "test",
+      "question": "Welche Verordnung gilt für das Tragsverhältnis bei der Ausschreibung 20047463?",
+      "language": "de",
+      "category": "single_fact",
+      "expected_answer": "PR 30/53",
+      "required_tender_ids": [
+        "20047463"
+      ],
+      "required_files": [
+        "Vergabeunterlagen_Vergabe_U-0220-23.pdf"
+      ],
+      "required_pages": [
+        25
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Vergabeunterlagen_Vergabe_U-0220-23.pdf S.25: tragsverhältnis gilt die Verordnung PR 30/53 über die Preise bei öffentlichen Aufträgen. Der Auftraggeber ist berechtigt, vom Auftragnehmer den Nachweis der Pre",
+      "verified_by_user": false,
+      "review_hint": "Auto-review: wording or answer of this model-written question looks doubtful. Check it closely or drop it."
+    },
+    {
+      "id": "q22_en",
+      "pair_id": "q22",
+      "split": "test",
+      "question": "Which regulation applies to the load ratio in tender 20047463?",
+      "language": "en",
+      "category": "single_fact",
+      "expected_answer": "PR 30/53",
+      "required_tender_ids": [
+        "20047463"
+      ],
+      "required_files": [
+        "Vergabeunterlagen_Vergabe_U-0220-23.pdf"
+      ],
+      "required_pages": [
+        25
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Vergabeunterlagen_Vergabe_U-0220-23.pdf S.25: tragsverhältnis gilt die Verordnung PR 30/53 über die Preise bei öffentlichen Aufträgen. Der Auftraggeber ist berechtigt, vom Auftragnehmer den Nachweis der Pre",
+      "verified_by_user": false,
+      "review_hint": "Auto-review: wording or answer of this model-written question looks doubtful. Check it closely or drop it."
+    },
+    {
+      "id": "q23_de",
+      "pair_id": "q23",
+      "split": "test",
+      "question": "Welche Farbe wird bei der Tausch von einzelnen Pflastersteinen innerhalb des Verbandes gemäß Ausschreibung 20046937 getauscht?",
+      "language": "de",
+      "category": "single_fact",
+      "expected_answer": "grau wird getauscht mit anthrazit bzw. sand-beige-hell",
+      "required_tender_ids": [
+        "20046937"
+      ],
+      "required_files": [
+        "Leistungsverzeichnis.pdf"
+      ],
+      "required_pages": [
+        21
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Leistungsverzeichnis.pdf S.21: teine in Kurvenbe- reichen nach Unterlagen des AG. In Flächen 'begehbare Flächen, Farbe: sand-beige-hell' Format für Rastermaß = 200/200/80 mm entlang der Borde",
+      "verified_by_user": false
+    },
+    {
+      "id": "q23_en",
+      "pair_id": "q23",
+      "split": "test",
+      "question": "What color is exchanged when individual paving stones within the bond are replaced according to tender 20046937?",
+      "language": "en",
+      "category": "single_fact",
+      "expected_answer": "gray is replaced with anthracite or sand-beige-hell",
+      "required_tender_ids": [
+        "20046937"
+      ],
+      "required_files": [
+        "Leistungsverzeichnis.pdf"
+      ],
+      "required_pages": [
+        21
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": false,
+      "corpus_level": "full_L1",
+      "evidence": "Leistungsverzeichnis.pdf S.21: teine in Kurvenbe- reichen nach Unterlagen des AG. In Flächen 'begehbare Flächen, Farbe: sand-beige-hell' Format für Rastermaß = 200/200/80 mm entlang der Borde",
+      "verified_by_user": false
+    },
+    {
+      "id": "q24_de",
+      "pair_id": "q24",
+      "split": "test",
+      "question": "Welche Probenbezeichnung enthält Asbest gemäß Ausschreibung 20046904?",
+      "language": "de",
+      "category": "scanned_page",
+      "expected_answer": "Chrysotilasbest",
+      "required_tender_ids": [
+        "20046904"
+      ],
+      "required_files": [
+        "Schadstoffgutachten.pdf"
+      ],
+      "required_pages": [
+        8
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": true,
+      "corpus_level": "full_L1",
+      "evidence": "Schadstoffgutachten.pdf S.8 (gescannt, OCR): els EDX [Probennummer| _Entnahmeort | Probenbezeichnung | __Asbest__ . . Probe enthält 009385-2 Spitzboden Dacheindeckung Chrysotilasbest° Bericht Nr. 009385-2,",
+      "verified_by_user": false,
+      "review_hint": "Auto-review: wording or answer of this model-written question looks doubtful. Check it closely or drop it."
+    },
+    {
+      "id": "q24_en",
+      "pair_id": "q24",
+      "split": "test",
+      "question": "Which sample designation contains asbestos according to tender 20046904?",
+      "language": "en",
+      "category": "scanned_page",
+      "expected_answer": "Chrysotil asbestos",
+      "required_tender_ids": [
+        "20046904"
+      ],
+      "required_files": [
+        "Schadstoffgutachten.pdf"
+      ],
+      "required_pages": [
+        8
+      ],
+      "answerable": true,
+      "expected_refusal": false,
+      "ocr": true,
+      "corpus_level": "full_L1",
+      "evidence": "Schadstoffgutachten.pdf S.8 (gescannt, OCR): els EDX [Probennummer| _Entnahmeort | Probenbezeichnung | __Asbest__ . . Probe enthält 009385-2 Spitzboden Dacheindeckung Chrysotilasbest° Bericht Nr. 009385-2,",
+      "verified_by_user": false,
+      "review_hint": "Auto-review: wording or answer of this model-written question looks doubtful. Check it closely or drop it."
+    }
+  ]
+}

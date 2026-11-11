@@ -42,7 +42,7 @@ DAILY_NOTES = {
     "2026-05-11": "Reformatted the README for clearer structure without changing the application pipeline.",
     "2026-11-04": "Defined Tender RAG 2.0, audited the corpus and defects, added staged plans, then removed dead code and simplified entry points, retrieval, configuration, and logging.",
     "2026-11-10": "Rebuilt the environment on Python 3.12 after Windows Smart App Control blocked unsigned binaries, matched Qdrant server and client (1.20), and fixed the Jina v3 loading errors (sentence-transformers 5.x cache_dir clash, missing einops).",
-    "2026-11-11": "Started the corpus from zero: one folder per tender with safe unzip, BGE-M3 as the default embedder (Jina v3 stays selectable), tender metadata finally attached to chunks, a 5-tender mini corpus, 10 draft questions and a deterministic retrieval check.",
+    "2026-11-11": "Started the corpus from zero (one folder per tender, safe unzip, tender metadata finally attached), made BGE-M3 the default embedder, added parallel read/OCR workers, a saved-chunk file so OCR runs once, three full collections (BGE-M3, Qwen3-0.6B, Jina v3, 32,370 points each after fixing a bug that overwrote 4.7% of chunks), resumable GPU indexing, and a 48-question German/English evaluation set with a retrieval check.",
 }
 
 
