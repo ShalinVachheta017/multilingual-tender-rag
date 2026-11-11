@@ -18,6 +18,7 @@ from pathlib import Path
 
 import requests
 
+from src.core.awake import keep_awake
 from src.core.config import CFG
 from src.core.index import Indexer
 
@@ -71,6 +72,7 @@ def main(argv: list[str] | None = None) -> None:
 
     if args.from_chunks and args.mode == "ocr-only":
         sys.exit("--from-chunks cannot be combined with --mode ocr-only (the chunks are already OCR'd).")
+    keep_awake()
     started = time.time()
     try:
         if args.mode == "ocr-only":

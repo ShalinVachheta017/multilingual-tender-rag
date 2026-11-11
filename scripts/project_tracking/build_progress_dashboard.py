@@ -120,14 +120,24 @@ def git(*args: str, check: bool = True) -> str:
 
 
 def parse_commits() -> list[Commit]:
+    history_refs = git(
+        "for-each-ref",
+        "--format=%(refname)",
+        "refs/heads",
+        "refs/remotes/origin",
+        "refs/tags",
+    ).splitlines()
+    if not history_refs:
+        return []
+
     raw = git(
         "log",
-        "--all",
         "--reverse",
         "--date=short",
         "--find-renames",
         "--pretty=format:%x1e%H%x1f%h%x1f%ad%x1f%s%x1f%D%x1f%P",
         "--name-status",
+        *history_refs,
     )
     commits: list[Commit] = []
     seen: set[str] = set()

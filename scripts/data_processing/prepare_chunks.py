@@ -20,6 +20,7 @@ from pathlib import Path
 
 from tqdm import tqdm
 
+from src.core.awake import keep_awake
 from src.core.config import CFG
 from src.core.prepare import init_worker, prepare_record
 
@@ -45,6 +46,7 @@ def main() -> None:
     tmp = out.with_suffix(".jsonl.tmp")
     print(f"{len(pdfs)} PDFs | chunks {args.chunk_size}/{args.chunk_overlap} | {args.workers} workers -> {out}")
 
+    keep_awake()
     started = time.time()
     n_chunks = n_ocr = 0
     problems: list[str] = []

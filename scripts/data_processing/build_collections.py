@@ -17,6 +17,7 @@ import sys
 import time
 from pathlib import Path
 
+from src.core.awake import keep_awake
 from src.core.config import CFG
 from src.core.embedder_presets import PRESETS, env_for
 
@@ -39,6 +40,7 @@ def main() -> None:
 
     if not Path(args.chunks_file).exists():
         sys.exit(f"{args.chunks_file} not found. Run scripts/data_processing/prepare_chunks.py first.")
+    keep_awake()
     for name in args.models or list(PRESETS):
         env = env_for(name, args.prefix, args.version)
         print(f"\n===== {name} -> {env['RAGBOT_QDRANT_COLLECTION']} =====", flush=True)

@@ -296,6 +296,8 @@ class Indexer:
 
                 processed_files += 1
             except Exception as e:
+                if "CUDA" in str(e):       # the GPU is gone (sleep, driver reset): stop instead of failing every file
+                    raise
                 tqdm.write(f"Error processing {name}: {e}")
                 continue
 
