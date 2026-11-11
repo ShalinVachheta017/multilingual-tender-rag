@@ -7,26 +7,24 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 ## Current checkpoint
 
 - Branch: `main`
-- HEAD: `6005ed91`
+- HEAD: `9728e1e8`
 - Origin: `https://github.com/ShalinVachheta017/ragbot-core.git`
-- Unique commits: **74**
+- Unique commits: **75**
 - Active commit dates: **20**
 - Latest commit date in the graph: `2026-11-11`
 - Product checkpoint: **Gate 0, restore a safe reproducible baseline**. See `NEXT_STEPS.md`.
 
 ### Refs included
 
-- `main -> 6005ed91`
-- `origin -> 6005ed91`
-- `origin/main -> 6005ed91`
-- `archive/cleanup-qdrant-only -> f076187a`
-- `v1-before-refactor -> 0c1b9999`
+- `main -> 9728e1e8`
+- `origin -> 9728e1e8`
+- `origin/main -> 9728e1e8`
+- `archive/cleanup-qdrant-only -> 68994bb3`
+- `v1-before-refactor -> 0e0a48d4`
 
 ### Working tree when regenerated
 
-- ` M NEXT_STEPS.md`
 - ` M WORK_LOG.md`
-- ` M docs/TENDER_RAG_REFERENCE.md`
 - `?? .dashboard/`
 - `?? .smapleproject.md`
 
@@ -38,7 +36,7 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 | RAG 1.0: Vector retrieval | 2025-08-12 to 2025-09-26 | 16 | Qdrant, API, Streamlit, OCR, multilingual embeddings, and retrieval debugging. |
 | RAG 1.x: Hybrid and evaluation | 2025-10-04 to 2025-11-02 | 11 | Diagrams, hybrid/BM25, FastAPI, evaluation, caching, and production-style layout. |
 | Maintenance: Documentation bridge | 2026-05-11 to 2026-05-11 | 2 | README structure and readability updates. |
-| Current: Tender RAG 2.0 | 2026-11-04 to current | 39 | Project definition, corpus evidence, staged plan, simplification refactor, and the from-zero rebuild (per-tender corpus, BGE-M3, mini evaluation). |
+| Current: Tender RAG 2.0 | 2026-11-04 to current | 40 | Project definition, corpus evidence, staged plan, simplification refactor, and the from-zero rebuild (per-tender corpus, BGE-M3, mini evaluation). |
 
 ## Daily history
 
@@ -52,9 +50,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 13, deleted 1
 - Areas touched: `.gitignore`, `docker-compose.yml`, `LICENSE`, `README.md`, `requirements.txt`, `scripts`, `test.py`
 
-#### `8c8d6b1e` Initial commit
+#### `c7b203d6` Initial commit
 
-- Full hash: `8c8d6b1e7edab56e7732dc0424655699af686a14`
+- Full hash: `c7b203d6ecb1fcc2318b1c5ad2e98056626509a2`
 - Added (2):
   - `LICENSE`
   - `README.md`
@@ -65,26 +63,26 @@ Every unique commit appears once below. File operations come directly from Git n
 - Added (1):
   - `scripts/config.py`
 
-#### `9b999f92` Merge branch 'main' of https://github.com/ShalinVachheta017/ragbot-core # Please enter a commit message to explain why this merge is necessary, # especially if it merges an updated upstream into a topic branch. # # Lines starting with '#' will be ignored, and an empty message aborts # the commit.
+#### `2f849dd0` Merge branch 'main' of https://github.com/ShalinVachheta017/ragbot-core # Please enter a commit message to explain why this merge is necessary, # especially if it merges an updated upstream into a topic branch. # # Lines starting with '#' will be ignored, and an empty message aborts # the commit.
 
-- Full hash: `9b999f92ae7559a4cf6b1215d270eb5ebae33450`
+- Full hash: `2f849dd009fb498f5c0bda56ad2642aae75cba36`
 - Merge commit; Git reports no direct file list for this merge in the default history view.
 
-#### `7053982a` Add GPU- and batch-optimized embed_chunks with dedup support
+#### `35a1206e` Add GPU- and batch-optimized embed_chunks with dedup support
 
-- Full hash: `7053982a51ab8a950f33a81e7d4ec68ffdfde5f1`
+- Full hash: `35a1206e3090e5b2bc9e69085c564905a5c4eb6e`
 - Added (1):
   - `scripts/embed_chunks.py`
 
-#### `19434e06` Add batch GPU embed_chunks and updated requirements
+#### `a9956cd5` Add batch GPU embed_chunks and updated requirements
 
-- Full hash: `19434e06cea22703cf98a5f0fe9360a504f70b36`
+- Full hash: `a9956cd5ea3a771b7e7cdeedc52b53cde8913807`
 - Added (1):
   - `requirements.txt`
 
-#### `be4a1749` Finalize cleaned Milvus-ready RAG structure and scripts
+#### `78f19cac` Finalize cleaned Milvus-ready RAG structure and scripts
 
-- Full hash: `be4a1749dce6e9e0f9dfb7c201e4a1ef158e3283`
+- Full hash: `78f19cac71b0bde0c0fa9d3f5ae38e941d61b589`
 - Added (8):
   - `.gitignore`
   - `docker-compose.yml`
@@ -105,9 +103,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 2, modified 5, deleted 1
 - Areas touched: `.gitignore`, `docker-compose.yml`, `requirements.txt`, `scripts`, `test.py`
 
-#### `38932e6a` Switch to Qdrant: pipeline + compose, reqs, tests; add privacy .gitignore
+#### `c7695c23` Switch to Qdrant: pipeline + compose, reqs, tests; add privacy .gitignore
 
-- Full hash: `38932e6a8b1706509f386ee4ba95dfbb84351b83`
+- Full hash: `c7695c23fda2d67338691337f96b0af7aeb9f96d`
 - Added (2):
   - `scripts/__init__.py`
   - `scripts/embed_chunks_qdrant.py`
@@ -128,9 +126,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 2, modified 2
 - Areas touched: `.gitignore`, `requirements.txt`, `scripts`
 
-#### `6b403aa0` Add RAG API (rag_qdrant.py) + Streamlit UI (app_streamlit.py)
+#### `dac2e823` Add RAG API (rag_qdrant.py) + Streamlit UI (app_streamlit.py)
 
-- Full hash: `6b403aa0317dd6b967c7fed95afc6520ba8611f0`
+- Full hash: `dac2e8234770de156055566dd61dcb6f9d720007`
 - Added (2):
   - `scripts/app_streamlit.py`
   - `scripts/rag_qdrant.py`
@@ -138,9 +136,9 @@ Every unique commit appears once below. File operations come directly from Git n
   - `.gitignore`
   - `requirements.txt`
 
-#### `914b68ff` Merge: Qdrant migration – RAG API + Streamlit UI
+#### `9f3edef2` Merge: Qdrant migration – RAG API + Streamlit UI
 
-- Full hash: `914b68ff792de88c0534869e5f18b87c4cbce23c`
+- Full hash: `9f3edef2c0170858ba9dcc14be2dbe81279af744`
 - Merge commit; Git reports no direct file list for this merge in the default history view.
 
 ### 2025-08-21
@@ -151,9 +149,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 1, modified 10, deleted 1
 - Areas touched: `.gitignore`, `README.md`, `requirements.txt`, `scripts`
 
-#### `f076187a` feat(rag): Qdrant-only core + robust reranker + structured answers
+#### `68994bb3` feat(rag): Qdrant-only core + robust reranker + structured answers
 
-- Full hash: `f076187a0bffefa7ecf850ee082841749cb3a1dd`
+- Full hash: `68994bb3375a5cdac3258b15314ffb57854955a3`
 - Refs: `tag: archive/cleanup-qdrant-only`
 - Added (1):
   - `scripts/tools/ensure_qdrant.py`
@@ -167,27 +165,27 @@ Every unique commit appears once below. File operations come directly from Git n
 - Deleted (1):
   - `scripts/rag_api_milvus.py`
 
-#### `e2c8ea74` Update: modified .gitignore, requirements, scripts
+#### `c2c91309` Update: modified .gitignore, requirements, scripts
 
-- Full hash: `e2c8ea74f67fd5d2939206418b721e0e4260d34d`
+- Full hash: `c2c913090edbdf72d049df22b7dff5ab0b8ac2e4`
 - Modified (1):
   - `.gitignore`
 
-#### `9594a395` Update README.md
+#### `f0686ad5` Update README.md
 
-- Full hash: `9594a395ab5d2d2ad381c116dfc8ac6edd783f08`
+- Full hash: `f0686ad55a11a9d566e57168a02b8e7ec5135e4c`
 - Modified (1):
   - `README.md`
 
-#### `fb568312` Update README.md
+#### `01ac9240` Update README.md
 
-- Full hash: `fb568312e7abdf8f8a349a7fe8ea22d39de09446`
+- Full hash: `01ac9240c558b6f5e530018fb2f0a80a253caf4c`
 - Modified (1):
   - `README.md`
 
-#### `f46db5a0` Update README.md
+#### `d0709694` Update README.md
 
-- Full hash: `f46db5a0fdec75eda3c0ef35437179ac9aad45ec`
+- Full hash: `d0709694b214a15035bccb307188803b9b79e1d1`
 - Modified (1):
   - `README.md`
 
@@ -199,9 +197,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: modified 4
 - Areas touched: `scripts`
 
-#### `ea8ecee0` solving error
+#### `048ac688` solving error
 
-- Full hash: `ea8ecee011cafb3019e149fc4a8147ce870d12c3`
+- Full hash: `048ac68833f4dcd56479f64245f5f507bcd02895`
 - Modified (4):
   - `scripts/app_streamlit.py`
   - `scripts/config.py`
@@ -216,9 +214,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 5, modified 2, deleted 1
 - Areas touched: `metadata`, `scripts`
 
-#### `de802847`  teseseract done but still shows error
+#### `cfc2e010`  teseseract done but still shows error
 
-- Full hash: `de8028476630215791cc63eddad08f9f5db23d83`
+- Full hash: `cfc2e01030dc092a3cc2beb05bd28674d8bb329e`
 - Added (5):
   - `metadata/loader_report.csv`
   - `scripts/classify_docs.py`
@@ -239,9 +237,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 2, modified 1, deleted 3, renamed 5
 - Areas touched: `core`, `env_venv_backup.yml`, `metadata`, `nv_requirements_lock.txt`, `scripts`, `ui`
 
-#### `d6cbc924` repor reform + replace env + add new libraries
+#### `734db112` repor reform + replace env + add new libraries
 
-- Full hash: `d6cbc92490d0528602cfb0e36015c2d5f585acc5`
+- Full hash: `734db112f80d53e23155b2880e34ca9971f3ce32`
 - Added (2):
   - `env_venv_backup.yml`
   - `nv_requirements_lock.txt`
@@ -266,9 +264,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 5, modified 6, deleted 1
 - Areas touched: `.gitignore`, `core`, `nv_requirements_lock.txt`, `pyproject.toml`, `scripts`, `test.py`
 
-#### `473ad05f`  search/ quary seatcion
+#### `07220fb9`  search/ quary seatcion
 
-- Full hash: `473ad05f2c62ae30989edadc4d4241d07dc0baa9`
+- Full hash: `07220fb93fccddef3ed3085b563cae6ef024f0cd`
 - Added (5):
   - `core/domain.py`
   - `pyproject.toml`
@@ -293,9 +291,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 11, modified 9, deleted 4
 - Areas touched: `=1.2.10`, `=20.0`, `core`, `requirements.txt`, `scripts`, `test.py`, `ui`
 
-#### `ba913271` till query with ocr without logging
+#### `c65d97cf` till query with ocr without logging
 
-- Full hash: `ba9132713049bcf254019e5fb2793bfd942df291`
+- Full hash: `c65d97cf8fb31de75abf52cecc03a431178d4473`
 - Added (2):
   - `=1.2.10`
   - `scripts/embed_ocr_only.py`
@@ -308,9 +306,9 @@ Every unique commit appears once below. File operations come directly from Git n
   - `scripts/search.py`
   - `test.py`
 
-#### `c637287d` Implemented full multilingual tender bot embedding pipeline and fallback chatbot UI
+#### `71f27cb6` Implemented full multilingual tender bot embedding pipeline and fallback chatbot UI
 
-- Full hash: `c637287de2a1ed54d19146528dfdace54b20c622`
+- Full hash: `71f27cb6fc8e48056cd42a298eeccbad9f44af99`
 - Added (9):
   - `=20.0`
   - `core/comprehensive_logger.py`
@@ -338,9 +336,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 3, modified 23, deleted 1
 - Areas touched: `config.py`, `core`, `docker-compose.yml`, `rag_qdrant.py`, `requirements.txt`, `scripts`, `test.py`, `ui`, `update.ipynb`
 
-#### `07887800` rettrival error
+#### `e7ca295e` rettrival error
 
-- Full hash: `07887800541a6865d30668e778ae987291498af0`
+- Full hash: `e7ca295e6674c1c181d7f79390014a8614d3dc98`
 - Added (3):
   - `config.py`
   - `rag_qdrant.py`
@@ -365,9 +363,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - Deleted (1):
   - `ui/simple_chat_bot.py`
 
-#### `24685c5e` done with embedded succesufully with qdrant + jiva 1024,retrival and sanity remaining
+#### `7f0567d0` done with embedded succesufully with qdrant + jiva 1024,retrival and sanity remaining
 
-- Full hash: `24685c5ebad8ae8fe62a36779e98e3588762cab3`
+- Full hash: `7f0567d0ed771d86a24c4c2d445ea6a231eb30a3`
 - Modified (7):
   - `core/config.py`
   - `docker-compose.yml`
@@ -385,9 +383,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 1, modified 1
 - Areas touched: `diagram.png`, `test.py`
 
-#### `448945f9` with diagram
+#### `9ec3d43e` with diagram
 
-- Full hash: `448945f989b7c26bc1d23593d4446f01b3129171`
+- Full hash: `9ec3d43e26e9d625b162d4f5fd099b72d2c1e7ef`
 - Added (1):
   - `diagram.png`
 - Modified (1):
@@ -401,9 +399,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 12, modified 9
 - Areas touched: `.gitignore`, `core`, `deploy_production.py`, `diagram.png`, `docs`, `PRODUCTION_GUIDE.md`, `QUICKSTART.md`, `README.md`, `test.py`, `ui`
 
-#### `ddbe3c7f` 🚀 Production-ready RAG system with fixes and documentation
+#### `4eb5483b` 🚀 Production-ready RAG system with fixes and documentation
 
-- Full hash: `ddbe3c7fd64f8acf934b9b08740379cd8d7eb3cd`
+- Full hash: `4eb5483b18723fc106a6c777f3c47046cad807ee`
 - Added (12):
   - `PRODUCTION_GUIDE.md`
   - `QUICKSTART.md`
@@ -422,29 +420,29 @@ Every unique commit appears once below. File operations come directly from Git n
   - `test.py`
   - `ui/app_streamlit.py`
 
-#### `d9cfe60a` 📝 Update README with production-ready documentation
+#### `355d4a9e` 📝 Update README with production-ready documentation
 
-- Full hash: `d9cfe60a09373732168284f5ce8390ce6b442a66`
+- Full hash: `355d4a9e3eebac57ad3338d76d3a694d9e1754ba`
 - Modified (1):
   - `README.md`
 
-#### `bcc70c33` updated readme till 5th october_process
+#### `59b7933d` updated readme till 5th october_process
 
-- Full hash: `bcc70c3341d55afe61ad2ffffcb02465f1f5107a`
+- Full hash: `59b7933d4ecd018ef4de13cee72f9159e6575d03`
 - Modified (3):
   - `.gitignore`
   - `README.md`
   - `diagram.png`
 
-#### `0582e982` updated read me + diagram
+#### `e645429d` updated read me + diagram
 
-- Full hash: `0582e9826b56de30293b72ea783762f835d3b123`
+- Full hash: `e645429d7edc2f53a030eb5df4ef743a3c3d291a`
 - Modified (1):
   - `README.md`
 
-#### `c0b289a3` updated read me n mermaid + diagram
+#### `c3bc162e` updated read me n mermaid + diagram
 
-- Full hash: `c0b289a392513abea3ee2e36881e19e403b842fc`
+- Full hash: `c3bc162ea57ff5071bb47e10f9d8dc0b1fcf2dea`
 - Modified (1):
   - `README.md`
 
@@ -456,9 +454,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 12, modified 4, deleted 13
 - Areas touched: `=1.2.10`, `=20.0`, `BASELINE_ANALYSIS.md`, `config.py`, `core`, `env_venv_backup.yml`, `EVALUATION_STRATEGY.md`, `FILE_AUDIT.md`, `HYBRID_SEARCH_FIX.md`, `HYBRID_SEARCH_IMPLEMENTATION.md`, `IMPLEMENTATION_PLAN.md`, `pyproject.toml`, `rag_qdrant.py`, `SAMPLE_QUERIES.md`, `scripts`, `test.py`, `ui`, `update.ipynb`, `VERIFICATION_REPORT.md`
 
-#### `c1beeaaa` hybrid fails
+#### `bdee89b1` hybrid fails
 
-- Full hash: `c1beeaaafda36d3d58c20e40ef8c0b70e15243ad`
+- Full hash: `bdee89b1ac0614b6dba31227a5f230eaddf9bb81`
 - Added (12):
   - `BASELINE_ANALYSIS.md`
   - `EVALUATION_STRATEGY.md`
@@ -500,9 +498,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 20, modified 1, renamed 36
 - Areas touched: `BASELINE_ANALYSIS.md`, `core`, `deploy_production.py`, `docs`, `evaluation`, `EVALUATION_STRATEGY.md`, `FILE_AUDIT.md`, `GITHUB_PUSH_GUIDE.md`, `HYBRID_SEARCH_FIX.md`, `HYBRID_SEARCH_IMPLEMENTATION.md`, `IMPLEMENTATION_PLAN.md`, `PRODUCTION_GUIDE.md`, `QUICKSTART.md`, `README.md`, `REORGANIZATION_SUMMARY.md`, `SAMPLE_QUERIES.md`, `scripts`, `src`, `ui`, `VERIFICATION_REPORT.md`
 
-#### `ff719bba` refactor: Reorganize project structure for production
+#### `ce50f23b` refactor: Reorganize project structure for production
 
-- Full hash: `ff719bba8065e3dce9122c4cee15d303af0aa380`
+- Full hash: `ce50f23b34f07ad712a0f6e5e1eb252746b1beef`
 - Added (20):
   - `GITHUB_PUSH_GUIDE.md`
   - `REORGANIZATION_SUMMARY.md`
@@ -572,9 +570,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 22, modified 13, deleted 21
 - Areas touched: `docs`, `evaluation`, `GITHUB_PUSH_GUIDE.md`, `manual_test.py`, `PROJECT_DOCUMENTATION.md`, `README.md`, `REORGANIZATION_SUMMARY.md`, `scripts`, `src`, `tests`
 
-#### `0c4e4a69`  final check before ui testing + fast APi + BM25
+#### `698caf13`  final check before ui testing + fast APi + BM25
 
-- Full hash: `0c4e4a695deaa89e226c6e2c93bbe4c165e25489`
+- Full hash: `698caf1356f31f0a5b2f80c20606ad9890e3ff35`
 - Added (21):
   - `PROJECT_DOCUMENTATION.md`
   - `evaluation/EVALUATION_REPORT.md`
@@ -633,15 +631,15 @@ Every unique commit appears once below. File operations come directly from Git n
   - `docs/research/HYBRID_SEARCH_FIX.md`
   - `docs/research/HYBRID_SEARCH_IMPLEMENTATION.md`
 
-#### `59de4269` feat: Add comprehensive documentation and caching explanations
+#### `fa193309` feat: Add comprehensive documentation and caching explanations
 
-- Full hash: `59de42693934f5ea8f81d993c8398e4685db89de`
+- Full hash: `fa1933095300835c7da678d64cda77252f7cdf09`
 - Modified (1):
   - `README.md`
 
-#### `0c33af2d`  embedding chached used and readme update
+#### `46659e14`  embedding chached used and readme update
 
-- Full hash: `0c33af2d1a759ba4d506b600ccb0b4d5cfd7554a`
+- Full hash: `46659e14cd32bed2e01adfa9bc11833e8c86bbbf`
 - Added (1):
   - `manual_test.py`
 
@@ -653,15 +651,15 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: modified 2
 - Areas touched: `README.md`
 
-#### `85683553` Format README for improved structure and readability
+#### `ddec30ee` Format README for improved structure and readability
 
-- Full hash: `85683553365b60c21ba98f0af48cd521934cb0fe`
+- Full hash: `ddec30eeff57bd3d2f8a675451b6da71b5643d2e`
 - Modified (1):
   - `README.md`
 
-#### `26fa967a` reformat readme
+#### `42dfc1aa` reformat readme
 
-- Full hash: `26fa967a364865378c8621e8feb95ae9a5bee868`
+- Full hash: `42dfc1aab1d23ac0d5b9234508c15c66bfb97829`
 - Modified (1):
   - `README.md`
 
@@ -673,9 +671,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: added 20, modified 43, deleted 28, renamed 1
 - Areas touched: `.gitignore`, `diagram.png`, `docs`, `evaluation`, `manual_test.py`, `pyproject.toml`, `README.md`, `requirements.txt`, `scripts`, `src`, `tests`, `ui`
 
-#### `33c07dd5` docs: add portfolio plan, project definition and planning assets
+#### `4becdda4` docs: add portfolio plan, project definition and planning assets
 
-- Full hash: `33c07dd57c992bfdd98d4eb586fd0c6cff52cd10`
+- Full hash: `4becdda492472678314571af5b5df3d6b88b1885`
 - Added (4):
   - `docs/PORTFOLIO_MASTER_PLAN.md`
   - `docs/PROJECT_DEFINITION.md`
@@ -686,9 +684,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - Renamed (1):
   - `diagram.png` -> `docs/architecture/current_system_diagram.png`
 
-#### `2ce0a60b` chore: remove dead code and empty placeholder packages
+#### `fc190464` chore: remove dead code and empty placeholder packages
 
-- Full hash: `2ce0a60b294496e0122270470db9a8832e68fdbc`
+- Full hash: `fc1904648394ef575c8fb0fb5b2ef2070cd4ec85`
 - Modified (1):
   - `README.md`
 - Deleted (9):
@@ -702,40 +700,40 @@ Every unique commit appears once below. File operations come directly from Git n
   - `src/reranker/__init__.py`
   - `src/utils/__init__.py`
 
-#### `b858ecbb` docs: record verified corpus inventory after cleanup
+#### `3757e478` docs: record verified corpus inventory after cleanup
 
-- Full hash: `b858ecbbfac00e452dace664a990e4151e5437c5`
+- Full hash: `3757e478f7468136d516ae53a04946a961928e58`
 - Modified (2):
   - `docs/PORTFOLIO_MASTER_PLAN.md`
   - `docs/PROJECT_DEFINITION.md`
 
-#### `f8429cb2` docs: explain the full pipeline, its design reasons and known defects
+#### `85f024c2` docs: explain the full pipeline, its design reasons and known defects
 
-- Full hash: `f8429cb2c1b4a9e0d629e96e49b8f0d20b798651`
+- Full hash: `85f024c2dd0a2bff0226bdafabafd8f19ad9c15e`
 - Added (1):
   - `docs/PROJECT_EXPLAINED.md`
 
-#### `4e565226` docs: add 21-page analysis and project plan PDF; record defect 22
+#### `ae7d9909` docs: add 21-page analysis and project plan PDF; record defect 22
 
-- Full hash: `4e565226166c56279089b0b8e8ebe032824414b9`
+- Full hash: `ae7d99093ec94ce1ed3bbeb2dd93d7cde6901708`
 - Added (1):
   - `docs/TENDER_RAG_PORTFOLIO_PLAN.pdf`
 - Modified (2):
   - `docs/PROJECT_DEFINITION.md`
   - `docs/PROJECT_EXPLAINED.md`
 
-#### `96be1bc6` docs: plan v1.1 after review (safer baseline, sealed tests, mandatory vs stretch)
+#### `2a9ce8b2` docs: plan v1.1 after review (safer baseline, sealed tests, mandatory vs stretch)
 
-- Full hash: `96be1bc6b5579ffa694ae7f4e733bcdc496f80b6`
+- Full hash: `2a9ce8b29e7bec9a98fd69f7407ea17aa13d2d8a`
 - Modified (4):
   - `docs/PORTFOLIO_MASTER_PLAN.md`
   - `docs/PROJECT_DEFINITION.md`
   - `docs/PROJECT_EXPLAINED.md`
   - `docs/TENDER_RAG_PORTFOLIO_PLAN.pdf`
 
-#### `ceea13db` docs: split into two stage-wise PDFs plus one reference markdown (plan v1.2)
+#### `d8bb0d6f` docs: split into two stage-wise PDFs plus one reference markdown (plan v1.2)
 
-- Full hash: `ceea13dbff83043d6e89e2d59b46d7d6197c70fa`
+- Full hash: `d8bb0d6f9ad44aa5f8f6d4ed0cb9f448582e9620`
 - Added (3):
   - `docs/PROJECT_1_TENDER_RAG_2_0.pdf`
   - `docs/PROJECT_2_MULTIDOC_AGENT.pdf`
@@ -748,9 +746,9 @@ Every unique commit appears once below. File operations come directly from Git n
   - `docs/PROJECT_EXPLAINED.md`
   - `docs/TENDER_RAG_PORTFOLIO_PLAN.pdf`
 
-#### `980a6d7e` docs: make the reference markdown visual and easier to navigate
+#### `28ab16ae` docs: make the reference markdown visual and easier to navigate
 
-- Full hash: `980a6d7e65e4d639e19453c984f3741c2fb77c99`
+- Full hash: `28ab16ae258fe370e894ccb55eb59a3fb679435e`
 - Added (10):
   - `docs/img/change_loop.svg`
   - `docs/img/data_split.svg`
@@ -767,9 +765,9 @@ Every unique commit appears once below. File operations come directly from Git n
   - `docs/PROJECT_2_MULTIDOC_AGENT.pdf`
   - `docs/TENDER_RAG_REFERENCE.md`
 
-#### `cefb23e5` docs: add "Explain it in five minutes" and focus the plan on Project 1
+#### `41e409ea` docs: add "Explain it in five minutes" and focus the plan on Project 1
 
-- Full hash: `cefb23e5d4ff0c65eb0b0872811a0cbb10e3b915`
+- Full hash: `41e409eafddd055d21fcd1b8f8c3f0a41f30c810`
 - Modified (6):
   - `docs/PROJECT_1_TENDER_RAG_2_0.pdf`
   - `docs/PROJECT_2_MULTIDOC_AGENT.pdf`
@@ -778,18 +776,18 @@ Every unique commit appears once below. File operations come directly from Git n
   - `docs/img/roadmap.svg`
   - `docs/img/timeline.svg`
 
-#### `0c1b9999` docs: add code tour and answer-model options to the reference
+#### `0e0a48d4` docs: add code tour and answer-model options to the reference
 
-- Full hash: `0c1b99990effc7167c37eb90d3f916264cb8f2af`
+- Full hash: `0e0a48d45d679c901cf3168584d4a70dd3917507`
 - Refs: `tag: v1-before-refactor`
 - Modified (3):
   - `docs/PROJECT_1_TENDER_RAG_2_0.pdf`
   - `docs/PROJECT_2_MULTIDOC_AGENT.pdf`
   - `docs/TENDER_RAG_REFERENCE.md`
 
-#### `7175b46e` chore: delete code nothing uses (about 1,900 lines)
+#### `0b695f4a` chore: delete code nothing uses (about 1,900 lines)
 
-- Full hash: `7175b46e4940dc48f0ed4bb7e71c68b8954d4e07`
+- Full hash: `0b695f4a590cb10a36408fafe7fe905bf2c6ddf0`
 - Modified (1):
   - `README.md`
 - Deleted (15):
@@ -809,9 +807,9 @@ Every unique commit appears once below. File operations come directly from Git n
   - `tests/test_embedding_cache.py`
   - `tests/test_qa_caching.py`
 
-#### `04c5d5ba` refactor: one clear way to run each step; fix broken entry points
+#### `ac6845ee` refactor: one clear way to run each step; fix broken entry points
 
-- Full hash: `04c5d5bab3c1f090f98a7ecf6bf0368493bb6eb1`
+- Full hash: `ac6845ee0a58c80e2424386e6613d61039f07e9c`
 - Modified (6):
   - `pyproject.toml`
   - `requirements.txt`
@@ -820,9 +818,9 @@ Every unique commit appears once below. File operations come directly from Git n
   - `scripts/deployment/build_bm25_index.py`
   - `ui/streamlit/app.py`
 
-#### `bcde984d` refactor: one simple retrieval path (search, qa, API routes)
+#### `ce4164b6` refactor: one simple retrieval path (search, qa, API routes)
 
-- Full hash: `bcde984d48972e2d521e057ecadf03bff533ceef`
+- Full hash: `ce4164b647c9f5a49d7c72094495c4ae191f2220`
 - Modified (10):
   - `evaluation/manual_evaluation.py`
   - `src/api/main.py`
@@ -835,9 +833,9 @@ Every unique commit appears once below. File operations come directly from Git n
   - `src/core/search.py`
   - `tests/test_multilingual.py`
 
-#### `a971b708` refactor: remove dead config/domain code and import-time logging; add retrieval asserts
+#### `77e2237c` refactor: remove dead config/domain code and import-time logging; add retrieval asserts
 
-- Full hash: `a971b708fa99431dfac478cc02761c2f18f51594`
+- Full hash: `77e2237cac273504c413a3ce003d60bf4395a15f`
 - Added (1):
   - `tests/unit/test_retrieval_basics.py`
 - Modified (3):
@@ -853,27 +851,27 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: modified 4
 - Areas touched: `README.md`
 
-#### `d8454d3d` docs: add plain-English project overview
+#### `fc271214` docs: add plain-English project overview
 
-- Full hash: `d8454d3d262733d2d273e1d6e3fe3db8959b68ff`
+- Full hash: `fc2712145275aa354bddca3346c89997dc459627`
 - Modified (1):
   - `README.md`
 
-#### `aa7cbd48` docs: add clear project summary before full technical README
+#### `1e519764` docs: add clear project summary before full technical README
 
-- Full hash: `aa7cbd48a22c3c877b14f8cf7adb263a795a7ed6`
+- Full hash: `1e5197641fa40696ddbfb20461eee7c0adcdd90b`
 - Modified (1):
   - `README.md`
 
-#### `edc80ab8` docs: replace summary questions with simple paragraphs
+#### `c143d855` docs: replace summary questions with simple paragraphs
 
-- Full hash: `edc80ab833b6327d825dc320b7a740a31966dfe3`
+- Full hash: `c143d855a73a2c977c01c6aef2e38d15f55334f0`
 - Modified (1):
   - `README.md`
 
-#### `df2a0be4` docs: position multilingual tender RAG as privacy-first with accurate runtime scope
+#### `c85e0271` docs: position multilingual tender RAG as privacy-first with accurate runtime scope
 
-- Full hash: `df2a0be499332c2b33d7e284328c6273b189f9db`
+- Full hash: `c85e02710a64f53e052e970fc3d395c7228c7dbb`
 - Modified (1):
   - `README.md`
 
@@ -885,9 +883,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - File events: modified 3, deleted 5
 - Areas touched: `docker-compose.yml`, `docs`, `PROJECT_DOCUMENTATION.md`, `requirements.txt`, `src`
 
-#### `4e310cd8` fix: match Qdrant server and client (1.20) and use query_points
+#### `a85163a4` fix: match Qdrant server and client (1.20) and use query_points
 
-- Full hash: `4e310cd8bb3ab6c6da7701ed426dbd8309e0187b`
+- Full hash: `a85163a4928de53c6c3fd3d8fad42084e8c67b27`
 - Modified (3):
   - `docker-compose.yml`
   - `requirements.txt`
@@ -903,13 +901,13 @@ Every unique commit appears once below. File operations come directly from Git n
 
 **Current: Tender RAG 2.0.** Started the corpus from zero (one folder per tender, safe unzip, tender metadata finally attached), made BGE-M3 the default embedder, added parallel read/OCR workers, a saved-chunk file so OCR runs once, three full collections (BGE-M3, Qwen3-0.6B, Jina v3, 32,370 points each after fixing a bug that overwrote 4.7% of chunks), resumable GPU indexing, and a 48-question German/English evaluation set with a retrieval check.
 
-- Commits: **20**
-- File events: added 28, modified 51, deleted 1
+- Commits: **21**
+- File events: added 28, modified 54, deleted 1
 - Areas touched: `.gitignore`, `docs`, `evaluation`, `NEXT_STEPS.md`, `README.md`, `requirements.txt`, `scripts`, `src`, `tests`, `WORK_LOG.md`
 
-#### `12279ffb` feat: start the corpus from zero with one folder per tender and a swappable embedder
+#### `6906303c` feat: start the corpus from zero with one folder per tender and a swappable embedder
 
-- Full hash: `12279ffb4f3f25257e40d0f474d16203f4f7dd8e`
+- Full hash: `6906303c516c867ca0d473da6a3029ad4b8c8db5`
 - Added (1):
   - `tests/unit/test_ingest_safety.py`
 - Modified (10):
@@ -924,22 +922,22 @@ Every unique commit appears once below. File operations come directly from Git n
   - `src/core/io.py`
   - `src/core/search.py`
 
-#### `3ee0eb5e` fix: tender metadata was never attached to chunks (DTAD-ID column not normalized)
+#### `e2769f1b` fix: tender metadata was never attached to chunks (DTAD-ID column not normalized)
 
-- Full hash: `3ee0eb5e62c364d53523e8b9cf69bcc8a8bdf083`
+- Full hash: `e2769f1ba5c48d006ac6d990bc94c24f07fd7c37`
 - Modified (2):
   - `src/core/io.py`
   - `tests/unit/test_ingest_safety.py`
 
-#### `2035fa4f` feat: profile_corpus.py counts pages and pages needing OCR per tender
+#### `d3011e71` feat: profile_corpus.py counts pages and pages needing OCR per tender
 
-- Full hash: `2035fa4f40268fbe3e8755e58a49000a2c8784f5`
+- Full hash: `d3011e715d00e2b05da02231085982fab6118581`
 - Added (1):
   - `scripts/data_processing/profile_corpus.py`
 
-#### `c2fdce05` fix: BM25 path property was missing; tender-id queries stay inside that tender; no emoji in console output
+#### `da9f9d8b` fix: BM25 path property was missing; tender-id queries stay inside that tender; no emoji in console output
 
-- Full hash: `c2fdce05533da7c683c48ca3351875b9a58cc44e`
+- Full hash: `da9f9d8b652a1fcad60c75d8285813d0e2edf1db`
 - Modified (6):
   - `scripts/deployment/build_bm25_index.py`
   - `src/core/config.py`
@@ -948,17 +946,17 @@ Every unique commit appears once below. File operations come directly from Git n
   - `src/core/search.py`
   - `tests/unit/test_retrieval_basics.py`
 
-#### `4f40a688` feat: 10 draft mini questions and a deterministic retrieval check
+#### `f6923dab` feat: 10 draft mini questions and a deterministic retrieval check
 
-- Full hash: `4f40a68887fc6412253cf1884448f2c87f30e14f`
+- Full hash: `f6923dab536da00e1e70c4a629fc76e2691a8ab2`
 - Added (3):
   - `evaluation/datasets/mini_questions.json`
   - `evaluation/results/mini_mini_bge-m3.json`
   - `evaluation/run_mini_eval.py`
 
-#### `2a8f4d77` docs: update WORK_LOG and NEXT_STEPS for the from-zero rebuild
+#### `d2a5cf0c` docs: update WORK_LOG and NEXT_STEPS for the from-zero rebuild
 
-- Full hash: `2a8f4d773e86f8b12336c3bac61930130c9e740b`
+- Full hash: `d2a5cf0cff0baf058689de6693f4621d0a7cd5ad`
 - Added (7):
   - `NEXT_STEPS.md`
   - `WORK_LOG.md`
@@ -968,9 +966,9 @@ Every unique commit appears once below. File operations come directly from Git n
   - `scripts/project_tracking/dashboard_assets/dashboard.js`
   - `scripts/project_tracking/dashboard_assets/tokens.css`
 
-#### `d75151b1` feat: parallel read/OCR/chunk workers and a three-way embedder comparison
+#### `f39237db` feat: parallel read/OCR/chunk workers and a three-way embedder comparison
 
-- Full hash: `d75151b105e34053a1a791b7e67119f5fb55673e`
+- Full hash: `f39237db90b0f77ca4d47c9b354b2c0a2fb42ee2`
 - Added (6):
   - `evaluation/compare_embedders.py`
   - `evaluation/make_checklist.py`
@@ -984,21 +982,21 @@ Every unique commit appears once below. File operations come directly from Git n
   - `src/core/index.py`
   - `tests/unit/test_ingest_safety.py`
 
-#### `827eed92` docs: refresh WORK_LOG
+#### `67bd5848` docs: refresh WORK_LOG
 
-- Full hash: `827eed92df50f1c6caa6b1d3ab7b72a6455a261b`
+- Full hash: `67bd58489dd045a5c47c1353e6464a5409822b85`
 - Modified (1):
   - `WORK_LOG.md`
 
-#### `0b3abad7` feat: verify_questions.py opens each evidence PDF at its page and records yes/no
+#### `67dc8b78` feat: verify_questions.py opens each evidence PDF at its page and records yes/no
 
-- Full hash: `0b3abad71c2c4bf414673804ca8ff343f5c85982`
+- Full hash: `67dc8b78b6d273505fb539ca0ebf4a05cc5830c9`
 - Added (1):
   - `evaluation/verify_questions.py`
 
-#### `0970060a` fix: identical files in different tenders no longer overwrite each other
+#### `f25dd8e2` fix: identical files in different tenders no longer overwrite each other
 
-- Full hash: `0970060ac6b0c33f4ba5ee85c5378e3b81542556`
+- Full hash: `f25dd8e2bd0820cadfc9bf3b83b7b9bd92e32570`
 - Added (6):
   - `evaluation/generate_questions.py`
   - `evaluation/run_eval.py`
@@ -1019,9 +1017,9 @@ Every unique commit appears once below. File operations come directly from Git n
 - Deleted (1):
   - `evaluation/run_mini_eval.py`
 
-#### `d8cde598` fix: stop at the first CUDA error and keep Windows awake during long jobs
+#### `184d4205` fix: stop at the first CUDA error and keep Windows awake during long jobs
 
-- Full hash: `d8cde598bb9067b4497f81a60a7dca16fb30aa44`
+- Full hash: `184d420591c27582a884da94621c55c15221ae8c`
 - Added (1):
   - `src/core/awake.py`
 - Modified (5):
@@ -1031,51 +1029,51 @@ Every unique commit appears once below. File operations come directly from Git n
   - `scripts/project_tracking/build_progress_dashboard.py`
   - `src/core/index.py`
 
-#### `eb81acc5` fix: resumable indexing, smaller batches for Qwen3/Jina, automatic retries
+#### `9fb5f95b` fix: resumable indexing, smaller batches for Qwen3/Jina, automatic retries
 
-- Full hash: `eb81acc5116374c1fb5a8bdf0dae2e7dd4cbfaa7`
+- Full hash: `9fb5f95baf8d85a3bc8143758a94912b73c7c789`
 - Modified (4):
   - `scripts/data_processing/build_collections.py`
   - `scripts/data_processing/embed.py`
   - `src/core/embedder_presets.py`
   - `src/core/index.py`
 
-#### `d3059d16` feat: 48-question German/English evaluation set (24 base questions, dev/test split)
+#### `6a796563` feat: 48-question German/English evaluation set (24 base questions, dev/test split)
 
-- Full hash: `d3059d16880e0b3d3fc125cb74d8ae4f7e84b6b0`
+- Full hash: `6a796563f0aef3493869e7b70706900d225a53d9`
 - Added (1):
   - `evaluation/datasets/g_de_en_48.json`
 - Modified (1):
   - `scripts/project_tracking/build_progress_dashboard.py`
 
-#### `728d460d` docs: refresh WORK_LOG
+#### `d75e1f96` docs: refresh WORK_LOG
 
-- Full hash: `728d460d53062ed2c3d146bd7467684b2930b2f7`
+- Full hash: `d75e1f968d02e971e3fa01c3c278d98807198844`
 - Modified (1):
   - `WORK_LOG.md`
 
-#### `fc646799` feat: verify_questions.py checks German/English pairs, can correct or drop a question
+#### `620fed14` feat: verify_questions.py checks German/English pairs, can correct or drop a question
 
-- Full hash: `fc646799c1c0acd4238942559df54a267d4f62b2`
+- Full hash: `620fed1403fd956942033c88d5a318f5928a048f`
 - Modified (2):
   - `evaluation/run_eval.py`
   - `evaluation/verify_questions.py`
 
-#### `b5223b53` docs: NEXT_STEPS records the state at the end of 11 Nov and the order of the next steps
+#### `7eafa464` docs: NEXT_STEPS records the state at the end of 11 Nov and the order of the next steps
 
-- Full hash: `b5223b53b53697184a0024a6cc73cf4efad225d6`
+- Full hash: `7eafa464b8033c63faf453dc6affb6197145042e`
 - Modified (1):
   - `NEXT_STEPS.md`
 
-#### `5cc41552` docs: refresh WORK_LOG
+#### `16f65a03` docs: refresh WORK_LOG
 
-- Full hash: `5cc415525d4c126f75f76bec06bf6483b5ad4ee0`
+- Full hash: `16f65a036425b8effe1ffa8e235c2f3843cb5c49`
 - Modified (1):
   - `WORK_LOG.md`
 
-#### `f2430bde` docs: README resume section, reference v1.3, and the Advanced RAG 2.0 backlog
+#### `a9b26e02` docs: README resume section, reference v1.3, and the Advanced RAG 2.0 backlog
 
-- Full hash: `f2430bdefc072a5d258c07aaf6b403ed371901c6`
+- Full hash: `a9b26e025bff7fa5ac4374b2dbc62a24b5f761e1`
 - Added (1):
   - `docs/img/one_page.svg`
 - Modified (3):
@@ -1083,17 +1081,25 @@ Every unique commit appears once below. File operations come directly from Git n
   - `README.md`
   - `docs/TENDER_RAG_REFERENCE.md`
 
-#### `f368020f` docs: refresh WORK_LOG
+#### `ae81f73c` docs: refresh WORK_LOG
 
-- Full hash: `f368020f76afc3cc16e1056154d36b2a90eebeb0`
+- Full hash: `ae81f73c525b1c111fbd47869aa80294479f7b84`
 - Modified (1):
   - `WORK_LOG.md`
 
-#### `6005ed91` Merge origin/main (README project summary) into refactor/simplify
+#### `4801971d` Merge origin/main (README project summary) into refactor/simplify
 
-- Full hash: `6005ed91d06c36f03652ab1043dcf9892691168c`
-- Refs: `HEAD -> main, origin/main, origin/HEAD`
+- Full hash: `4801971d5d00be492d1178259c5d334bd344bde9`
 - Merge commit; Git reports no direct file list for this merge in the default history view.
+
+#### `9728e1e8` docs: main is now the only branch; old lines are kept as tags
+
+- Full hash: `9728e1e8e1eefe9272a9f455352908a665c01411`
+- Refs: `HEAD -> main, origin/main, origin/HEAD`
+- Modified (3):
+  - `NEXT_STEPS.md`
+  - `WORK_LOG.md`
+  - `docs/TENDER_RAG_REFERENCE.md`
 
 ## Rebuild
 
