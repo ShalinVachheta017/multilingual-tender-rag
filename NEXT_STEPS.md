@@ -18,6 +18,12 @@ Still open from the lists below: API key default, candidate pool equals final co
 
 Next: verify the 10 questions, compare BGE-M3 / Qwen3-Embedding-0.6B / Jina v3 on the mini corpus, then build the full index with the winner.
 
+Parked for later (decided 2026-11-11):
+
+- OCR speed and engine: Tesseract is CPU only (about 2.2 s per scanned page, 983 pages is about 36 minutes). Add `RAGBOT_OCR_ENGINE=tesseract|easyocr|doctr`, run Tesseract on 8 to 12 worker processes, and benchmark GPU OCR (EasyOCR, docTR) on about 12 sample pages (seconds per page, German umlaut errors, GPU memory). Run OCR before embedding so the GPU memory is free.
+- Overlap CPU and GPU work: read and OCR the next PDFs while the GPU embeds the current ones.
+- Splitting the vector database into partitions: not needed at this size (see the answer in the chat of 2026-11-11). Revisit only if the corpus grows past about 1 million chunks.
+
 ## Current conclusion
 
 The repository is a useful local prototype, but it is **not currently working end to end** and is not ready for a quality baseline yet.

@@ -1,0 +1,78 @@
+{
+  "collection": "mini_qwen3-0.6b",
+  "summary": {
+    "tender_recall@1": 0.6666666666666666,
+    "evidence_recall@1": 0.0,
+    "tender_recall@5": 0.8888888888888888,
+    "evidence_recall@5": 0.8,
+    "tender_recall@10": 1.0,
+    "evidence_recall@10": 0.8,
+    "tender_mrr@10": 0.7444444444444445,
+    "evidence_mrr@10": 0.25666666666666665
+  },
+  "rows": [
+    {
+      "id": "m01",
+      "category": "single_fact",
+      "tender_rank": 5,
+      "evidence_rank": null,
+      "has_evidence": true
+    },
+    {
+      "id": "m02",
+      "category": "english_over_german",
+      "tender_rank": 1,
+      "evidence_rank": 2,
+      "has_evidence": true
+    },
+    {
+      "id": "m03",
+      "category": "scanned_page",
+      "tender_rank": 3,
+      "evidence_rank": 3,
+      "has_evidence": true
+    },
+    {
+      "id": "m04",
+      "category": "single_fact",
+      "tender_rank": 1,
+      "evidence_rank": 5,
+      "has_evidence": true
+    },
+    {
+      "id": "m05",
+      "category": "metadata",
+      "tender_rank": 1,
+      "evidence_rank": null,
+      "has_evidence": false
+    },
+    {
+      "id": "m06",
+      "category": "metadata",
+      "tender_rank": 1,
+      "evidence_rank": null,
+      "has_evidence": false
+    },
+    {
+      "id": "m07",
+      "category": "metadata",
+      "tender_rank": 6,
+      "evidence_rank": null,
+      "has_evidence": false
+    },
+    {
+      "id": "m08",
+      "category": "multi_document",
+      "tender_rank": 1,
+      "evidence_rank": 4,
+      "has_evidence": true
+    },
+    {
+      "id": "m10",
+      "category": "exact_id",
+      "tender_rank": 1,
+      "evidence_rank": null,
+      "has_evidence": false
+    }
+  ]
+}

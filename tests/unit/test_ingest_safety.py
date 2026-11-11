@@ -76,3 +76,20 @@ def test_normalize_columns_makes_the_id_column_findable():
     out = normalize_columns(df)
     assert list(out.columns) == ["dtad_id", "vergabestelle_komplett", "e_mail"]
     assert list(out["dtad_id"]) == ["20046891", "20046893"]
+
+
+def test_prepare_pdf_returns_chunks_and_never_raises(tmp_path):
+    import fitz
+    from src.core.prepare import prepare_pdf
+    pdf = tmp_path / "t.pdf"
+    doc = fitz.open()
+    for i in range(2):
+        lines = [f"Seite {i + 1} Zeile {j}: Die Bindefrist endet am 15.06.2023." for j in range(30)]
+        doc.new_page().insert_text((40, 40), chr(10).join(lines))
+    doc.save(pdf)
+    doc.close()
+    path, chunks, error = prepare_pdf(pdf, 300, 50)
+    assert error is None and path == pdf and len(chunks) >= 2
+    assert chunks[0].page_start == 1 and chunks[-1].page_end == 2
+    path, chunks, error = prepare_pdf(tmp_path / "missing.pdf", 300, 50)
+    assert chunks == []                                  # a bad file yields an empty result, not an exception

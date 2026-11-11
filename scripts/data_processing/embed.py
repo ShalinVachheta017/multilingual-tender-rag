@@ -39,6 +39,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument("--chunk-overlap", type=int, default=CFG.chunk_overlap, help="chunk overlap in characters")
     p.add_argument("--extract-dir", default=str(CFG.extract_dir), help="folder that holds the PDFs")
     p.add_argument("--tenders", nargs="+", metavar="ID", help="only index these tender ids (a small test corpus)")
+    p.add_argument("--workers", type=int, default=1,
+                   help="processes that read, OCR and chunk the next PDFs while the GPU embeds (1 = one after the other)")
     p.add_argument("--no-health-check", action="store_true", help="skip the Qdrant readiness check")
     p.add_argument("-v", "--verbose", action="store_true")
     return p.parse_args(argv)
@@ -70,7 +72,7 @@ def main(argv: list[str] | None = None) -> None:
         else:
             if args.mode == "fresh":
                 print("mode fresh: the existing collection will be deleted and recreated")
-            Indexer(CFG, fresh=(args.mode == "fresh")).build(extract_dir=extract_dir, tenders=args.tenders)
+            Indexer(CFG, fresh=(args.mode == "fresh")).build(extract_dir=extract_dir, tenders=args.tenders, workers=args.workers)
     except KeyboardInterrupt:
         sys.exit("Interrupted.")
     print(f"Done in {time.time() - started:.1f}s. Next: python scripts/deployment/build_bm25_index.py")

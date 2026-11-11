@@ -3,6 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import List, Dict, Optional
 import hashlib
+from concurrent.futures import ProcessPoolExecutor
+from itertools import repeat
 import numpy as np
 from tqdm import tqdm
 import torch
@@ -12,60 +14,11 @@ from qdrant_client import QdrantClient
 from qdrant_client.http import models as qmodels
 from sentence_transformers import SentenceTransformer
 
-from .domain import DocumentPage, DocumentChunk
+from .chunking import PageAwareChunker
+from .prepare import init_worker, prepare_pdf
 from .io import PDFLoader, ExcelMetadataJoiner
 from .config import CFG
 
-
-
-class PageAwareChunker:
-    def __init__(self, size: int, overlap: int):
-        self.size, self.overlap = size, overlap
-
-    def split(self, pages: List[DocumentPage]) -> List[DocumentChunk]:
-        text_acc: List[str] = []
-        page_acc: List[int] = []
-        chunks: List[DocumentChunk] = []
-        idx = 0
-
-        def flush():
-            nonlocal idx, text_acc, page_acc
-            if not text_acc:
-                return
-            text = "".join(text_acc)
-            page_start, page_end = (page_acc[0], page_acc[-1]) if page_acc else (None, None)
-            chunks.append(
-                DocumentChunk(
-                    chunk_index=idx,
-                    text=text,
-                    source_path=pages[0].source_path if pages else None,
-                    page_start=page_start,
-                    page_end=page_end,
-                    meta={},
-                )
-            )
-            idx += 1
-            keep = text[-self.overlap:] if self.overlap > 0 else ""
-            text_acc = [keep] if keep else []
-            page_acc = [page_end] if (self.overlap > 0 and page_end is not None) else []
-
-        for p in pages:
-            t = p.text or ""
-            if not t:
-                continue
-            cursor = 0
-            while cursor < len(t):
-                space_left = self.size - sum(len(x) for x in text_acc)
-                if space_left <= 0:
-                    flush()
-                    space_left = self.size
-                take = t[cursor : cursor + space_left]
-                text_acc.append(take)
-                if p.page_number not in page_acc:
-                    page_acc.append(p.page_number)
-                cursor += len(take)
-        flush()
-        return chunks
 
 
 class Indexer:
@@ -244,9 +197,23 @@ class Indexer:
         except Exception:
             return hashlib.sha1(str(pdf_path).encode("utf-8")).hexdigest()
 
+    def _prepared(self, pdfs: List[Path], workers: int):
+        """Yield (pdf, chunks, error) in order. Reading, OCR and chunking are the CPU part of the work.
+
+        With workers > 1 they run in other processes, so the next PDFs are being read and OCR'd
+        while the GPU embeds the current one.
+        """
+        size, overlap = self.cfg.chunk_size, self.cfg.chunk_overlap
+        if workers <= 1:
+            for pdf in pdfs:
+                yield prepare_pdf(pdf, size, overlap)
+            return
+        with ProcessPoolExecutor(max_workers=workers, initializer=init_worker) as pool:
+            yield from pool.map(prepare_pdf, pdfs, repeat(size), repeat(overlap))
+
     # --------------- main flows ----------------
 
-    def build(self, extract_dir: Path | None = None, tenders: Optional[List[str]] = None):
+    def build(self, extract_dir: Path | None = None, tenders: Optional[List[str]] = None, workers: int = 1):
         """
         Build (fresh or append) the index with batch upserts.
         - In fresh mode, the collection was recreated in __init__
@@ -264,11 +231,11 @@ class Indexer:
         total_chunks = 0
         processed_files = 0
 
-        for pdf_idx, pdf in enumerate(tqdm(pdfs, desc="PDFs", unit="file"), start=1):
+        for pdf_idx, (pdf, chunks, error) in enumerate(
+                tqdm(self._prepared(pdfs, workers), total=len(pdfs), desc="PDFs", unit="file"), start=1):
             try:
-
-                pages: List[DocumentPage] = self.loader.load_pages(pdf)
-                chunks: List[DocumentChunk] = self.chunker.split(pages)
+                if error:
+                    raise RuntimeError(error)
 
                 if not chunks:
                     tqdm.write(f" Skipped (no text): {pdf.name}")
