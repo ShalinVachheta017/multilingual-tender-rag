@@ -7,9 +7,9 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 ## Current checkpoint
 
 - Branch: `refactor/simplify`
-- HEAD: `b5223b53`
+- HEAD: `f2430bde`
 - Origin: `https://github.com/ShalinVachheta017/ragbot-core.git`
-- Unique commits: **70**
+- Unique commits: **72**
 - Active commit dates: **20**
 - Latest commit date in the graph: `2026-11-11`
 - Product checkpoint: **Gate 0, restore a safe reproducible baseline**. See `NEXT_STEPS.md`.
@@ -19,7 +19,7 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 - `chore/repo-cleanup -> 0c1b9999`
 - `cleanup-qdrant-only -> f076187a`
 - `main -> 26fa967a`
-- `refactor/simplify -> b5223b53`
+- `refactor/simplify -> f2430bde`
 - `origin -> df2a0be4`
 - `origin/cleanup-qdrant-only -> f076187a`
 - `origin/main -> df2a0be4`
@@ -27,12 +27,9 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 
 ### Working tree when regenerated
 
-- ` M README.md`
 - ` M WORK_LOG.md`
-- ` M docs/TENDER_RAG_REFERENCE.md`
 - `?? .dashboard/`
 - `?? .smapleproject.md`
-- `?? docs/img/one_page.svg`
 
 ## Era overview
 
@@ -42,7 +39,7 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 | RAG 1.0: Vector retrieval | 2025-08-12 to 2025-09-26 | 16 | Qdrant, API, Streamlit, OCR, multilingual embeddings, and retrieval debugging. |
 | RAG 1.x: Hybrid and evaluation | 2025-10-04 to 2025-11-02 | 11 | Diagrams, hybrid/BM25, FastAPI, evaluation, caching, and production-style layout. |
 | Maintenance: Documentation bridge | 2026-05-11 to 2026-05-11 | 2 | README structure and readability updates. |
-| Current: Tender RAG 2.0 | 2026-11-04 to current | 35 | Project definition, corpus evidence, staged plan, simplification refactor, and the from-zero rebuild (per-tender corpus, BGE-M3, mini evaluation). |
+| Current: Tender RAG 2.0 | 2026-11-04 to current | 37 | Project definition, corpus evidence, staged plan, simplification refactor, and the from-zero rebuild (per-tender corpus, BGE-M3, mini evaluation). |
 
 ## Daily history
 
@@ -909,9 +906,9 @@ Every unique commit appears once below. File operations come directly from Git n
 
 **Current: Tender RAG 2.0.** Started the corpus from zero (one folder per tender, safe unzip, tender metadata finally attached), made BGE-M3 the default embedder, added parallel read/OCR workers, a saved-chunk file so OCR runs once, three full collections (BGE-M3, Qwen3-0.6B, Jina v3, 32,370 points each after fixing a bug that overwrote 4.7% of chunks), resumable GPU indexing, and a 48-question German/English evaluation set with a retrieval check.
 
-- Commits: **16**
-- File events: added 27, modified 46, deleted 1
-- Areas touched: `.gitignore`, `evaluation`, `NEXT_STEPS.md`, `requirements.txt`, `scripts`, `src`, `tests`, `WORK_LOG.md`
+- Commits: **18**
+- File events: added 28, modified 50, deleted 1
+- Areas touched: `.gitignore`, `docs`, `evaluation`, `NEXT_STEPS.md`, `README.md`, `requirements.txt`, `scripts`, `src`, `tests`, `WORK_LOG.md`
 
 #### `12279ffb` feat: start the corpus from zero with one folder per tender and a swappable embedder
 
@@ -1070,9 +1067,25 @@ Every unique commit appears once below. File operations come directly from Git n
 #### `b5223b53` docs: NEXT_STEPS records the state at the end of 11 Nov and the order of the next steps
 
 - Full hash: `b5223b53b53697184a0024a6cc73cf4efad225d6`
-- Refs: `HEAD -> refactor/simplify`
 - Modified (1):
   - `NEXT_STEPS.md`
+
+#### `5cc41552` docs: refresh WORK_LOG
+
+- Full hash: `5cc415525d4c126f75f76bec06bf6483b5ad4ee0`
+- Modified (1):
+  - `WORK_LOG.md`
+
+#### `f2430bde` docs: README resume section, reference v1.3, and the Advanced RAG 2.0 backlog
+
+- Full hash: `f2430bdefc072a5d258c07aaf6b403ed371901c6`
+- Refs: `HEAD -> refactor/simplify`
+- Added (1):
+  - `docs/img/one_page.svg`
+- Modified (3):
+  - `NEXT_STEPS.md`
+  - `README.md`
+  - `docs/TENDER_RAG_REFERENCE.md`
 
 ## Rebuild
 
