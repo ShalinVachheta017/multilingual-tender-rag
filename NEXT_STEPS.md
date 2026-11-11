@@ -16,7 +16,21 @@ Done since then, all committed on `refactor/simplify`:
 
 Still open from the lists below: API key default, candidate pool equals final count, UI and API still have separate prompts, `data/extract` (old flat corpus) can be deleted, chunk size (chunks are about 1,400 characters, not 1,000: the overlap is added on top), noisy OCR of site plans.
 
-Next: verify the 10 questions, compare BGE-M3 / Qwen3-Embedding-0.6B / Jina v3 on the mini corpus, then build the full index with the winner.
+State at the end of 2026-11-11 (work paused here, everything committed, nothing pushed):
+
+- Full corpus prepared once: `data/chunks/chunks_s1000_o400.jsonl` (1,692 PDFs, 32,370 chunks, 983 OCR pages, 560 s with 12 workers).
+- Three full collections, 32,370 points each, same ids, keyword files built: `tender_bge-m3_v1`, `tender_qwen3-0.6b_v1`, `tender_jina-v3_v1`.
+- 48-question set (24 base questions, German + English, 32 dev / 16 test): `evaluation/datasets/g_de_en_48.json`. NOT VERIFIED yet. Model-written questions are of mixed quality; some are flagged with `review_hint`.
+- Bugs found and fixed today: tender metadata never attached, identical files in different tenders overwrote each other (1,537 chunks), tender-id queries leaking other tenders, emoji crashing redirected runs, CUDA out-of-memory stopping long builds (now resumable and retried).
+
+Next (in this order):
+
+1. Verify the dev questions: `python evaluation/verify_questions.py --dataset evaluation/datasets/g_de_en_48.json --split dev`.
+2. Phase C, first experiment: `python evaluation/compare_embedders.py --prefix tender --version _v1 --dataset evaluation/datasets/g_de_en_48.json --split dev` (add `--verified-only` support when scoring; the flag exists in run_eval.py).
+3. Then the experiment list: keyword vs vector vs hybrid, reranker, candidate pool, chunk size, translation, OCR engines, filters.
+4. Before pushing to GitHub: merge `origin/main` (4 README commits from 9 Nov), ask first.
+
+Older next step (superseded): verify the 10 questions, compare BGE-M3 / Qwen3-Embedding-0.6B / Jina v3 on the mini corpus, then build the full index with the winner.
 
 Parked for later (decided 2026-11-11):
 
