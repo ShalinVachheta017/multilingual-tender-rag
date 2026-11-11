@@ -49,13 +49,13 @@ def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--dataset", default=str(HERE / "datasets" / "mini_questions.json"))
     p.add_argument("--split", default="all", choices=["all", "dev", "test"])
-    p.add_argument("--verified-only", action="store_true", help="use only questions you confirmed with verify_questions.py")
+    p.add_argument("--verified-only", action="store_true", help="use only questions you confirmed with verify_questions.py (dropped ones are always left out)")
     args = p.parse_args()
 
     dataset = Path(args.dataset)
     questions = json.loads(dataset.read_text(encoding="utf-8"))["questions"]
     questions = [q for q in questions
-                 if q["answerable"]
+                 if q["answerable"] and not q.get("dropped")
                  and (args.split == "all" or q.get("split", "dev") == args.split)
                  and (not args.verified_only or q.get("verified_by_user"))]
     rows = []
