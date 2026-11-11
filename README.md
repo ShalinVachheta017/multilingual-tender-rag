@@ -10,6 +10,29 @@ A local Retrieval-Augmented Generation prototype for searching and answering que
 
 ---
 
+## Resume the project
+
+**Status (11 November 2026):** the data pipeline and retrieval run end to end on all 105 tenders (1,692 PDFs, 32,370 chunks, three embedding models indexed). A 48-question German/English evaluation set exists but is not verified yet. The answer generation, API and Streamlit app have not been re-tested since the refactor.
+
+Run order (Python 3.12, `pip install -r requirements.txt && pip install -e .`, Qdrant via `docker compose up -d`):
+
+```text
+python scripts/data_processing/ingest.py                    # unzip: one folder per tender
+python scripts/data_processing/prepare_chunks.py --workers 12   # read + OCR + chunk, once
+python scripts/data_processing/build_collections.py         # embed on the GPU: one collection per model
+python evaluation/compare_embedders.py --prefix tender --version _v1 --dataset evaluation/datasets/g_de_en_48.json --split dev
+```
+
+Project records:
+
+- [Repository work log](WORK_LOG.md): every commit grouped by day, including file additions, modifications, deletions, and renames
+- [Forward roadmap](NEXT_STEPS.md): what is done, the order of the next steps, and the plan for the evaluation and the advanced version
+- Local dashboard: run `.\.venv312\Scripts\python.exe scripts\project_tracking\build_progress_dashboard.py`, then open `.progress-dashboard\index.html`
+
+The dashboard folder is disposable and ignored by Git; the log, roadmap, and generator are the durable record.
+
+---
+
 ## 📌 Project Overview
 
 This project is a **local multilingual RAG prototype** built for German tender documents.

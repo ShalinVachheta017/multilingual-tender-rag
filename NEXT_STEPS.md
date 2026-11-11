@@ -30,6 +30,36 @@ Next (in this order):
 3. Then the experiment list: keyword vs vector vs hybrid, reranker, candidate pool, chunk size, translation, OCR engines, filters.
 4. Before pushing to GitHub: merge `origin/main` (4 README commits from 9 Nov), ask first.
 
+## Advanced RAG 2.0 backlog (decided 2026-11-11)
+
+The "about 30%" in the status refers to the Gate 0 to 5 checklist below only. The advanced version is bigger. Order: measure first, then change one thing at a time, always on the same questions.
+
+**A. Faster answers (measure each stage before touching anything)**
+- Time every stage per question: query embedding, keyword search, vector search, reranker, prompt build, first token, full answer. Report p50 and p95, cold and warm.
+- Filter before searching (region, category, tender id): fewer candidates means less vector and reranker work.
+- Rerank a bounded pool (for example 50) in GPU batches; keep the Ollama model loaded (`keep_alive`); stream the answer; run retrieval and translation at the same time.
+- Smaller or quantized answer model if the 48-question score allows it.
+- ANN tuning and vector quantization only if the corpus grows far beyond 32k chunks (it is tiny for Qdrant today).
+
+**B. Caching, in layers (Gate 4 has the safety rules)**
+1. Query-embedding cache (exists, in memory) and retrieval cache keyed by query + filters + collection version + reranker version.
+2. Answer cache keyed by question + evidence digest + prompt version + model digest + language.
+3. Semantic cache last: a small Qdrant collection of past questions. Entry stores language, corpus version, model and prompt version, evidence digest, creation time (TTL). Separate thresholds per question type, tuned on the dev set. Report hit rate AND wrong-hit rate (a vendor's "95% accuracy" is only the share of correct hits, not how often the cache is used).
+   - Never cache: tender ids, dates and deadlines, amounts, counts, filtered or access-controlled requests.
+   - German and English: a multilingual embedder puts a German question close to its English twin. Cache the retrieved evidence across languages, but generate the answer per language; do not serve a German answer to an English question.
+   - Invalidate by corpus version, so a re-indexed tender never serves an old answer.
+   - Test with our German/English question pairs and with deliberately different questions that look alike.
+
+**C. Better retrieval**: reranker on/off and weight, candidate pool, chunk size and heading-aware chunks, a short context header on every chunk (title + tender id), parent/child chunks, German compound-word handling for keyword search, BGE-M3 sparse and multi-vector output, learned fusion, query rewriting, DOCX/XLSX/GAEB indexing, table extraction, OCR engine comparison (Tesseract, EasyOCR, docTR), dropping noisy OCR chunks of site plans, metadata routing.
+
+**D. Better answers**: one shared prompt for UI and API, structured answers with citations and refusal, minimum-score cutoff, grounding check (every claim appears in a retrieved chunk), prompt-injection tests, comparing qwen2.5:1.5b / granite4.1:3b / gemma3:4b, a judge (DeepEval or RAGAS) calibrated on 20 to 50 answers you label.
+
+**E. Reliability and MLOps**: tracing (Phoenix or Langfuse), evaluation regression gate in CI, required API key, timeouts and retries, Qdrant snapshots and collection aliases, full Docker compose stack, load test at 1, 5 and 20 users, a model and corpus version register.
+
+**F. Later**: the MultiDoc Evidence Agent (Project 2), only after the above.
+
+Sources for the caching and latency notes: practitioner guides on semantic caching pitfalls (fixed thresholds fail across intents, stale cached answers, per-language partitioning) and a 2026 paper on freshness-aware semantic caching that also uses BGE-M3; general 2026 RAG latency guides (measure per stage, filter first, batch the reranker). The guides are partly vendor material, so every claim above is a hypothesis to test here.
+
 Older next step (superseded): verify the 10 questions, compare BGE-M3 / Qwen3-Embedding-0.6B / Jina v3 on the mini corpus, then build the full index with the winner.
 
 Parked for later (decided 2026-11-11):

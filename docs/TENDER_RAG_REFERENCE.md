@@ -3,17 +3,25 @@
 
 # 🏛️ Tender RAG 2.0 · Project Reference
 
-> **The single reference file for the current project.** Private, measured question answering over German public tenders: fix it, measure it, prove it. The agent project (`PROJECT_2_MULTIDOC_AGENT.pdf`) is deferred until this one is finished. **Need to explain the project to someone? Start with [🗣️ Explain it in five minutes](#sec-explain).** **Want to understand the code first? Read the [🗺️ Code tour](#sec-tour).** **Choosing an answer model? See [🤖 model options](#sec-models).** This file has the same content as `PROJECT_1_TENDER_RAG_2_0.pdf`, laid out for reading.
+<p align="center"><img src="img/one_page.svg" alt="Tender RAG 2.0 on one page: data, offline index, online answer, proof, five stages, today and next" width="100%"></p>
+
+> **The single reference file for the current project.** Private, measured question answering over German public tenders: fix it, measure it, prove it. The agent project (`PROJECT_2_MULTIDOC_AGENT.pdf`) is deferred until this one is finished. **Need to explain the project to someone? Start with [🗣️ Explain it in five minutes](#sec-explain).** **Want to understand the code first? Read the [🗺️ Code tour](#sec-tour).** **Choosing an answer model? See [🤖 model options](#sec-models).** This is the only Project 1 plan in the repository.
 
 | 📁 **112** | ✅ **105** | 📄 **1,781** | 🐞 **22** | ❓ **48** | ⏱ **58.5 h** |
 |:-:|:-:|:-:|:-:|:-:|:-:|
 | tenders | valid zips | extracted files | known defects | test questions | mandatory hours |
 
-**Version 1.2** · 4 Nov 2026 · branch `chore/repo-cleanup` · **Status:** *plan. Part 1 describes the code as read, not as run. Nothing is built or measured yet.*
+**Version 1.3** · 10 Nov 2026 · branch `refactor/simplify` · **Status:** *plan. Part 1 describes the code as read, not as run. Nothing is built or measured yet.*
 
 ## 🚦 Status board
 
 > ▶ **Now:** S0 · task 1 · back up `data/raw`  *(edit this line and the bars as you go, then commit)*
+
+**Next three actions** (state checked 7 Nov 2026: Qdrant has no collection, so search and chat fail):
+
+1. 💾 Copy `data/raw` (1.39 GB) to external storage and verify the SHA-256 of every zip. Nothing else is safe before this.
+2. 🔧 Pin matching Qdrant server and client versions, download Jina v3, and build an isolated collection `baseline_v0` (never the default fresh mode).
+3. 📝 Write the 32 dev questions, run the baseline read-only, and label each failure with one stage.
 
 | Stage | What | Weeks | Hours | Progress | Exit tag |
 |---|---|:-:|:-:|---|---|
@@ -778,7 +786,7 @@ From the seven Krish Naik interview sets (350 questions; questions read, answers
 | W8 | 24 Dec | 5 | ▮▮▮▮▮ | S3: injection test document (1 h), access-control filter (2 h); 2 h buffer for the holidays |
 | W9 | 31 Dec | 5 | ▮▮▮▮▮ | S3: version-aware cache key, timeouts and degraded mode (2 h), Docker and CI gate (1.5 h), capacity note (0.5 h); 1 h buffer |
 | W10 | 7 Jan | 6 | ▮▮▮▮▮▮ | S3: load test at 1/5/20 users (2 h); stretch (4 h): GAEB text parsing, OCR challenger E4 |
-| W11 | 14 Jan | 6 | ▮▮▮▮▮▮ | Stretch or buffer: E7 contextual header, E9 chunk sweep, E8 BM25 in Qdrant (pick by what the failure analysis shows); rehearse the explanation |
+| W11 | 14 Jan | 6 | ▮▮▮▮▮▮ | Stretch or buffer: E7 contextual header, E9 chunk sweep, E8 BM25 in Qdrant, E10 corrective retrieval, E11 incremental indexing (pick by what the failure analysis shows); rehearse the explanation |
 | W12 | 21 Jan | 6 | ▮▮▮▮▮▮ | S4: README, diagrams, demo, one AWS workflow |
 | **Total** |  | **71.5** | ▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▯ | **58.5 h mandatory** (S0 to S4) + **13 h** stretch or buffer |
 
@@ -869,7 +877,7 @@ Never run `ingest.py` or `embed.py` in their default mode: both default to fresh
 **Hygiene**
 
 - [ ] **9.** Each re-index writes a new collection; switch with a Qdrant alias; keep the old collection for rollback; never change the embedding call and the chunking in the same step (0.5 h).
-- [ ] **10.** Structured trace logs for every request with version tags: prompt version, LLM tag and digest, embedder revision and task, chunk settings, collection name (1 h).
+- [ ] **10.** Structured trace logs for every request with version tags: prompt version, LLM tag and digest, embedder revision and task, chunk settings, collection name; plus tokens in and out and latency per stage, so S2 can report cost and latency per request (1 h).
 - [ ] **11.** Try Langfuse (time-box 1.5 h): copy the six Langfuse services (web, worker, Postgres, Redis, ClickHouse, MinIO) from the course's compose file into docker-compose.langfuse.yml and start it only when needed; otherwise Phoenix (1.5 h).
 - [ ] **12.** Write the 16 sealed test questions from the held-out tenders; commit them with a content hash; do not run them (2 h).
 - [ ] **13.** Decision records and regression tests for each fix (1 h).
@@ -1109,9 +1117,13 @@ Every failed question gets exactly one primary label, found by walking back thro
 | E6 | Cross-language handling | Dual query with LLM translation (current) | Direct multilingual retrieval, no translation | Recall on English questions against German text; latency |
 | E7 (stretch) | Contextual chunk header | Chunk text only | Tender title and document type prepended before embedding, and also stored as keyword fields with a boost (the course boosts chunk_text 3, title 2, abstract 1) | Recall, especially for form text that is identical across tenders (35 identical paths) |
 | E8 (stretch) | Where BM25 lives | Pickle file next to Qdrant | BM25 as Qdrant sparse vectors: no pickle, no rebuild step, no rank-order defect | Exact-ID and term recall; rebuild time; code removed |
-| E9 (stretch) | Chunk size and overlap | 1000 characters, 400 overlap | Larger chunks with less overlap (for example 1500/200 and 2500/300) | Recall@k, citation precision, chunk count; needs re-embedding |
+| E9 (stretch) | Chunk size and overlap | 1000 characters, 400 overlap | Larger chunks with less overlap (for example 1500/200 and 2500/300). Variant: parent-child, where small chunks are searched and the larger parent passage is sent to the LLM | Recall@k, citation precision, chunk count; needs re-embedding |
+| E10 (stretch) | Corrective retrieval | E5 refusal rule only | If the top rerank score is below a threshold, rewrite the query once and retrieve again; otherwise refuse. A score threshold, not an LLM grader (a 1.5B to 3B model is a weak judge). One retry, no web fallback (closed corpus) | Correctness, false-refusal rate, extra latency; only after E5 |
+| E11 (stretch) | Incremental indexing | Re-index into a new collection behind an alias | Content hash per file; upsert or delete only the changed tender by `tender_id`. Also a version tag per tender, so an amendment does not silently overwrite the earlier version (the amendments and conflicts question category) | Time to add one tender; retrieval unchanged on the dev set. Needs the per-tender payload from S1 task 7 |
 
-Optional only if time remains: a subset of EnterpriseRAG-Bench for generality (English text only), OmniDocBench for parsing (no German), corpus growth beyond the 112 tenders (needs synthetic distractors), GraphRAG, A2A.
+Reference code for E7 and E10 (read, not run; rewrite for this project, do not copy): `pdichone/fcc-production-rag-part-6/02_contextual_retrieval.py` (LLM prefix per chunk; cost is one LLM call per chunk, so test on a subset first) and `entbappy/Enterprise-IT-Support-Agentic-RAG-Copilot/app/rag/workflow.py` (grade, rewrite, capped retry, refuse).
+
+Optional only if time remains: a subset of EnterpriseRAG-Bench for generality (English text only), OmniDocBench for parsing (no German), corpus growth beyond the 112 tenders (needs synthetic distractors), GraphRAG, A2A. Left out on purpose: LangGraph, MCP, A2A, NeMo Guardrails and pass^5 belong to Project 2.
 
 <sub>[↑ Contents](#contents)</sub>
 
@@ -1224,7 +1236,7 @@ Structured trace logs are mandatory: request ID, per-stage timing, retrieval hit
 |  | Mandatory (must exist by the end of week 12) | Stretch (only if time allows) |
 |---|---|---|
 | Pipeline and data | Per-tender extraction; P0 fixes; baseline; retrieval fixes; DOCX and XLSX indexed | GAEB text and completeness; German compound splitting; corpus growth beyond 112 tenders |
-| Evaluation | 48 questions with a sealed test split; E1, E2, E3, E5, E6; Tesseract OCR baseline on 10 pages; claim-level citation checks; failure analysis | Questions 49 to 64; E4 challenger engine; E7 contextual header; E8 BM25 in Qdrant; E9 chunk-size sweep; calibrated LLM judge |
+| Evaluation | 48 questions with a sealed test split; E1, E2, E3, E5, E6; Tesseract OCR baseline on 10 pages; claim-level citation checks; failure analysis | Questions 49 to 64; E4 challenger engine; E7 contextual header; E8 BM25 in Qdrant; E9 chunk-size sweep; E10 corrective retrieval; E11 incremental indexing; calibrated LLM judge |
 | Reliability and security | Access-control filter; injection test; load test at 1/5/20 users; alias re-index; version-aware cache; CI gate; Docker; structured traces | Langfuse self-hosting (if Phoenix was used); Kubernetes; large-scale load tests |
 | Operations | One demonstrated AWS workflow; GitHub Actions; README, diagrams, demo video | Full EC2 or container deployment |
 
@@ -1330,6 +1342,8 @@ Every call carries an API key; the access scope is injected server-side and neve
 | 4 Nov 2026 | Jina v3 stays the default embedding model; bge-m3 only as a challenger if E2 shows a problem | Decided |
 | 4 Nov 2026 | Access-control filter promoted to mandatory (you asked to implement all the additions) | Assumed; please confirm |
 | 4 Nov 2026 | Older plan files merged into this reference; two stage PDFs replace the single PDF | Done |
+| 10 Nov 2026 | This markdown file is the only Project 1 plan; the Project 1 PDF, PROJECT_DOCUMENTATION.md, docs/planning and the old architecture PNG were deleted (all in git history). README.md, the evaluation report and the Project 2 PDF stay | Done |
+| 10 Nov 2026 | Added stretch experiments E10 (corrective retrieval) and E11 (incremental indexing) after reviewing 14 pasted tutorial resources. LangGraph, MCP, A2A, NeMo and pass^5 stay in Project 2. The watchlist is limited to the freeCodeCamp production-RAG course chapters on hybrid search, tracing, contextual retrieval and corrective RAG, plus the Fandom RAG article for E1 | Decided by the plan, please confirm |
 
 
 #### Open decisions
@@ -1372,6 +1386,9 @@ Verified means the page or repository was opened or checked by search or API in 
 | Postings | European Dynamics D53EAA65D5 · Titan AI (Applied AI Engineer) | Title only; skills not verified |
 | Market | DEV Community 390-posting analysis · Simpleapply · Second Talent (Lightcast) · ODSC · 365 Data Science · Axial Search | Read via search; small or commercial samples |
 | Reference repos | Clinical-RAG, 8hr-MARATHON, ATLAS, IT-Support Copilot, pdichone course; stars and activity of 18 tools checked through the GitHub API on 4 Nov 2026 | Verified |
+| Pasted tutorial list (10 Nov 2026) | 7 GitHub repos opened through the GitHub API and file trees or key files read: pdichone/fcc-production-rag-part-6 (68★), pdichone/production-course-main-code (174★), entbappy IT-Support and HR copilots (28★, 15★), entbappy/ATLAS-Enterprise-AI (18★, README says not production-secure), Sandesh-hase investor platform (41★), TauricResearch/TradingAgents (121k★). Plus entbappy multi-agent travel repo (README: no tests) and two articles. Not run. None has retrieval metrics, a gold set or German data | Verified to exist; code not executed |
+| Pasted video list (10 Nov 2026) | 9 YouTube IDs resolve to the titles given. Durations, chapter times (for example freeCodeCamp 6830 s hybrid search) and what each video teaches are the paste's claims; video contents could not be read | Titles verified only |
+| Not accessible (10 Nov 2026) | A Google Drive folder and a Google Doc from the pasted tab list (need authorisation); a Bing results page | Not checked |
 | Reference course | jamwithai/production-agentic-rag-course: README, file tree, `compose.yml`, agent graph, nodes, cache and tracer files read; 10,032 stars, MIT, last push 5 Jun 2026. Your fork (ShalinVachheta017/production-agentic-rag-course) last pushed 5 Apr 2026 | Verified via the GitHub API |
 | Interview sets | Krish Naik interview prep: 7 sets of 50 questions (agentic AI, FDE, system design, RAG, LLMOps, evals and guardrails, LLM fundamentals); questions read, answers not | Questions verified |
 | Guides | Codebasics AI System Design (13 pages, read); Galileo Mastering RAG (cover only) | Partly read |

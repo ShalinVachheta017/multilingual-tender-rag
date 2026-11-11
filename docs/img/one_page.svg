@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" font-family="Segoe UI, Arial, sans-serif">
+<title>Tender RAG 2.0 on one page</title>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+<rect width="1000" height="560" rx="12" fill="#ffffff" stroke="#d0d7de"/>
+<text x="500" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#1f2328">Tender RAG 2.0 on one page</text>
+<text x="500" y="56" text-anchor="middle" font-size="13" fill="#57606a">Private question answering over German public tenders: fix it, measure it, prove it</text>
+
+<g font-size="13" fill="#1f2328">
+<rect x="20" y="76" width="200" height="150" rx="8" fill="#ddf4ff" stroke="#54aeff"/>
+<text x="120" y="98" text-anchor="middle" font-weight="700">1 DATA</text>
+<text x="120" y="122" text-anchor="middle">112 tenders (DTAD)</text>
+<text x="120" y="142" text-anchor="middle">105 readable zips</text>
+<text x="120" y="162" text-anchor="middle">1,781 files</text>
+<text x="120" y="182" text-anchor="middle">8 % scanned pages</text>
+<text x="120" y="206" text-anchor="middle" fill="#cf222e">159 file versions lost</text>
+
+<rect x="270" y="76" width="220" height="150" rx="8" fill="#dafbe1" stroke="#4ac26b"/>
+<text x="380" y="98" text-anchor="middle" font-weight="700">2 OFFLINE: build the index</text>
+<text x="380" y="122" text-anchor="middle">unzip per tender</text>
+<text x="380" y="142" text-anchor="middle">text (OCR only for scans)</text>
+<text x="380" y="162" text-anchor="middle">chunks + tender ID</text>
+<text x="380" y="182" text-anchor="middle">Jina v3 embeddings → Qdrant</text>
+<text x="380" y="202" text-anchor="middle">BM25 keyword index</text>
+
+<rect x="540" y="76" width="240" height="150" rx="8" fill="#fff8c5" stroke="#d4a72c"/>
+<text x="660" y="98" text-anchor="middle" font-weight="700">3 ONLINE: answer a question</text>
+<text x="660" y="122" text-anchor="middle">exact ID → table lookup</text>
+<text x="660" y="142" text-anchor="middle">else hybrid search (vector+BM25)</text>
+<text x="660" y="162" text-anchor="middle">rerank → top passages</text>
+<text x="660" y="182" text-anchor="middle">local LLM (Ollama) + citations</text>
+<text x="660" y="202" text-anchor="middle">no evidence → refuse</text>
+
+<rect x="830" y="76" width="150" height="150" rx="8" fill="#fbefff" stroke="#c297ff"/>
+<text x="905" y="98" text-anchor="middle" font-weight="700">4 PROVE IT</text>
+<text x="905" y="122" text-anchor="middle">48 questions</text>
+<text x="905" y="142" text-anchor="middle">16 sealed for test</text>
+<text x="905" y="162" text-anchor="middle">Recall@k, MRR</text>
+<text x="905" y="182" text-anchor="middle">citation check</text>
+<text x="905" y="202" text-anchor="middle">failure labels</text>
+</g>
+<g stroke="#555" stroke-width="2" fill="none" marker-end="url(#a)">
+<line x1="222" y1="151" x2="266" y2="151"/><line x1="492" y1="151" x2="536" y2="151"/><line x1="782" y1="151" x2="826" y2="151"/></g>
+
+<text x="20" y="262" font-size="15" font-weight="700" fill="#1f2328">Plan: 5 stages, one change at a time, each with a test and a number</text>
+<g font-size="12" fill="#1f2328" text-anchor="middle">
+<rect x="20" y="274" width="180" height="92" rx="8" fill="#ffebe9" stroke="#ff8182"/><text x="110" y="296" font-weight="700">S0 Baseline + safety</text><text x="110" y="316">backup, first honest score</text><text x="110" y="336">12 h · weeks 1–2</text><text x="110" y="356" fill="#57606a">tag s0-baseline</text>
+<rect x="206" y="274" width="180" height="92" rx="8" fill="#fff1e5" stroke="#fb8f44"/><text x="296" y="296" font-weight="700">S1 Retrieval fixes</text><text x="296" y="316">22 defects, one by one</text><text x="296" y="336">18.5 h · weeks 3–5</text><text x="296" y="356" fill="#57606a">tag s1-retrieval-fixes</text>
+<rect x="392" y="274" width="180" height="92" rx="8" fill="#fff8c5" stroke="#d4a72c"/><text x="482" y="296" font-weight="700">S2 Evaluation</text><text x="482" y="316">E1–E6, sealed test once</text><text x="482" y="336">13 h · weeks 6–7</text><text x="482" y="356" fill="#57606a">tag s2-evaluation</text>
+<rect x="578" y="274" width="200" height="92" rx="8" fill="#dafbe1" stroke="#4ac26b"/><text x="678" y="296" font-weight="700">S3 Reliability + access</text><text x="678" y="316">injection, ACL, load test, CI</text><text x="678" y="336">9 h · weeks 8–10</text><text x="678" y="356" fill="#57606a">tag s3-reliability</text>
+<rect x="784" y="274" width="196" height="92" rx="8" fill="#ddf4ff" stroke="#54aeff"/><text x="882" y="296" font-weight="700">S4 Polish + deploy</text><text x="882" y="316">README, demo, one AWS flow</text><text x="882" y="336">6 h · week 12</text><text x="882" y="356" fill="#57606a">stretch: E7–E11</text>
+</g>
+
+<rect x="20" y="388" width="960" height="152" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+<text x="36" y="412" font-size="15" font-weight="700" fill="#1f2328">Where we are today (checked 7 Nov 2026) and what comes next</text>
+<g font-size="13" fill="#1f2328">
+<text x="36" y="438" fill="#cf222e" font-weight="700">✗ Blocking</text>
+<text x="130" y="438">Qdrant has zero collections: search returns 500, the app crashes · no verified backup of data/raw · no baseline score</text>
+<text x="36" y="462" fill="#9a6700" font-weight="700">! Fix first</text>
+<text x="130" y="462">Qdrant server 1.9.2 vs client 1.20 mismatch · Jina model not downloaded · pytest collection runs live services</text>
+<text x="36" y="492" fill="#1a7f37" font-weight="700">▶ Next 1</text><text x="130" y="492">Back up data/raw (1.39 GB) and verify SHA-256 hashes</text>
+<text x="36" y="512" fill="#1a7f37" font-weight="700">▶ Next 2</text><text x="130" y="512">Pin Qdrant versions, download Jina, build isolated collection baseline_v0</text>
+<text x="36" y="532" fill="#1a7f37" font-weight="700">▶ Next 3</text><text x="130" y="532">Write 32 dev questions, run the baseline read-only, label every failure</text>
+</g>
+</svg>
