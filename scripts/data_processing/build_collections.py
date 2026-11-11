@@ -22,11 +22,20 @@ from src.core.config import CFG
 from src.core.embedder_presets import PRESETS, env_for
 
 ROOT = Path(__file__).resolve().parents[2]
+MAX_ATTEMPTS = 5   # a GPU hiccup (out of memory, driver reset) should not lose hours of work
 
 
 def run(script: str, args: list[str], env_extra: dict[str, str]) -> None:
-    env = {**os.environ, "PYTHONIOENCODING": "utf-8", **env_extra}
-    subprocess.run([sys.executable, str(ROOT / script), *args], cwd=ROOT, env=env, check=True)
+    env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True", **env_extra}
+    for attempt in range(1, MAX_ATTEMPTS + 1):
+        try:
+            subprocess.run([sys.executable, str(ROOT / script), *args], cwd=ROOT, env=env, check=True)
+            return
+        except subprocess.CalledProcessError:
+            if attempt == MAX_ATTEMPTS:
+                raise
+            print(f"{script} failed (attempt {attempt}/{MAX_ATTEMPTS}); waiting 30 s, then it resumes where it stopped.", flush=True)
+            time.sleep(30)
 
 
 def main() -> None:

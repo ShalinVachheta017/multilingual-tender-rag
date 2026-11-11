@@ -29,8 +29,9 @@ class Indexer:
     - fresh=False : keep the collection; validates vector size; upserts are idempotent
     """
 
-    def __init__(self, cfg=CFG, fresh: bool = True):
+    def __init__(self, cfg=CFG, fresh: bool = True, resume: bool = True):
         self.cfg = cfg
+        self.resume = bool(resume)   # skip chunks that are already stored, so a crashed run can simply be repeated
         self.fresh = bool(fresh)
 
         # ---- device selection ----
@@ -273,15 +274,25 @@ class Indexer:
                     for c in chunks
                 ]
                 texts = [c["text"] or "" for c in chunks]
+                ids = [self._point_id(pl["rel_path"], pl["doc_hash"], int(pl["chunk_idx"])) for pl in payloads]
+
+                if self.resume:                       # points already in Qdrant are not embedded again
+                    stored = {str(p.id) for p in self.client.retrieve(
+                        self.cfg.qdrant_collection, ids=ids, with_payload=False, with_vectors=False)}
+                    todo = [i for i, pid in enumerate(ids) if pid not in stored]
+                    payloads, texts, ids = [payloads[i] for i in todo], [texts[i] for i in todo], [ids[i] for i in todo]
+                    if not todo:
+                        processed_files += 1
+                        continue
 
                 # Batch over encode output for throughput (4x embed_batch_size is a good start)
                 batch_size = min(len(texts), max(1, int(self.cfg.embed_batch_size) * 4))
                 for i in range(0, len(texts), batch_size):
                     vecs = self._embed(texts[i : i + batch_size])
-                    for v, pl in zip(vecs, payloads[i : i + batch_size]):
+                    for v, pl, pid in zip(vecs, payloads[i : i + batch_size], ids[i : i + batch_size]):
                         points_buffer.append(
                             qmodels.PointStruct(
-                                id=self._point_id(pl["rel_path"], pl["doc_hash"], int(pl["chunk_idx"])),
+                                id=pid,
                                 vector=v.tolist(),
                                 payload=pl,
                             )

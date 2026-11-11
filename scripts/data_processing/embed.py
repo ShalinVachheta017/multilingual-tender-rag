@@ -40,6 +40,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument("--chunk-size", type=int, default=CFG.chunk_size, help="chunk size in characters")
     p.add_argument("--chunk-overlap", type=int, default=CFG.chunk_overlap, help="chunk overlap in characters")
     p.add_argument("--extract-dir", default=str(CFG.extract_dir), help="folder that holds the PDFs")
+    p.add_argument("--no-resume", action="store_true", help="embed every chunk again, even if it is already stored")
     p.add_argument("--from-chunks", action="store_true",
                    help="embed the chunks saved by prepare_chunks.py (no PDF reading, no OCR: GPU only)")
     p.add_argument("--chunks-file", default=None, help="chunk file for --from-chunks (default: the standard one)")
@@ -80,7 +81,7 @@ def main(argv: list[str] | None = None) -> None:
         else:
             if args.mode == "fresh":
                 print("mode fresh: the existing collection will be deleted and recreated")
-            indexer = Indexer(CFG, fresh=(args.mode == "fresh"))
+            indexer = Indexer(CFG, fresh=(args.mode == "fresh"), resume=not args.no_resume)
             if args.from_chunks:
                 indexer.build_from_chunks(Path(args.chunks_file or CFG.chunks_path), extract_dir, tenders=args.tenders)
             else:

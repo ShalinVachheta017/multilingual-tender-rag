@@ -12,10 +12,12 @@ PRESETS: dict[str, dict[str, str]] = {
     "bge-m3": {},   # the defaults in config.py: BAAI/bge-m3, no prefixes, no remote code
     "qwen3-0.6b": {
         "RAGBOT_EMBED_MODEL": "Qwen/Qwen3-Embedding-0.6B",
+        "RAGBOT_EMBED_BATCH_SIZE": "8",
         "RAGBOT_EMBED_QUERY_PREFIX": QWEN_QUERY,
     },
     "jina-v3": {
         "RAGBOT_EMBED_MODEL": "jinaai/jina-embeddings-v3",
+        "RAGBOT_EMBED_BATCH_SIZE": "8",
         "RAGBOT_EMBED_REVISION": "f1944de8402dcd5f2b03f822a4bc22a7f2de2eb9",
         "RAGBOT_EMBED_TRUST_REMOTE_CODE": "true",
         "RAGBOT_EMBED_DOC_PREFIX": "search_document: ",
