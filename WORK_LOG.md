@@ -7,9 +7,9 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 ## Current checkpoint
 
 - Branch: `refactor/simplify`
-- HEAD: `4f40a688`
+- HEAD: `d75151b1`
 - Origin: `https://github.com/ShalinVachheta017/ragbot-core.git`
-- Unique commits: **65**
+- Unique commits: **67**
 - Active commit dates: **20**
 - Latest commit date in the graph: `2026-11-11`
 - Product checkpoint: **Gate 0, restore a safe reproducible baseline**. See `NEXT_STEPS.md`.
@@ -19,7 +19,7 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 - `chore/repo-cleanup -> 0c1b9999`
 - `cleanup-qdrant-only -> f076187a`
 - `main -> 26fa967a`
-- `refactor/simplify -> 4f40a688`
+- `refactor/simplify -> d75151b1`
 - `origin -> df2a0be4`
 - `origin/cleanup-qdrant-only -> f076187a`
 - `origin/main -> df2a0be4`
@@ -28,13 +28,12 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 ### Working tree when regenerated
 
 - ` M README.md`
+- ` M WORK_LOG.md`
 - ` M docs/TENDER_RAG_REFERENCE.md`
 - `?? .dashboard/`
 - `?? .smapleproject.md`
-- `?? NEXT_STEPS.md`
-- `?? WORK_LOG.md`
 - `?? docs/img/one_page.svg`
-- `?? scripts/project_tracking/`
+- `?? evaluation/verify_mini.md`
 
 ## Era overview
 
@@ -44,7 +43,7 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 | RAG 1.0: Vector retrieval | 2025-08-12 to 2025-09-26 | 16 | Qdrant, API, Streamlit, OCR, multilingual embeddings, and retrieval debugging. |
 | RAG 1.x: Hybrid and evaluation | 2025-10-04 to 2025-11-02 | 11 | Diagrams, hybrid/BM25, FastAPI, evaluation, caching, and production-style layout. |
 | Maintenance: Documentation bridge | 2026-05-11 to 2026-05-11 | 2 | README structure and readability updates. |
-| Current: Tender RAG 2.0 | 2026-11-04 to current | 30 | Project definition, corpus evidence, staged plan, simplification refactor, and the from-zero rebuild (per-tender corpus, BGE-M3, mini evaluation). |
+| Current: Tender RAG 2.0 | 2026-11-04 to current | 32 | Project definition, corpus evidence, staged plan, simplification refactor, and the from-zero rebuild (per-tender corpus, BGE-M3, mini evaluation). |
 
 ## Daily history
 
@@ -1063,9 +1062,9 @@ Every unique commit appears once below. File operations come directly from Git n
 
 **Current: Tender RAG 2.0.** Started the corpus from zero: one folder per tender with safe unzip, BGE-M3 as the default embedder (Jina v3 stays selectable), tender metadata finally attached to chunks, a 5-tender mini corpus, 10 draft questions and a deterministic retrieval check.
 
-- Commits: **5**
-- File events: added 5, modified 18
-- Areas touched: `.gitignore`, `evaluation`, `requirements.txt`, `scripts`, `src`, `tests`
+- Commits: **7**
+- File events: added 18, modified 22
+- Areas touched: `.gitignore`, `evaluation`, `NEXT_STEPS.md`, `requirements.txt`, `scripts`, `src`, `tests`, `WORK_LOG.md`
 
 #### `12279ffb` feat: start the corpus from zero with one folder per tender and a swappable embedder
 
@@ -1111,11 +1110,39 @@ Every unique commit appears once below. File operations come directly from Git n
 #### `4f40a688` feat: 10 draft mini questions and a deterministic retrieval check
 
 - Full hash: `4f40a68887fc6412253cf1884448f2c87f30e14f`
-- Refs: `HEAD -> refactor/simplify`
 - Added (3):
   - `evaluation/datasets/mini_questions.json`
   - `evaluation/results/mini_mini_bge-m3.json`
   - `evaluation/run_mini_eval.py`
+
+#### `2a8f4d77` docs: update WORK_LOG and NEXT_STEPS for the from-zero rebuild
+
+- Full hash: `2a8f4d773e86f8b12336c3bac61930130c9e740b`
+- Added (7):
+  - `NEXT_STEPS.md`
+  - `WORK_LOG.md`
+  - `scripts/project_tracking/build_progress_dashboard.py`
+  - `scripts/project_tracking/dashboard_assets/base.css`
+  - `scripts/project_tracking/dashboard_assets/dashboard.css`
+  - `scripts/project_tracking/dashboard_assets/dashboard.js`
+  - `scripts/project_tracking/dashboard_assets/tokens.css`
+
+#### `d75151b1` feat: parallel read/OCR/chunk workers and a three-way embedder comparison
+
+- Full hash: `d75151b105e34053a1a791b7e67119f5fb55673e`
+- Refs: `HEAD -> refactor/simplify`
+- Added (6):
+  - `evaluation/compare_embedders.py`
+  - `evaluation/make_checklist.py`
+  - `evaluation/results/mini_mini_jina-v3.json`
+  - `evaluation/results/mini_mini_qwen3-0.6b.json`
+  - `src/core/chunking.py`
+  - `src/core/prepare.py`
+- Modified (4):
+  - `NEXT_STEPS.md`
+  - `scripts/data_processing/embed.py`
+  - `src/core/index.py`
+  - `tests/unit/test_ingest_safety.py`
 
 ## Rebuild
 
