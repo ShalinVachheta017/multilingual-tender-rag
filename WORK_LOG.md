@@ -7,7 +7,7 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 ## Current checkpoint
 
 - Branch: `refactor/simplify`
-- HEAD: `d75151b1`
+- HEAD: `d3059d16`
 - Origin: `https://github.com/ShalinVachheta017/ragbot-core.git`
 - Unique commits: **67**
 - Active commit dates: **20**
@@ -19,7 +19,7 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 - `chore/repo-cleanup -> 0c1b9999`
 - `cleanup-qdrant-only -> f076187a`
 - `main -> 26fa967a`
-- `refactor/simplify -> d75151b1`
+- `refactor/simplify -> d3059d16`
 - `origin -> df2a0be4`
 - `origin/cleanup-qdrant-only -> f076187a`
 - `origin/main -> df2a0be4`
@@ -33,7 +33,6 @@ Generated on 2026-11-11 from the complete local Git object graph after refreshin
 - `?? .dashboard/`
 - `?? .smapleproject.md`
 - `?? docs/img/one_page.svg`
-- `?? evaluation/verify_mini.md`
 
 ## Era overview
 
@@ -888,9 +887,9 @@ Every unique commit appears once below. File operations come directly from Git n
 
 **Current: Tender RAG 2.0.** Rebuilt the environment on Python 3.12 after Windows Smart App Control blocked unsigned binaries, matched Qdrant server and client (1.20), and fixed the Jina v3 loading errors (sentence-transformers 5.x cache_dir clash, missing einops).
 
-- Commits: **7**
-- File events: added 122, modified 3, deleted 5
-- Areas touched: `.dashboard`, `.gitignore`, `.smapleproject.md`, `docker-compose.yml`, `docs`, `evaluation`, `LICENSE`, `NEXT_STEPS.md`, `PROJECT_DOCUMENTATION.md`, `pyproject.toml`, `README.md`, `requirements.txt`, `scripts`, `src`, `tests`, `ui`, `WORK_LOG.md`
+- Commits: **1**
+- File events: modified 3, deleted 5
+- Areas touched: `docker-compose.yml`, `docs`, `PROJECT_DOCUMENTATION.md`, `requirements.txt`, `src`
 
 #### `4e310cd8` fix: match Qdrant server and client (1.20) and use query_points
 
@@ -906,164 +905,12 @@ Every unique commit appears once below. File operations come directly from Git n
   - `docs/planning/portfolio_two_projects_roadmap.png`
   - `docs/planning/project2_privacy_first_agentic_rag_roadmap.pdf`
 
-#### `fe8acd93` Agent host session 56c5cde6-e99a-472b-a306-1f6fa118bd25 - baseline checkpoint
-
-- Full hash: `fe8acd9340834672f779548c3a0822b7212cd380`
-- Added (61):
-  - `.dashboard/project.json`
-  - `.gitignore`
-  - `.smapleproject.md`
-  - `LICENSE`
-  - `NEXT_STEPS.md`
-  - `README.md`
-  - `WORK_LOG.md`
-  - `docker-compose.yml`
-  - `docs/PROJECT_2_MULTIDOC_AGENT.pdf`
-  - `docs/TENDER_RAG_REFERENCE.md`
-  - `docs/img/change_loop.svg`
-  - `docs/img/data_split.svg`
-  - `docs/img/defects_by_stage.svg`
-  - `docs/img/failure_funnel.svg`
-  - `docs/img/hours.svg`
-  - `docs/img/one_page.svg`
-  - `docs/img/p1_p2_link.svg`
-  - `docs/img/pipeline_offline.svg`
-  - `docs/img/pipeline_online.svg`
-  - `docs/img/roadmap.svg`
-  - `docs/img/timeline.svg`
-  - `evaluation/EVALUATION_REPORT.md`
-  - `evaluation/datasets/SAMPLE_QUERIES.md`
-  - `evaluation/datasets/TEST_QUERIES.md`
-  - `evaluation/manual_evaluation.py`
-  - `evaluation/results/manual_eval_20251102_192935.json`
-  - `pyproject.toml`
-  - `requirements.txt`
-  - `scripts/data_processing/__init__.py`
-  - `scripts/data_processing/embed.py`
-  - `scripts/data_processing/ingest.py`
-  - `scripts/deployment/__init__.py`
-  - `scripts/deployment/build_bm25_index.py`
-  - `scripts/project_tracking/build_progress_dashboard.py`
-  - `scripts/project_tracking/dashboard_assets/base.css`
-  - `scripts/project_tracking/dashboard_assets/dashboard.css`
-  - `scripts/project_tracking/dashboard_assets/dashboard.js`
-  - `scripts/project_tracking/dashboard_assets/tokens.css`
-  - `src/__init__.py`
-  - `src/api/__init__.py`
-  - `src/api/main.py`
-  - `src/api/models/__init__.py`
-  - `src/api/models/requests.py`
-  - `src/api/models/responses.py`
-  - `src/api/routes/__init__.py`
-  - `src/api/routes/chat.py`
-  - `src/api/routes/search.py`
-  - `src/api/security.py`
-  - `src/core/__init__.py`
-  - `src/core/config.py`
-  - `src/core/domain.py`
-  - `src/core/hybrid_search.py`
-  - `src/core/index.py`
-  - `src/core/io.py`
-  - `src/core/qa.py`
-  - `src/core/search.py`
-  - `tests/test_api.py`
-  - `tests/test_id_lookup.py`
-  - `tests/test_multilingual.py`
-  - `tests/unit/test_retrieval_basics.py`
-  - `ui/streamlit/app.py`
-
-#### `2471df33` Agent host session 56c5cde6-e99a-472b-a306-1f6fa118bd25 - turn 1 start
-
-- Full hash: `2471df33ed56edea57d562188cac79e3dbab1a9c`
-- No file-status rows were reported for this commit.
-
-#### `a7c6b81f` Agent host session 56c5cde6-e99a-472b-a306-1f6fa118bd25 - turn 1
-
-- Full hash: `a7c6b81f29ff8f75c7310ab5e82101d8c467afa4`
-- No file-status rows were reported for this commit.
-
-#### `e8f1cec8` Agent host session c36fb272-d394-49d5-a4e8-5a8acedf406e - baseline checkpoint
-
-- Full hash: `e8f1cec87e719d27486231ba5c71a98e3970049f`
-- Added (61):
-  - `.dashboard/project.json`
-  - `.gitignore`
-  - `.smapleproject.md`
-  - `LICENSE`
-  - `NEXT_STEPS.md`
-  - `README.md`
-  - `WORK_LOG.md`
-  - `docker-compose.yml`
-  - `docs/PROJECT_2_MULTIDOC_AGENT.pdf`
-  - `docs/TENDER_RAG_REFERENCE.md`
-  - `docs/img/change_loop.svg`
-  - `docs/img/data_split.svg`
-  - `docs/img/defects_by_stage.svg`
-  - `docs/img/failure_funnel.svg`
-  - `docs/img/hours.svg`
-  - `docs/img/one_page.svg`
-  - `docs/img/p1_p2_link.svg`
-  - `docs/img/pipeline_offline.svg`
-  - `docs/img/pipeline_online.svg`
-  - `docs/img/roadmap.svg`
-  - `docs/img/timeline.svg`
-  - `evaluation/EVALUATION_REPORT.md`
-  - `evaluation/datasets/SAMPLE_QUERIES.md`
-  - `evaluation/datasets/TEST_QUERIES.md`
-  - `evaluation/manual_evaluation.py`
-  - `evaluation/results/manual_eval_20251102_192935.json`
-  - `pyproject.toml`
-  - `requirements.txt`
-  - `scripts/data_processing/__init__.py`
-  - `scripts/data_processing/embed.py`
-  - `scripts/data_processing/ingest.py`
-  - `scripts/deployment/__init__.py`
-  - `scripts/deployment/build_bm25_index.py`
-  - `scripts/project_tracking/build_progress_dashboard.py`
-  - `scripts/project_tracking/dashboard_assets/base.css`
-  - `scripts/project_tracking/dashboard_assets/dashboard.css`
-  - `scripts/project_tracking/dashboard_assets/dashboard.js`
-  - `scripts/project_tracking/dashboard_assets/tokens.css`
-  - `src/__init__.py`
-  - `src/api/__init__.py`
-  - `src/api/main.py`
-  - `src/api/models/__init__.py`
-  - `src/api/models/requests.py`
-  - `src/api/models/responses.py`
-  - `src/api/routes/__init__.py`
-  - `src/api/routes/chat.py`
-  - `src/api/routes/search.py`
-  - `src/api/security.py`
-  - `src/core/__init__.py`
-  - `src/core/config.py`
-  - `src/core/domain.py`
-  - `src/core/hybrid_search.py`
-  - `src/core/index.py`
-  - `src/core/io.py`
-  - `src/core/qa.py`
-  - `src/core/search.py`
-  - `tests/test_api.py`
-  - `tests/test_id_lookup.py`
-  - `tests/test_multilingual.py`
-  - `tests/unit/test_retrieval_basics.py`
-  - `ui/streamlit/app.py`
-
-#### `7d37c488` Agent host session c36fb272-d394-49d5-a4e8-5a8acedf406e - turn 1 start
-
-- Full hash: `7d37c48836f1608aa5e3231f054efc1c3485455a`
-- No file-status rows were reported for this commit.
-
-#### `e9e71abc` Agent host session c36fb272-d394-49d5-a4e8-5a8acedf406e - turn 1
-
-- Full hash: `e9e71abc7a0c11d0e6972e27bc6b5a2ad9aba515`
-- No file-status rows were reported for this commit.
-
 ### 2026-11-11
 
-**Current: Tender RAG 2.0.** Started the corpus from zero: one folder per tender with safe unzip, BGE-M3 as the default embedder (Jina v3 stays selectable), tender metadata finally attached to chunks, a 5-tender mini corpus, 10 draft questions and a deterministic retrieval check.
+**Current: Tender RAG 2.0.** Started the corpus from zero (one folder per tender, safe unzip, tender metadata finally attached), made BGE-M3 the default embedder, added parallel read/OCR workers, a saved-chunk file so OCR runs once, three full collections (BGE-M3, Qwen3-0.6B, Jina v3, 32,370 points each after fixing a bug that overwrote 4.7% of chunks), resumable GPU indexing, and a 48-question German/English evaluation set with a retrieval check.
 
-- Commits: **7**
-- File events: added 18, modified 22
+- Commits: **13**
+- File events: added 27, modified 42, deleted 1
 - Areas touched: `.gitignore`, `evaluation`, `NEXT_STEPS.md`, `requirements.txt`, `scripts`, `src`, `tests`, `WORK_LOG.md`
 
 #### `12279ffb` feat: start the corpus from zero with one folder per tender and a swappable embedder
@@ -1130,7 +977,6 @@ Every unique commit appears once below. File operations come directly from Git n
 #### `d75151b1` feat: parallel read/OCR/chunk workers and a three-way embedder comparison
 
 - Full hash: `d75151b105e34053a1a791b7e67119f5fb55673e`
-- Refs: `HEAD -> refactor/simplify`
 - Added (6):
   - `evaluation/compare_embedders.py`
   - `evaluation/make_checklist.py`
@@ -1143,6 +989,71 @@ Every unique commit appears once below. File operations come directly from Git n
   - `scripts/data_processing/embed.py`
   - `src/core/index.py`
   - `tests/unit/test_ingest_safety.py`
+
+#### `827eed92` docs: refresh WORK_LOG
+
+- Full hash: `827eed92df50f1c6caa6b1d3ab7b72a6455a261b`
+- Modified (1):
+  - `WORK_LOG.md`
+
+#### `0b3abad7` feat: verify_questions.py opens each evidence PDF at its page and records yes/no
+
+- Full hash: `0b3abad71c2c4bf414673804ca8ff343f5c85982`
+- Added (1):
+  - `evaluation/verify_questions.py`
+
+#### `0970060a` fix: identical files in different tenders no longer overwrite each other
+
+- Full hash: `0970060ac6b0c33f4ba5ee85c5378e3b81542556`
+- Added (6):
+  - `evaluation/generate_questions.py`
+  - `evaluation/run_eval.py`
+  - `evaluation/verify_mini.md`
+  - `scripts/data_processing/build_collections.py`
+  - `scripts/data_processing/prepare_chunks.py`
+  - `src/core/embedder_presets.py`
+- Modified (9):
+  - `NEXT_STEPS.md`
+  - `evaluation/compare_embedders.py`
+  - `evaluation/datasets/mini_questions.json`
+  - `scripts/data_processing/embed.py`
+  - `src/core/config.py`
+  - `src/core/index.py`
+  - `src/core/prepare.py`
+  - `tests/unit/test_ingest_safety.py`
+  - `tests/unit/test_retrieval_basics.py`
+- Deleted (1):
+  - `evaluation/run_mini_eval.py`
+
+#### `d8cde598` fix: stop at the first CUDA error and keep Windows awake during long jobs
+
+- Full hash: `d8cde598bb9067b4497f81a60a7dca16fb30aa44`
+- Added (1):
+  - `src/core/awake.py`
+- Modified (5):
+  - `scripts/data_processing/build_collections.py`
+  - `scripts/data_processing/embed.py`
+  - `scripts/data_processing/prepare_chunks.py`
+  - `scripts/project_tracking/build_progress_dashboard.py`
+  - `src/core/index.py`
+
+#### `eb81acc5` fix: resumable indexing, smaller batches for Qwen3/Jina, automatic retries
+
+- Full hash: `eb81acc5116374c1fb5a8bdf0dae2e7dd4cbfaa7`
+- Modified (4):
+  - `scripts/data_processing/build_collections.py`
+  - `scripts/data_processing/embed.py`
+  - `src/core/embedder_presets.py`
+  - `src/core/index.py`
+
+#### `d3059d16` feat: 48-question German/English evaluation set (24 base questions, dev/test split)
+
+- Full hash: `d3059d16880e0b3d3fc125cb74d8ae4f7e84b6b0`
+- Refs: `HEAD -> refactor/simplify`
+- Added (1):
+  - `evaluation/datasets/g_de_en_48.json`
+- Modified (1):
+  - `scripts/project_tracking/build_progress_dashboard.py`
 
 ## Rebuild
 
